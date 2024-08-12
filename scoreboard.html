@@ -12,97 +12,64 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="canonical" href="navbars">
+    
 
     <!-- Bootstrap core CSS -->
-    <link href="assets/sb/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/sb/fonts/specimen_files/specimen_stylesheet.css" type="text/css" charset="utf-8" />
-    <link rel="stylesheet" href="assets/sb/fonts/stylesheet.css" type="text/css" charset="utf-8" />
-    <link href="assets/sb/css/scare.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
+    <link href="./assets/sb/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/sb/fonts/specimen_files/specimen_stylesheet.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="./assets/sb/fonts/stylesheet.css" type="text/css" charset="utf-8" />
+    <link href="./assets/sb/css/scare.css" rel="stylesheet">
+     <!-- เพิ่มลิงก์ Font Awesome -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
      <!-- Template css -->
-    
-    <link href="assets/sb/css/navbar.css" rel="stylesheet">
+
+    <link href="./assets/sb/css/navbar.css" rel="stylesheet">
+
 </head>
 <body>
 
- <!-- Header Section Start -->
- <header>
-    <div class="top-header">
-        <div class="container-fluid-lg">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="navbar custom-navbar navbar-expand-lg navbar-expand-lg justify-content-end">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <a class="navbar-brand" href="./index.html" target="_blank">
-                    
-                             <h2 class="text-black"> ALLITSHOP</h2>
-                        </a>
-                        
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mx-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link " href="./index.html">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="./scoreboard.html">ป้ายสกอร์บอร์ด</a>
-                                </li>  
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
+<!-- ปุ่มย้อนกลับไปหน้า Home (ใช้ไอคอน) -->
+<a href="index.html" class="btn-back-home">
+    <i class="fas fa-arrow-left"></i> <!-- ไอคอนย้อนกลับ -->
+</a>
+<div class="scoreboard-container">
+    <div class="scoreboard">
+        <div class="team-section">
+            <button class="btn btn-primary w-100" id="btn1">กรอกชื่อทีมA</button>
+            <div>
+                <p id="roundCorners">00</p>
+                <button onclick="addone1()" type="button" class="btn btn-info">+</button>
+                <button onclick="subone1()" type="button" class="btn btn-info">-</button>
             </div>
         </div>
+        <div class="set-section">
+            <h2>Set</h2>
+            <p id="set" class="score">00</p>
+            <button onclick="addone3()" type="button" class="btn btn-info">+</button>
+            <button onclick="subone3()" type="button" class="btn btn-info">-</button>
+            <div  id="refresh" class="refresh-btn">
+                <button class="btn btn-primary" onClick="refreshPage()">Refresh</button>
+            </div>
+        </div>
+        <div class="team-section">
+            <button class="btn btn-danger w-100" id="btn2">กรอกชื่อทีมB</button>
+            <div>
+                <p id="roundCorners2">00</p>
+                <button onclick="addone2()" type="button" class="btn btn-info">+</button>
+                <button onclick="subone2()" type="button" class="btn btn-info">-</button>
+            </div>
+        </div>
+        
     </div>
-</header>
-<!-- Header Section End -->
-
-<h3 class="container-sm mb-2" style="text-align: center;">
-  <span style="color: #000099;"><strong>โปรแกรมป้ายสกอร์บอร์ด</strong>
-  </span>
-</h3>
-
-
-
-<div class="container">
-<div class="card-deck text-white  ">
-  <div class=" text-center content-center">
-      <button class="btn1 btn-primary btn-lg btn-block" id="btn1">กรอกชื่อทีมA</button>
-      <div class="card-body text-center-sm">
-          <p id="roundCorners">00</p>
-          <button onclick="addone1()" type="button" class="btn btn-lg btn-info" >+</button>
-          <button onclick="subone1()" type="button" class="btn btn-lg btn-info" >-</button>
-      </div>
-  </div>
-  <div class="card-body text-center">
-      <h2>Set</h2>
-      <h1 id="set">00</h1>
-      <button onclick="addone3()" type="button" class="btn btn-lg btn-info" >+</button>
-      <button onclick="subone3()" type="button" class="btn btn-lg btn-info" >-</button>
-  </div>
-  <div class=" text-center content-center">
-      <button class="btn2  btn-lg btn-block btn-danger" id="btn2">กรอกชื่อทีมB</button>
-      <div class="card-body text-center">
-          <p id="roundCorners2">00</p>
-          <button onclick="addone2()" type="button" class="btn btn-lg btn-info" >+</button>
-          <button onclick="subone2()" type="button" class="btn btn-lg btn-info" >-</button>
-      </div>
-
-  </div>
-
+    
+    
 </div>
-<div class="col-sm-8 mx-auto text-center">
-  <h2><a class="btn btn-primary text-center" onClick="refreshPage()" role="button">Refresh </a></h2>
-</div>
+        
 
-<script type="text/javascript" src="assets/sb/js/app.js"></script>
 
+<script type="text/javascript" src="./assets/sb/js/app.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
