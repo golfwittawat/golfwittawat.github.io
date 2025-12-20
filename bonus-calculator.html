@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>คำนวณโบนัส (แบบหักตามขั้นบันได)</title>
+    <title>คำนวณโบนัส (แบบแบ่งจ่าย)</title>
     <style>
         body {
             font-family: 'Sarabun', sans-serif;
@@ -49,11 +49,11 @@
         /* กลุ่มปุ่มกด */
         .button-group {
             display: flex;
-            gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+            gap: 10px;
             margin-top: 20px;
         }
         button {
-            flex: 1; /* ให้ปุ่มขยายเต็มพื้นที่เท่าๆ กัน */
+            flex: 1;
             padding: 12px;
             border: none;
             border-radius: 6px;
@@ -90,6 +90,13 @@
             color: #d35400;
             font-weight: bold;
         }
+        .installment-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #d35400;
+            font-weight: bold;
+            color: #e67e22;
+        }
         .detail-text {
             font-size: 14px;
             color: #7f8c8d;
@@ -101,7 +108,7 @@
 <body>
 
 <div class="container">
-    <h2>🧮 คำนวณโบนัสปี 2568 </h2>
+    <h2>🧮 คำนวณโบนัสปี 2568</h2>
     
     <div class="form-group">
         <label for="salary">เงินเดือน (บาท)</label>
@@ -134,6 +141,7 @@
         <div>ยอดโบนัสสุทธิที่จะได้รับ</div>
         <div class="result-value" id="finalBonus">0.00 บาท</div>
         <div class="detail-text" id="calculationDetail"></div>
+        <div class="installment-info" id="installmentDetail"></div>
     </div>
 </div>
 
@@ -145,7 +153,6 @@
 
     function createOptions() {
         const select = document.getElementById('leaveSelect');
-        // เคลียร์ตัวเลือกเดิมก่อน (เผื่อกรณีเรียกซ้ำ)
         select.innerHTML = '<option value="0">ไม่ลาเลย (ไม่หัก)</option>';
 
         const penaltyStep = 7; 
@@ -174,21 +181,17 @@
         }
     }
 
-    // ฟังก์ชันสำหรับปุ่ม "ค่าเริ่มต้น"
     function setDefaults() {
         document.getElementById('salary').value = "";
         document.getElementById('totalDays').value = 60;
-        document.getElementById('leaveSelect').value = 0; // กลับไปที่ "ไม่ลา"
+        document.getElementById('leaveSelect').value = 0; 
         document.getElementById('percent').value = 30;
-        
-        // ซ่อนกล่องผลลัพธ์ เพื่อให้เหมือนเริ่มใหม่
         document.getElementById('resultBox').style.display = 'none';
     }
 
     function calculateBonus() {
         const salary = parseFloat(document.getElementById('salary').value);
         
-        // เช็คว่ากรอกเงินเดือนหรือยัง
         if (isNaN(salary)) {
             alert("กรุณากรอกเงินเดือนก่อนครับ");
             return;
@@ -203,11 +206,32 @@
 
         const dailyRate = salary / 30;
         const baseAmount = dailyRate * calculatedDays;
+        
+        // ยอดโบนัสสุทธิ
         const bonus = baseAmount * (percent / 100);
+
+        // --- ส่วนคำนวณแบ่งจ่าย (เพิ่มใหม่) ---
+        let months = 0;
+        let note = "";
+
+        if (bonus <= 3000) {
+            months = 1;
+            note = "จ่ายครั้งเดียว";
+        } else if (bonus <= 5000) {
+            months = 5;
+            note = "แบ่งจ่าย 5 เดือน";
+        } else {
+            months = 12;
+            note = "แบ่งจ่าย 12 เดือน";
+        }
+        
+        const monthlyPayment = bonus / months;
+        // ----------------------------------
 
         const resultBox = document.getElementById('resultBox');
         const finalBonusDisplay = document.getElementById('finalBonus');
         const detailDisplay = document.getElementById('calculationDetail');
+        const installmentDisplay = document.getElementById('installmentDetail');
         const formatter = new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' });
 
         resultBox.style.display = 'block';
@@ -218,6 +242,12 @@
             <span style="color: #c0392b;">ถูกหักออก: ${daysToDeduct} วัน (ตามเกณฑ์วันลา)</span><br>
             เหลือวันคำนวณ: <b>${calculatedDays}</b> วัน<br>
             ฐานเงิน: ${formatter.format(baseAmount)}
+        `;
+
+        // แสดงผลแบ่งจ่าย
+        installmentDisplay.innerHTML = `
+            ${note}<br>
+            <span style="font-size: 1.2em;">ได้รับเงิน ${formatter.format(monthlyPayment)} บาท</span>
         `;
     }
 </script>
