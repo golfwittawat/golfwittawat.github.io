@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คำนวณโบนัส (แบบหักตามขั้นบันได)</title>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+        /* กลุ่มปุ่มกด */
+        .button-group {
+            display: flex;
+            gap: 10px; /* ระยะห่างระหว่างปุ่ม */
+            margin-top: 20px;
+        }
+        button {
+            flex: 1; /* ให้ปุ่มขยายเต็มพื้นที่เท่าๆ กัน */
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-calc {
+            background-color: #138b03d3;
+            color: white;
+        }
+        .btn-calc:hover {
+            background-color: #46e408;
+        }
+        .btn-default {
+            background-color: #95a5a6;
+            color: white;
+        }
+        .btn-default:hover {
+            background-color: #7f8c8d;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fdf2e9;
+            border: 1px solid #d35400;
+            border-radius: 6px;
+            text-align: center;
+            display: none;
+        }
+        .result-value {
+            font-size: 24px;
+            color: #d35400;
+            font-weight: bold;
+        }
+        .detail-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🧮 คำนวณโบนัสปี 2568 </h2>
+    
+    <div class="form-group">
+        <label for="salary">เงินเดือน (บาท)</label>
+        <input type="number" id="salary" value="" placeholder="กรอกเงินเดือนที่นี่...">
+    </div>
+
+    <div class="form-group">
+        <label for="totalDays">ระยะเวลาพิจารณา (วัน)</label>
+        <input type="number" id="totalDays" value="60" readonly style="background-color: #eee; color: #777;">
+    </div>
+
+    <div class="form-group">
+        <label for="leaveSelect">จำนวนวันที่ลา (รวม)</label>
+        <select id="leaveSelect">
+            <option value="0">ไม่ลาเลย (ไม่หัก)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="percent">อัตราโบนัส (%)</label>
+        <input type="number" id="percent" value="30" placeholder="เช่น 30">
+    </div>
+
+    <div class="button-group">
+        <button class="btn-default" onclick="setDefaults()">ค่าเริ่มต้น</button>
+        <button class="btn-calc" onclick="calculateBonus()">คำนวณยอดเงิน</button>
+    </div>
+
+    <div id="resultBox" class="result-box">
+        <div>ยอดโบนัสสุทธิที่จะได้รับ</div>
+        <div class="result-value" id="finalBonus">0.00 บาท</div>
+        <div class="detail-text" id="calculationDetail"></div>
+    </div>
+</div>
+
+<script>
+    // สร้างตัวเลือก Dropdown เมื่อโหลดหน้าเว็บ
+    window.onload = function() {
+        createOptions();
+    };
+
+    function createOptions() {
+        const select = document.getElementById('leaveSelect');
+        // เคลียร์ตัวเลือกเดิมก่อน (เผื่อกรณีเรียกซ้ำ)
+        select.innerHTML = '<option value="0">ไม่ลาเลย (ไม่หัก)</option>';
+
+        const penaltyStep = 7; 
+        const leaveStep = 3;   
+        const maxPenalty = 60; 
+
+        for (let i = 1; ; i++) {
+            let deductDays = i * penaltyStep;
+            let endRange = i * leaveStep; 
+            let startRange = endRange - leaveStep + 1;
+
+            if (deductDays > maxPenalty) {
+                let option = document.createElement("option");
+                option.value = maxPenalty;
+                option.text = `ลา ${startRange} วันขึ้นไป (หักหมด ${maxPenalty} วัน)`;
+                select.appendChild(option);
+                break;
+            }
+
+            let option = document.createElement("option");
+            option.value = deductDays;
+            option.text = `ลา ${startRange}-${endRange} วัน (หักโบนัส ${deductDays} วัน)`;
+            select.appendChild(option);
+            
+            if (deductDays === maxPenalty) break;
+        }
+    }
+
+    // ฟังก์ชันสำหรับปุ่ม "ค่าเริ่มต้น"
+    function setDefaults() {
+        document.getElementById('salary').value = "";
+        document.getElementById('totalDays').value = 60;
+        document.getElementById('leaveSelect').value = 0; // กลับไปที่ "ไม่ลา"
+        document.getElementById('percent').value = 30;
+        
+        // ซ่อนกล่องผลลัพธ์ เพื่อให้เหมือนเริ่มใหม่
+        document.getElementById('resultBox').style.display = 'none';
+    }
+
+    function calculateBonus() {
+        const salary = parseFloat(document.getElementById('salary').value);
+        
+        // เช็คว่ากรอกเงินเดือนหรือยัง
+        if (isNaN(salary)) {
+            alert("กรุณากรอกเงินเดือนก่อนครับ");
+            return;
+        }
+
+        const totalDays = parseFloat(document.getElementById('totalDays').value) || 60;
+        const percent = parseFloat(document.getElementById('percent').value) || 0;
+        const daysToDeduct = parseFloat(document.getElementById('leaveSelect').value) || 0;
+
+        let calculatedDays = totalDays - daysToDeduct;
+        if (calculatedDays < 0) calculatedDays = 0;
+
+        const dailyRate = salary / 30;
+        const baseAmount = dailyRate * calculatedDays;
+        const bonus = baseAmount * (percent / 100);
+
+        const resultBox = document.getElementById('resultBox');
+        const finalBonusDisplay = document.getElementById('finalBonus');
+        const detailDisplay = document.getElementById('calculationDetail');
+        const formatter = new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' });
+
+        resultBox.style.display = 'block';
+        finalBonusDisplay.innerText = formatter.format(bonus);
+        
+        detailDisplay.innerHTML = `
+            จากเวลาทั้งหมด: ${totalDays} วัน<br>
+            <span style="color: #c0392b;">ถูกหักออก: ${daysToDeduct} วัน (ตามเกณฑ์วันลา)</span><br>
+            เหลือวันคำนวณ: <b>${calculatedDays}</b> วัน<br>
+            ฐานเงิน: ${formatter.format(baseAmount)}
+        `;
+    }
+</script>
+
+</body>
+</html>
