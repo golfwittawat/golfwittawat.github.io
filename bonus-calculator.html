@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>คำนวณโบนัส (แบบแบ่งจ่าย)</title>
+    <title>คำนวณโบนัส (กฎการลาใหม่)</title>
     <style>
         body {
             font-family: 'Sarabun', sans-serif;
@@ -155,30 +155,24 @@
         const select = document.getElementById('leaveSelect');
         select.innerHTML = '<option value="0">ไม่ลาเลย (ไม่หัก)</option>';
 
-        const penaltyStep = 7; 
-        const leaveStep = 3;   
-        const maxPenalty = 60; 
+        // กำหนดกฎการหักวันลาแบบกำหนดเอง (Custom Rules)
+        const rules = [
+            { label: "ลา 1-3 วัน", deduct: 7 },
+            { label: "ลา 4-7 วัน", deduct: 15 },
+            { label: "ลา 8-15 วัน", deduct: 30 },
+            { label: "ลา 16-21 วัน", deduct: 45 },
+            { label: "ลา 22-30 วัน", deduct: 57 },
+            { label: "ลา 31 วันขึ้นไป", deduct: 60 } // เกิน 30 วัน หัก 60 (หมดโบนัส)
+        ];
 
-        for (let i = 1; ; i++) {
-            let deductDays = i * penaltyStep;
-            let endRange = i * leaveStep; 
-            let startRange = endRange - leaveStep + 1;
-
-            if (deductDays > maxPenalty) {
-                let option = document.createElement("option");
-                option.value = maxPenalty;
-                option.text = `ลา ${startRange} วันขึ้นไป (หักหมด ${maxPenalty} วัน)`;
-                select.appendChild(option);
-                break;
-            }
-
+        rules.forEach(rule => {
             let option = document.createElement("option");
-            option.value = deductDays;
-            option.text = `ลา ${startRange}-${endRange} วัน (หักโบนัส ${deductDays} วัน)`;
+            option.value = rule.deduct;
+            // เช็คข้อความพิเศษสำหรับกรณีไม่ได้โบนัส
+            const extraText = rule.deduct >= 60 ? " / ไม่ได้รับโบนัส" : "";
+            option.text = `${rule.label} (หักโบนัส ${rule.deduct} วัน${extraText})`;
             select.appendChild(option);
-            
-            if (deductDays === maxPenalty) break;
-        }
+        });
     }
 
     function setDefaults() {
@@ -202,6 +196,7 @@
         const daysToDeduct = parseFloat(document.getElementById('leaveSelect').value) || 0;
 
         let calculatedDays = totalDays - daysToDeduct;
+        // ป้องกันค่าติดลบ (กรณีหัก 60 วัน แต่ระยะเวลาพิจารณาน้อยกว่าหรือเท่ากับ 60)
         if (calculatedDays < 0) calculatedDays = 0;
 
         const dailyRate = salary / 30;
@@ -210,11 +205,14 @@
         // ยอดโบนัสสุทธิ
         const bonus = baseAmount * (percent / 100);
 
-        // --- ส่วนคำนวณแบ่งจ่าย (เพิ่มใหม่) ---
+        // --- ส่วนคำนวณแบ่งจ่าย ---
         let months = 0;
         let note = "";
 
-        if (bonus <= 3000) {
+        if (bonus <= 0) {
+            months = 0;
+            note = "ไม่ได้รับเงินโบนัส";
+        } else if (bonus <= 3000) {
             months = 1;
             note = "จ่ายครั้งเดียว";
         } else if (bonus <= 5000) {
@@ -225,8 +223,8 @@
             note = "แบ่งจ่าย 12 เดือน";
         }
         
-        const monthlyPayment = bonus / months;
-        // ----------------------------------
+        const monthlyPayment = months > 0 ? bonus / months : 0;
+        // -----------------------
 
         const resultBox = document.getElementById('resultBox');
         const finalBonusDisplay = document.getElementById('finalBonus');
@@ -244,11 +242,20 @@
             ฐานเงิน: ${formatter.format(baseAmount)}
         `;
 
-        // แสดงผลแบ่งจ่าย
-        installmentDisplay.innerHTML = `
-            ${note}<br>
-            <span style="font-size: 1.2em;">ได้รับเงิน ${formatter.format(monthlyPayment)} บาท</span>
-        `;
+        // แสดงผลแบ่งจ่าย (ถ้าไม่ได้โบนัส ให้แสดงข้อความธรรมดา)
+        if (bonus > 0) {
+            installmentDisplay.innerHTML = `
+                ${note}<br>
+                <span style="font-size: 1.2em;">ได้รับเดือนละ ${formatter.format(monthlyPayment)}</span>
+            `;
+            installmentDisplay.style.color = "#e67e22"; // สีส้มปกติ
+        } else {
+            installmentDisplay.innerHTML = `
+                ${note}<br>
+                <span style="font-size: 1.2em;">0.00 บาท</span>
+            `;
+            installmentDisplay.style.color = "red"; // สีแดงกรณีไม่ได้เงิน
+        }
     }
 </script>
 
