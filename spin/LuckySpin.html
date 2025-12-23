@@ -8,22 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Mali', cursive;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        canvas {
-            filter: drop-shadow(0 0 15px rgba(255, 183, 178, 0.6));
-            max-width: 100%;
-            height: auto;
-        }
-
-        .pastel-text {
-            color: #4A4A4A;
-            text-shadow: 2px 2px 0px #FFF;
-        }
-
         .glass-panel {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
@@ -308,11 +292,9 @@
         let animationId = null;
 
         // Audio
-        const tickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
         const winSound = new Audio("https://actions.google.com/sounds/v1/crowds/battle_crowd_celebrate_stutter.ogg"); // Applause/Cheer
         const bgMusic = new Audio("https://actions.google.com/sounds/v1/science_fiction/music_box_happy_birthday.ogg"); // Happy tune
 
-        tickSound.volume = 0.2;
         winSound.volume = 0.6;
         bgMusic.volume = 0.3;
         bgMusic.loop = true;
@@ -452,15 +434,7 @@
             currentAngle += velocity;
             if (currentAngle >= 360) currentAngle -= 360;
 
-            // Sound
-            const segmentAngle = 360 / data.numbers.length;
-            if (Math.floor(currentAngle / segmentAngle) !== Math.floor((currentAngle - velocity) / segmentAngle)) {
-                if (velocity > 0.5) {
-                    const clone = tickSound.cloneNode();
-                    clone.volume = Math.min(velocity / 40, 0.5);
-                    clone.play().catch(() => { });
-                }
-            }
+            // Sound removed as per request
 
             drawWheel();
 
