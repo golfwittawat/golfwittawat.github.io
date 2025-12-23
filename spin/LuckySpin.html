@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎁 LuckySpin 2025 🎉</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Mali', cursive;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        canvas {
+            filter: drop-shadow(0 0 15px rgba(255, 183, 178, 0.6));
+            max-width: 100%;
+            height: auto;
+        }
+
+        .pastel-text {
+            color: #4A4A4A;
+            text-shadow: 2px 2px 0px #FFF;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border: 2px solid #FFF;
+            box-shadow: 0 8px 32px 0 rgba(181, 234, 215, 0.4);
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FFB7B2;
+            border-radius: 4px;
+        }
+
+        .pastel-bg {
+            background: linear-gradient(135deg, #FFDAC1 0%, #FFB7B2 25%, #E2F0CB 50%, #B5EAD7 75%, #C7CEEA 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Floating Shapes (Snow) */
+        .shape {
+            position: absolute;
+            filter: blur(1px);
+            z-index: 0;
+            animation: fall linear infinite;
+            opacity: 0.8;
+            color: #FFF;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0.4;
+            }
+        }
+
+        /* Modal Animation */
+        .modal-enter {
+            animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes modalPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Mobile Accordion Styles */
+        details>summary {
+            list-style: none;
+            cursor: pointer;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] summary~* {
+            animation: slideDown 0.3s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="pastel-bg text-gray-700 min-h-screen flex flex-col items-center overflow-x-hidden relative">
+
+    <!-- Floating Background Shapes -->
+    <div id="shapes-container" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+
+    <!-- Top Controls -->
+    <div class="fixed top-4 right-4 z-50 flex gap-2">
+        <button id="musicBtn"
+            class="bg-white/80 p-3 rounded-full shadow-lg hover:scale-110 transition-transform text-xl active:scale-95">🔇</button>
+        <button id="fullscreenBtn"
+            class="bg-white/80 p-3 rounded-full shadow-lg hover:scale-110 transition-transform text-xl active:scale-95">⛶</button>
+    </div>
+
+    <div class="relative z-10 w-full max-w-7xl p-4 md:p-6 flex flex-col items-center">
+
+        <!-- Header -->
+        <header class="text-center mb-4 md:mb-8 animate-fade-in-down">
+            <h1 class="text-3xl md:text-6xl mb-2 pastel-text font-bold leading-tight drop-shadow-sm">LuckySpin 2025
+            </h1>
+            <p
+                class="text-sm md:text-lg text-gray-600 tracking-widest uppercase font-bold bg-white/60 px-6 py-1 rounded-full inline-block shadow-sm">
+                🎁 จับของขวัญปีใหม่ 💖</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full items-start">
+
+            <!-- Center Panel: Wheel (Mobile: Top) -->
+            <div class="lg:col-span-6 flex flex-col items-center justify-start order-1 lg:order-2">
+                <div class="relative group w-full max-w-[450px] aspect-square flex items-center justify-center mb-6">
+                    <!-- Pointer -->
+                    <div
+                        class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 md:-translate-y-6 z-20 filter drop-shadow-md">
+                        <svg width="60" height="60" md:width="80" md:height="80" viewBox="0 0 60 60" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 md:w-20 md:h-20">
+                            <path d="M30 60L10 10H50L30 60Z" fill="#FFFFD1" stroke="#FFB7B2" stroke-width="3" />
+                            <circle cx="30" cy="15" r="5" fill="#FFF" />
+                        </svg>
+                    </div>
+
+                    <!-- Wheel Canvas -->
+                    <canvas id="wheelCanvas" width="500" height="500"
+                        class="rounded-full border-4 md:border-8 border-white shadow-2xl transition-transform duration-300 w-full h-full bg-white"></canvas>
+
+                    <!-- Center Logo -->
+                    <div
+                        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-inner flex items-center justify-center border-4 border-[#FFB7B2] z-10">
+                        <span class="text-4xl md:text-6xl">🎁</span>
+                    </div>
+                </div>
+
+                <!-- Spin Button -->
+                <button id="spinBtn"
+                    class="px-12 md:px-20 py-4 md:py-5 bg-gradient-to-r from-[#FFB7B2] to-[#C7CEEA] text-white text-3xl md:text-4xl font-bold rounded-full shadow-lg border-4 border-white hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-3 w-full md:w-auto justify-center mb-8">
+                    SPIN! ✨
+                </button>
+            </div>
+
+            <!-- Left Panel: Settings (Mobile: Collapsible) -->
+            <div class="lg:col-span-3 space-y-4 order-2 lg:order-1">
+                <details class="glass-panel group" open>
+                    <summary
+                        class="p-4 md:p-6 flex justify-between items-center font-bold text-[#FF9E99] cursor-pointer select-none">
+                        <span class="flex items-center gap-2"><span class="text-xl">⚙️</span> ตั้งค่าตัวเลข</span>
+                        <span class="transform group-open:rotate-180 transition-transform text-sm">▼</span>
+                    </summary>
+                    <div class="px-4 pb-4 md:px-6 md:pb-6 pt-0">
+                        <!-- Quick Generate -->
+                        <div class="mb-4 p-4 bg-white/50 rounded-xl border border-[#FFB7B2]">
+                            <label class="text-xs text-gray-500 mb-1 block">สร้างเลข 1 ถึง...</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="quickCount"
+                                    class="w-full bg-white border border-[#FFB7B2] rounded-lg px-3 py-2 text-center focus:outline-none focus:ring-2 focus:ring-[#FFB7B2] font-bold text-gray-600"
+                                    placeholder="20" value="20" min="1" max="100">
+                                <button id="generateBtn"
+                                    class="bg-[#FFB7B2] text-white px-3 rounded-lg hover:bg-[#FF9E99] active:scale-95 transition-transform">Go</button>
+                            </div>
+                        </div>
+
+                        <!-- Manual Edit -->
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-500">แก้ไขเอง (<span id="numberCount">0</span>)</span>
+                            <button id="resetBtn"
+                                class="text-xs text-red-400 hover:text-red-500 underline">รีเซ็ต</button>
+                        </div>
+                        <textarea id="numbersInput"
+                            class="w-full h-40 bg-white border border-[#C7CEEA] rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C7CEEA] resize-none font-mono text-gray-600"
+                            placeholder="1&#10;2&#10;3..."></textarea>
+                        <button id="updateBtn"
+                            class="mt-3 w-full py-2 bg-[#C7CEEA] hover:bg-[#B5B9E8] rounded-xl text-sm transition-colors text-white font-bold shadow-sm active:scale-95">
+                            อัปเดตวงล้อ
+                        </button>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Right Panel: History (Mobile: Collapsible) -->
+            <div class="lg:col-span-3 space-y-4 order-3 lg:order-3">
+                <details class="glass-panel group" open>
+                    <summary
+                        class="p-4 md:p-6 flex justify-between items-center font-bold text-[#C7CEEA] cursor-pointer select-none">
+                        <span class="flex items-center gap-2"><span class="text-xl">📜</span> ประวัติ (<span
+                                id="historyCount">0</span>)</span>
+                        <span class="transform group-open:rotate-180 transition-transform text-sm">▼</span>
+                    </summary>
+                    <div class="px-4 pb-4 md:px-6 md:pb-6 pt-0">
+                        <div class="flex justify-end mb-2">
+                            <button id="clearHistoryBtn"
+                                class="text-xs text-red-400 hover:text-red-500 underline">ล้างประวัติ</button>
+                        </div>
+                        <div class="overflow-y-auto max-h-[300px] md:max-h-[400px] space-y-2 pr-1" id="historyList">
+                            <!-- History Items -->
+                            <div class="text-center text-gray-400 py-4 text-sm">ยังไม่มีประวัติ</div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Winner Modal Overlay -->
+    <div id="winnerModal"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div
+            class="bg-white/90 p-8 md:p-12 rounded-[3rem] shadow-2xl text-center transform scale-50 transition-transform duration-300 border-8 border-[#FFB7B2] max-w-sm md:max-w-lg w-full mx-4 relative overflow-hidden">
+            <!-- Decorative Background -->
+            <div class="absolute inset-0 bg-gradient-to-b from-white to-[#FFF0F0] -z-10"></div>
+
+            <div class="text-6xl md:text-8xl mb-4 animate-bounce">🎉</div>
+            <h2 class="text-2xl md:text-3xl font-bold text-[#FF9E99] mb-2">ผู้โชคดีคือ!</h2>
+            <div id="modalResultNumber"
+                class="text-7xl md:text-9xl font-bold text-[#4A4A4A] drop-shadow-md my-4 font-mono">--</div>
+            <p class="text-gray-500 mb-8">ยินดีด้วยนะค้าบ! 🎁</p>
+
+            <button id="closeModalBtn"
+                class="w-full py-3 bg-[#B5EAD7] hover:bg-[#9FDFC3] text-white text-xl font-bold rounded-2xl shadow-md active:scale-95 transition-all">
+                ตกลง ✨
+            </button>
+        </div>
+    </div>
+
+    <!-- Credit -->
+    <div class="mt-auto py-2 text-center z-10 opacity-30 hover:opacity-80 transition-opacity duration-500">
+        <span class="text-[10px] text-gray-600 font-light tracking-[0.2em] cursor-default">GolfCode</span>
+    </div>
+
+    <!-- Confetti & Fireworks Container -->
+    <canvas id="fireworksCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <script>
+        /***********************
+         * Core Logic & State
+         ***********************/
+        const defaultData = {
+            numbers: Array.from({ length: 20 }, (_, i) => (i + 1).toString()), // 1-20
+            history: []
+        };
+
+        let data = loadData();
+        let isSpinning = false;
+
+        // Physics State
+        let currentAngle = 0;
+        let velocity = 0;
+        let friction = 0.985;
+        let animationId = null;
+
+        // Audio
+        const tickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
+        const winSound = new Audio("https://actions.google.com/sounds/v1/crowds/battle_crowd_celebrate_stutter.ogg"); // Applause/Cheer
+        const bgMusic = new Audio("https://actions.google.com/sounds/v1/science_fiction/music_box_happy_birthday.ogg"); // Happy tune
+
+        tickSound.volume = 0.2;
+        winSound.volume = 0.6;
+        bgMusic.volume = 0.3;
+        bgMusic.loop = true;
+
+        let isMusicPlaying = false;
+
+        /***********************
+         * Initialization
+         ***********************/
+        const canvas = document.getElementById("wheelCanvas");
+        const ctx = canvas.getContext("2d");
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = canvas.width / 2 - 20;
+
+        function init() {
+            syncUI();
+            drawWheel();
+            updateHistoryUI();
+            createFloatingShapes();
+            checkMobileCollapse();
+
+            document.getElementById("spinBtn").addEventListener("click", startSpin);
+            document.getElementById("generateBtn").addEventListener("click", generateNumbers);
+            document.getElementById("updateBtn").addEventListener("click", updateNumbersFromInput);
+            document.getElementById("resetBtn").addEventListener("click", () => {
+                if (confirm("รีเซ็ตเป็น 1-20?")) {
+                    data.numbers = Array.from({ length: 20 }, (_, i) => (i + 1).toString());
+                    saveData();
+                    syncUI();
+                    drawWheel();
+                }
+            });
+            document.getElementById("clearHistoryBtn").addEventListener("click", () => {
+                if (confirm("ล้างประวัติ?")) {
+                    data.history = [];
+                    saveData();
+                    updateHistoryUI();
+                }
+            });
+
+            // Quick Generate Input Listener
+            document.getElementById("quickCount").addEventListener("input", (e) => {
+                // document.getElementById("btnCountDisplay").textContent = e.target.value || "0";
+            });
+
+            // Music Toggle
+            document.getElementById("musicBtn").addEventListener("click", toggleMusic);
+
+            // Fullscreen Toggle
+            document.getElementById("fullscreenBtn").addEventListener("click", toggleFullscreen);
+
+            // Modal Close
+            document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+        }
+
+        function checkMobileCollapse() {
+            // Auto close details on mobile, open on desktop
+            const details = document.querySelectorAll("details");
+            if (window.innerWidth < 1024) {
+                details.forEach(d => d.removeAttribute("open"));
+            }
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById("musicBtn");
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                btn.textContent = "🔇";
+                isMusicPlaying = false;
+            } else {
+                bgMusic.play().catch(e => alert("Please interact with the page first!"));
+                btn.textContent = "🔊";
+                isMusicPlaying = true;
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function createFloatingShapes() {
+            const container = document.getElementById("shapes-container");
+            const shapes = ['❅', '❆'];
+            for (let i = 0; i < 30; i++) {
+                const el = document.createElement("div");
+                el.className = "shape text-2xl md:text-4xl";
+                el.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                el.style.left = Math.random() * 100 + "vw";
+                el.style.top = -10 + "vh"; // Start above screen
+                el.style.animationDuration = (Math.random() * 5 + 5) + "s"; // Fall speed
+                el.style.animationDelay = (Math.random() * 10) + "s";
+                container.appendChild(el);
+            }
+        }
+
+        /***********************
+         * Logic
+         ***********************/
+        function generateNumbers() {
+            const count = parseInt(document.getElementById("quickCount").value) || 20;
+            if (count < 1) return;
+
+            if (confirm(`ต้องการสร้างเลข 1 ถึง ${count} ใหม่หรือไม่? (ข้อมูลเก่าจะหายไป)`)) {
+                data.numbers = Array.from({ length: count }, (_, i) => (i + 1).toString());
+                saveData();
+                syncUI();
+                drawWheel();
+            }
+        }
+
+        function startSpin() {
+            if (isSpinning) return;
+            if (data.numbers.length === 0) {
+                alert("❌ หมดแล้ว! ไม่มีเลขเหลือให้จับแล้ว");
+                return;
+            }
+
+            isSpinning = true;
+            document.getElementById("spinBtn").disabled = true;
+            document.getElementById("spinBtn").classList.add("opacity-50", "scale-95", "cursor-not-allowed");
+
+            velocity = Math.random() * 25 + 20;
+            friction = 0.980 + (Math.random() * 0.009);
+
+            animate();
+        }
+
+        function animate() {
+            velocity *= friction;
+            currentAngle += velocity;
+            if (currentAngle >= 360) currentAngle -= 360;
+
+            // Sound
+            const segmentAngle = 360 / data.numbers.length;
+            if (Math.floor(currentAngle / segmentAngle) !== Math.floor((currentAngle - velocity) / segmentAngle)) {
+                if (velocity > 0.5) {
+                    const clone = tickSound.cloneNode();
+                    clone.volume = Math.min(velocity / 40, 0.5);
+                    clone.play().catch(() => { });
+                }
+            }
+
+            drawWheel();
+
+            if (velocity < 0.05) {
+                stopSpin();
+            } else {
+                animationId = requestAnimationFrame(animate);
+            }
+        }
+
+        function stopSpin() {
+            cancelAnimationFrame(animationId);
+            isSpinning = false;
+
+            const segmentAngle = 360 / data.numbers.length;
+            const winningIndex = Math.floor(((360 - currentAngle + 270) % 360) / segmentAngle) % data.numbers.length;
+            const winningNumber = data.numbers[winningIndex];
+
+            handleWin(winningNumber, winningIndex);
+        }
+
+        function handleWin(number, index) {
+            winSound.currentTime = 0;
+            winSound.play().catch(() => { });
+
+            // Trigger Fireworks
+            launchFireworks();
+
+            // Show Result Modal
+            const modal = document.getElementById("winnerModal");
+            const modalContent = modal.querySelector("div");
+            document.getElementById("modalResultNumber").textContent = number;
+
+            modal.classList.remove("hidden");
+            // Trigger reflow
+            void modal.offsetWidth;
+            modal.classList.remove("opacity-0");
+            modalContent.classList.remove("scale-50");
+            modalContent.classList.add("scale-100");
+
+            // Save History
+            data.history.unshift({
+                number: number,
+                timestamp: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+            });
+
+            // Remove Number
+            data.numbers.splice(index, 1);
+            currentAngle = 0; // Reset angle
+
+            saveData();
+            updateHistoryUI();
+            syncUI();
+            drawWheel();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("winnerModal");
+            const modalContent = modal.querySelector("div");
+
+            modal.classList.add("opacity-0");
+            modalContent.classList.remove("scale-100");
+            modalContent.classList.add("scale-50");
+
+            setTimeout(() => {
+                modal.classList.add("hidden");
+
+                // Re-enable button
+                const btn = document.getElementById("spinBtn");
+                btn.disabled = false;
+                btn.classList.remove("opacity-50", "scale-95", "cursor-not-allowed");
+                btn.textContent = "SPIN! ✨";
+            }, 300);
+        }
+
+        function drawWheel() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const len = data.numbers.length;
+            if (len === 0) return;
+
+            const arc = (Math.PI * 2) / len;
+
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(currentAngle * Math.PI / 180);
+
+            for (let i = 0; i < len; i++) {
+                const angle = i * arc;
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, radius, angle, angle + arc);
+                ctx.lineTo(0, 0);
+
+                // Colors: Pastel Theme
+                const colors = ["#FFB7B2", "#B5EAD7", "#C7CEEA", "#FFDAC1"]; // Pink, Mint, Purple, Peach
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+
+                ctx.strokeStyle = "#FFF";
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                // Text
+                ctx.save();
+                ctx.rotate(angle + arc / 2);
+                ctx.textAlign = "right";
+
+                ctx.fillStyle = "#4A4A4A"; // Dark Gray Text
+
+                ctx.font = len > 50 ? "bold 12px Mali" : "bold 24px Mali";
+                ctx.shadowColor = "rgba(255,255,255,0.5)";
+                ctx.shadowBlur = 0;
+                ctx.fillText(data.numbers[i], radius - 20, 8);
+                ctx.restore();
+            }
+
+            ctx.restore();
+
+            // Center
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 35, 0, Math.PI * 2);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fill();
+            ctx.strokeStyle = "#FFB7B2";
+            ctx.lineWidth = 4;
+            ctx.stroke();
+        }
+
+        /***********************
+         * Data & UI
+         ***********************/
+        function loadData() {
+            const saved = localStorage.getItem("pastelLuckyDraw2025"); // New key for new file
+            if (saved) return JSON.parse(saved);
+            return defaultData;
+        }
+
+        function saveData() {
+            localStorage.setItem("pastelLuckyDraw2025", JSON.stringify(data));
+        }
+
+        function syncUI() {
+            document.getElementById("numbersInput").value = data.numbers.join("\n");
+            document.getElementById("numberCount").textContent = data.numbers.length;
+        }
+
+        function updateNumbersFromInput() {
+            const text = document.getElementById("numbersInput").value;
+            data.numbers = text.split("\n").map(s => s.trim()).filter(s => s);
+            saveData();
+            syncUI();
+            drawWheel();
+        }
+
+        function updateHistoryUI() {
+            const list = document.getElementById("historyList");
+            list.innerHTML = "";
+            document.getElementById("historyCount").textContent = data.history.length;
+
+            if (data.history.length === 0) {
+                list.innerHTML = '<div class="text-center text-gray-400 py-4 text-sm">ยังไม่มีประวัติ</div>';
+                return;
+            }
+
+            data.history.forEach((h, i) => {
+                const item = document.createElement("div");
+                item.className = "bg-white bg-opacity-80 p-3 rounded-xl flex justify-between items-center animate-fade-in border-l-4 border-[#FFB7B2] shadow-sm";
+                item.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="text-gray-400 text-sm">#${data.history.length - i}</span>
+            <span class="text-2xl font-bold text-[#4A4A4A]">${h.number}</span>
+          </div>
+          <div class="text-xs text-gray-400">${h.timestamp}</div>
+        `;
+                list.appendChild(item);
+            });
+        }
+
+        /***********************
+         * Fireworks Logic
+         ***********************/
+        const fwCanvas = document.getElementById("fireworksCanvas");
+        const fwCtx = fwCanvas.getContext("2d");
+        let particles = [];
+
+        function resizeFireworksCanvas() {
+            fwCanvas.width = window.innerWidth;
+            fwCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeFireworksCanvas);
+        resizeFireworksCanvas();
+
+        function launchFireworks() {
+            // Create multiple explosions
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createExplosion(
+                        Math.random() * fwCanvas.width,
+                        Math.random() * fwCanvas.height * 0.6
+                    );
+                }, i * 300);
+            }
+            animateFireworks();
+        }
+
+        function createExplosion(x, y) {
+            const colors = ["#FFB7B2", "#B5EAD7", "#C7CEEA", "#FFDAC1", "#FFF"];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 10,
+                    vy: (Math.random() - 0.5) * 10,
+                    alpha: 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 4 + 2
+                });
+            }
+        }
+
+        function animateFireworks() {
+            if (particles.length === 0) return;
+
+            fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+
+            particles.forEach((p, i) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.1; // Gravity
+                p.alpha -= 0.01;
+
+                fwCtx.globalAlpha = p.alpha;
+                fwCtx.fillStyle = p.color;
+                fwCtx.beginPath();
+                fwCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                fwCtx.fill();
+
+                if (p.alpha <= 0) particles.splice(i, 1);
+            });
+
+            requestAnimationFrame(animateFireworks);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
