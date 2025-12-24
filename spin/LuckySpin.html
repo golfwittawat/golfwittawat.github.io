@@ -122,126 +122,201 @@
                 transform: translateY(0);
             }
         }
+
+        .fade-out {
+            opacity: 0 !important;
+            pointer-events: none;
+            transition: opacity 1s ease-out;
+        }
+
+        /* Mobile Landscape Fixes */
+        @media (max-height: 500px) and (orientation: landscape) {
+            header {
+                position: relative !important;
+                top: 0 !important;
+                margin-bottom: 0.25rem !important;
+                padding-top: 0.25rem;
+                z-index: 30;
+                transition: opacity 1s ease-out;
+            }
+
+            header h1 {
+                font-size: 1.25rem !important;
+                display: inline;
+                margin-right: 0.5rem;
+            }
+
+            header p {
+                font-size: 0.75rem !important;
+                padding: 0.1rem 0.5rem !important;
+                display: inline;
+            }
+
+            header br {
+                display: none;
+            }
+
+            /* Adjust Wheel Container to fit */
+            .flex-col.items-center.justify-center.w-full.h-full {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                justify-content: flex-start !important;
+            }
+
+            /* Wheel Size - Reverted to default (removed max-width constraint) */
+            .aspect-square {
+                margin-bottom: 0.25rem !important;
+            }
+
+            /* Spin Button */
+            #spinBtn {
+                padding: 0.25rem 1.5rem !important;
+                font-size: 1.25rem !important;
+                margin-top: 0.25rem !important;
+            }
+        }
+
+        /* Pulse Animation for Button */
+        @keyframes pulse-soft {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 183, 178, 0.7);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 183, 178, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 183, 178, 0);
+            }
+        }
+
+        .animate-pulse-soft {
+            animation: pulse-soft 2s infinite;
+        }
+
+        /* Enhanced Text Shadow */
+        .text-glow {
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 183, 178, 0.5);
+        }
     </style>
 </head>
 
-<body class="pastel-bg text-gray-700 min-h-screen flex flex-col items-center overflow-x-hidden relative">
+<body class="pastel-bg text-gray-700 min-h-screen flex flex-col items-center overflow-hidden relative">
 
     <!-- Floating Background Shapes -->
     <div id="shapes-container" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
 
-    <!-- Top Controls -->
-    <div class="fixed top-4 right-4 z-50 flex gap-2">
-        <button id="musicBtn"
-            class="bg-white/80 p-3 rounded-full shadow-lg hover:scale-110 transition-transform text-xl active:scale-95">🔇</button>
-        <button id="fullscreenBtn"
-            class="bg-white/80 p-3 rounded-full shadow-lg hover:scale-110 transition-transform text-xl active:scale-95">⛶</button>
-    </div>
-
-    <div class="relative z-10 w-full max-w-7xl p-4 md:p-6 flex flex-col items-center">
+    <!-- Main Container: Full Screen Flex -->
+    <div class="relative z-10 w-full min-h-screen flex flex-col lg:flex-row items-center justify-center p-4 gap-4">
 
         <!-- Header -->
-        <header class="text-center mb-4 md:mb-8 animate-fade-in-down">
-            <h1 class="text-3xl md:text-6xl mb-2 pastel-text font-bold leading-tight drop-shadow-sm">LuckySpin 2025
+        <header class="text-center mb-4 absolute top-4 md:top-8 z-20 animate-fade-in-down w-full pointer-events-none">
+            <h1
+                class="text-3xl md:text-6xl mb-2 pastel-text font-bold leading-tight drop-shadow-sm pointer-events-auto inline-block text-glow text-[#FF9E99]">
+                LuckySpin 2025
             </h1>
+            <br>
             <p
-                class="text-sm md:text-lg text-gray-600 tracking-widest uppercase font-bold bg-white/60 px-6 py-1 rounded-full inline-block shadow-sm">
+                class="text-sm md:text-lg text-gray-600 tracking-widest uppercase font-bold bg-white/60 px-6 py-1 rounded-full inline-block shadow-sm pointer-events-auto">
                 🎁 จับของขวัญปีใหม่ 💖</p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full items-start">
-
-            <!-- Center Panel: Wheel (Mobile: Top) -->
-            <div class="lg:col-span-6 flex flex-col items-center justify-start order-1 lg:order-2">
-                <div class="relative group w-full max-w-[450px] aspect-square flex items-center justify-center mb-6">
-                    <!-- Pointer -->
-                    <div
-                        class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 md:-translate-y-6 z-20 filter drop-shadow-md">
-                        <svg width="60" height="60" md:width="80" md:height="80" viewBox="0 0 60 60" fill="none"
-                            xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 md:w-20 md:h-20">
-                            <path d="M30 60L10 10H50L30 60Z" fill="#FFFFD1" stroke="#FFB7B2" stroke-width="3" />
-                            <circle cx="30" cy="15" r="5" fill="#FFF" />
-                        </svg>
-                    </div>
-
-                    <!-- Wheel Canvas -->
-                    <canvas id="wheelCanvas" width="500" height="500"
-                        class="rounded-full border-4 md:border-8 border-white shadow-2xl transition-transform duration-300 w-full h-full bg-white"></canvas>
-
-                    <!-- Center Logo -->
-                    <div
-                        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-28 md:h-28 bg-white rounded-full shadow-inner flex items-center justify-center border-4 border-[#FFB7B2] z-10">
-                        <span class="text-4xl md:text-6xl">🎁</span>
-                    </div>
+        <!-- Center Panel: Wheel (Full Screen on Desktop) -->
+        <div
+            class="flex flex-col items-center justify-center w-full h-full transform scale-90 md:scale-100 lg:scale-100 xl:scale-125 transition-transform duration-500 mt-24 lg:mt-0 mb-24 lg:mb-0">
+            <div
+                class="relative group w-full max-w-[350px] md:max-w-[600px] aspect-square flex items-center justify-center mb-6">
+                <!-- Pointer -->
+                <div
+                    class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 md:-translate-y-6 z-20 filter drop-shadow-md">
+                    <svg width="60" height="60" md:width="80" md:height="80" viewBox="0 0 60 60" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 md:w-20 md:h-20">
+                        <path d="M30 60L10 10H50L30 60Z" fill="#FFFFD1" stroke="#FFB7B2" stroke-width="3" />
+                        <circle cx="30" cy="15" r="5" fill="#FFF" />
+                    </svg>
                 </div>
 
-                <!-- Spin Button -->
-                <button id="spinBtn"
-                    class="px-12 md:px-20 py-4 md:py-5 bg-gradient-to-r from-[#FFB7B2] to-[#C7CEEA] text-white text-3xl md:text-4xl font-bold rounded-full shadow-lg border-4 border-white hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-3 w-full md:w-auto justify-center mb-8">
-                    SPIN! ✨
-                </button>
+                <!-- Wheel Canvas -->
+                <canvas id="wheelCanvas" width="600" height="600"
+                    class="rounded-full border-4 md:border-8 border-white shadow-2xl transition-transform duration-300 w-full h-full bg-white"></canvas>
+
+                <!-- Center Logo -->
+                <div
+                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-32 md:h-32 bg-white rounded-full shadow-inner flex items-center justify-center border-4 border-[#FFB7B2] z-10">
+                    <span class="text-4xl md:text-7xl">🎁</span>
+                </div>
             </div>
 
-            <!-- Left Panel: Settings (Mobile: Collapsible) -->
-            <div class="lg:col-span-3 space-y-4 order-2 lg:order-1">
-                <details class="glass-panel group" open>
-                    <summary
-                        class="p-4 md:p-6 flex justify-between items-center font-bold text-[#FF9E99] cursor-pointer select-none">
-                        <span class="flex items-center gap-2"><span class="text-xl">⚙️</span> ตั้งค่าตัวเลข</span>
-                        <span class="transform group-open:rotate-180 transition-transform text-sm">▼</span>
-                    </summary>
-                    <div class="px-4 pb-4 md:px-6 md:pb-6 pt-0">
-                        <!-- Quick Generate -->
-                        <div class="mb-4 p-4 bg-white/50 rounded-xl border border-[#FFB7B2]">
-                            <label class="text-xs text-gray-500 mb-1 block">สร้างเลข 1 ถึง...</label>
-                            <div class="flex gap-2">
-                                <input type="number" id="quickCount"
-                                    class="w-full bg-white border border-[#FFB7B2] rounded-lg px-3 py-2 text-center focus:outline-none focus:ring-2 focus:ring-[#FFB7B2] font-bold text-gray-600"
-                                    placeholder="20" value="20" min="1" max="100">
-                                <button id="generateBtn"
-                                    class="bg-[#FFB7B2] text-white px-3 rounded-lg hover:bg-[#FF9E99] active:scale-95 transition-transform">Go</button>
-                            </div>
-                        </div>
-
-                        <!-- Manual Edit -->
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sm text-gray-500">แก้ไขเอง (<span id="numberCount">0</span>)</span>
-                            <button id="resetBtn"
-                                class="text-xs text-red-400 hover:text-red-500 underline">รีเซ็ต</button>
-                        </div>
-                        <textarea id="numbersInput"
-                            class="w-full h-40 bg-white border border-[#C7CEEA] rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C7CEEA] resize-none font-mono text-gray-600"
-                            placeholder="1&#10;2&#10;3..."></textarea>
-                        <button id="updateBtn"
-                            class="mt-3 w-full py-2 bg-[#C7CEEA] hover:bg-[#B5B9E8] rounded-xl text-sm transition-colors text-white font-bold shadow-sm active:scale-95">
-                            อัปเดตวงล้อ
-                        </button>
-                    </div>
-                </details>
-            </div>
-
-            <!-- Right Panel: History (Mobile: Collapsible) -->
-            <div class="lg:col-span-3 space-y-4 order-3 lg:order-3">
-                <details class="glass-panel group" open>
-                    <summary
-                        class="p-4 md:p-6 flex justify-between items-center font-bold text-[#C7CEEA] cursor-pointer select-none">
-                        <span class="flex items-center gap-2"><span class="text-xl">📜</span> ประวัติ (<span
-                                id="historyCount">0</span>)</span>
-                        <span class="transform group-open:rotate-180 transition-transform text-sm">▼</span>
-                    </summary>
-                    <div class="px-4 pb-4 md:px-6 md:pb-6 pt-0">
-                        <div class="flex justify-end mb-2">
-                            <button id="clearHistoryBtn"
-                                class="text-xs text-red-400 hover:text-red-500 underline">ล้างประวัติ</button>
-                        </div>
-                        <div class="overflow-y-auto max-h-[300px] md:max-h-[400px] space-y-2 pr-1" id="historyList">
-                            <!-- History Items -->
-                            <div class="text-center text-gray-400 py-4 text-sm">ยังไม่มีประวัติ</div>
-                        </div>
-                    </div>
-                </details>
-            </div>
+            <!-- Spin Button -->
+            <button id="spinBtn"
+                class="px-12 md:px-24 py-4 md:py-6 bg-gradient-to-r from-[#FFB7B2] to-[#C7CEEA] text-white text-3xl md:text-5xl font-bold rounded-full shadow-lg border-4 border-white hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-3 justify-center z-30 animate-pulse-soft">
+                SPIN! ✨
+            </button>
         </div>
+
+        <!-- Left Panel: Settings (Floating Bottom-Left on Desktop, Stacked on Mobile) -->
+        <div class="w-full max-w-xs md:w-80 lg:fixed lg:bottom-4 lg:left-4 z-40 order-2 lg:order-none">
+            <details class="glass-panel group">
+                <summary
+                    class="p-4 flex justify-between items-center font-bold text-[#FF9E99] cursor-pointer select-none bg-white/80 rounded-2xl">
+                    <span class="flex items-center gap-2"><span class="text-xl">⚙️</span> ตั้งค่าตัวเลข</span>
+                    <span class="transform group-open:rotate-180 transition-transform text-sm">▼</span>
+                </summary>
+                <div class="px-4 pb-4 pt-2 bg-white/90 rounded-b-2xl mt-[-10px] pt-4">
+                    <!-- Quick Generate -->
+                    <div class="mb-4 p-3 bg-white/50 rounded-xl border border-[#FFB7B2]">
+                        <label class="text-xs text-gray-500 mb-1 block">สร้างเลข 1 ถึง...</label>
+                        <div class="flex gap-2">
+                            <input type="number" id="quickCount"
+                                class="w-full bg-white border border-[#FFB7B2] rounded-lg px-3 py-2 text-center focus:outline-none focus:ring-2 focus:ring-[#FFB7B2] font-bold text-gray-600"
+                                placeholder="20" value="20" min="1" max="100">
+                            <button id="generateBtn"
+                                class="bg-[#FFB7B2] text-white px-3 rounded-lg hover:bg-[#FF9E99] active:scale-95 transition-transform">Go</button>
+                        </div>
+                    </div>
+
+                    <!-- Manual Edit -->
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm text-gray-500">แก้ไขเอง (<span id="numberCount">0</span>)</span>
+                        <button id="resetBtn" class="text-xs text-red-400 hover:text-red-500 underline">รีเซ็ต</button>
+                    </div>
+                    <textarea id="numbersInput"
+                        class="w-full h-32 bg-white border border-[#C7CEEA] rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C7CEEA] resize-none font-mono text-gray-600"
+                        placeholder="1&#10;2&#10;3..."></textarea>
+                    <button id="updateBtn"
+                        class="mt-3 w-full py-2 bg-[#C7CEEA] hover:bg-[#B5B9E8] rounded-xl text-sm transition-colors text-white font-bold shadow-sm active:scale-95">
+                        อัปเดตวงล้อ
+                    </button>
+                </div>
+            </details>
+        </div>
+
+        <!-- Right Panel: History (Floating Bottom-Right on Desktop, Stacked on Mobile) -->
+        <div class="w-full max-w-xs md:w-80 lg:fixed lg:bottom-4 lg:right-4 z-40 order-3 lg:order-none">
+            <details class="glass-panel group">
+                <summary
+                    class="p-4 flex justify-between items-center font-bold text-[#C7CEEA] cursor-pointer select-none bg-white/80 rounded-2xl">
+                    <span class="flex items-center gap-2"><span class="text-xl">📜</span> ประวัติ (<span
+                            id="historyCount">0</span>)</span>
+                    <span class="transform group-open:rotate-180 transition-transform text-sm">▼</span>
+                </summary>
+                <div class="px-4 pb-4 pt-2 bg-white/90 rounded-b-2xl mt-[-10px] pt-4">
+                    <div class="flex justify-end mb-2">
+                        <button id="clearHistoryBtn"
+                            class="text-xs text-red-400 hover:text-red-500 underline">ล้างประวัติ</button>
+                    </div>
+                    <div class="overflow-y-auto max-h-[200px] space-y-2 pr-1" id="historyList">
+                        <!-- History Items -->
+                        <div class="text-center text-gray-400 py-4 text-sm">ยังไม่มีประวัติ</div>
+                    </div>
+                </div>
+            </details>
+        </div>
+
     </div>
 
     <!-- Winner Modal Overlay -->
@@ -266,8 +341,9 @@
     </div>
 
     <!-- Credit -->
-    <div class="mt-auto py-2 text-center z-10 opacity-30 hover:opacity-80 transition-opacity duration-500">
-        <span class="text-[10px] text-gray-600 font-light tracking-[0.2em] cursor-default">GolfCode</span>
+    <div
+        class="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-10 opacity-30 hover:opacity-80 transition-opacity duration-500 pointer-events-none">
+        <span class="text-[10px] text-gray-600 font-light tracking-[0.2em]">GolfCode</span>
     </div>
 
     <!-- Confetti & Fireworks Container -->
@@ -291,16 +367,6 @@
         let friction = 0.985;
         let animationId = null;
 
-        // Audio
-        const winSound = new Audio("https://actions.google.com/sounds/v1/crowds/battle_crowd_celebrate_stutter.ogg"); // Applause/Cheer
-        const bgMusic = new Audio("https://actions.google.com/sounds/v1/science_fiction/music_box_happy_birthday.ogg"); // Happy tune
-
-        winSound.volume = 0.6;
-        bgMusic.volume = 0.3;
-        bgMusic.loop = true;
-
-        let isMusicPlaying = false;
-
         /***********************
          * Initialization
          ***********************/
@@ -315,14 +381,22 @@
             drawWheel();
             updateHistoryUI();
             createFloatingShapes();
-            checkMobileCollapse();
+
+            // Auto-hide header after 5 seconds
+            setTimeout(() => {
+                const header = document.querySelector('header');
+                if (header) {
+                    header.classList.add('fade-out');
+                }
+            }, 5000);
 
             document.getElementById("spinBtn").addEventListener("click", startSpin);
             document.getElementById("generateBtn").addEventListener("click", generateNumbers);
             document.getElementById("updateBtn").addEventListener("click", updateNumbersFromInput);
             document.getElementById("resetBtn").addEventListener("click", () => {
                 if (confirm("รีเซ็ตเป็น 1-20?")) {
-                    data.numbers = Array.from({ length: 20 }, (_, i) => (i + 1).toString());
+                    let nums = Array.from({ length: 20 }, (_, i) => (i + 1).toString());
+                    data.numbers = shuffleArray(nums);
                     saveData();
                     syncUI();
                     drawWheel();
@@ -341,45 +415,8 @@
                 // document.getElementById("btnCountDisplay").textContent = e.target.value || "0";
             });
 
-            // Music Toggle
-            document.getElementById("musicBtn").addEventListener("click", toggleMusic);
-
-            // Fullscreen Toggle
-            document.getElementById("fullscreenBtn").addEventListener("click", toggleFullscreen);
-
             // Modal Close
             document.getElementById("closeModalBtn").addEventListener("click", closeModal);
-        }
-
-        function checkMobileCollapse() {
-            // Auto close details on mobile, open on desktop
-            const details = document.querySelectorAll("details");
-            if (window.innerWidth < 1024) {
-                details.forEach(d => d.removeAttribute("open"));
-            }
-        }
-
-        function toggleMusic() {
-            const btn = document.getElementById("musicBtn");
-            if (isMusicPlaying) {
-                bgMusic.pause();
-                btn.textContent = "🔇";
-                isMusicPlaying = false;
-            } else {
-                bgMusic.play().catch(e => alert("Please interact with the page first!"));
-                btn.textContent = "🔊";
-                isMusicPlaying = true;
-            }
-        }
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
         }
 
         function createFloatingShapes() {
@@ -400,12 +437,21 @@
         /***********************
          * Logic
          ***********************/
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
         function generateNumbers() {
             const count = parseInt(document.getElementById("quickCount").value) || 20;
             if (count < 1) return;
 
             if (confirm(`ต้องการสร้างเลข 1 ถึง ${count} ใหม่หรือไม่? (ข้อมูลเก่าจะหายไป)`)) {
-                data.numbers = Array.from({ length: count }, (_, i) => (i + 1).toString());
+                let nums = Array.from({ length: count }, (_, i) => (i + 1).toString());
+                data.numbers = shuffleArray(nums);
                 saveData();
                 syncUI();
                 drawWheel();
@@ -423,6 +469,11 @@
             document.getElementById("spinBtn").disabled = true;
             document.getElementById("spinBtn").classList.add("opacity-50", "scale-95", "cursor-not-allowed");
 
+            // Reset Zoom
+            const wheelContainer = document.querySelector('#wheelCanvas').parentElement.parentElement;
+            wheelContainer.classList.remove('scale-[1.5]', 'transition-transform', 'duration-[2000ms]');
+            wheelContainer.classList.add('transition-transform', 'duration-500'); // Restore default speed
+
             velocity = Math.random() * 25 + 20;
             friction = 0.980 + (Math.random() * 0.009);
 
@@ -433,8 +484,6 @@
             velocity *= friction;
             currentAngle += velocity;
             if (currentAngle >= 360) currentAngle -= 360;
-
-            // Sound removed as per request
 
             drawWheel();
 
@@ -453,13 +502,18 @@
             const winningIndex = Math.floor(((360 - currentAngle + 270) % 360) / segmentAngle) % data.numbers.length;
             const winningNumber = data.numbers[winningIndex];
 
-            handleWin(winningNumber, winningIndex);
+            // Zoom Effect
+            const wheelContainer = document.querySelector('#wheelCanvas').parentElement.parentElement;
+            // Add a slower transition for the zoom effect
+            wheelContainer.classList.remove('duration-500');
+            wheelContainer.classList.add('duration-[2000ms]', 'scale-[1.5]');
+
+            setTimeout(() => {
+                handleWin(winningNumber, winningIndex);
+            }, 800); // Wait a bit for zoom to start before showing modal
         }
 
         function handleWin(number, index) {
-            winSound.currentTime = 0;
-            winSound.play().catch(() => { });
-
             // Trigger Fireworks
             launchFireworks();
 
@@ -499,6 +553,11 @@
             modalContent.classList.remove("scale-100");
             modalContent.classList.add("scale-50");
 
+            // Reset Zoom
+            const wheelContainer = document.querySelector('#wheelCanvas').parentElement.parentElement;
+            wheelContainer.classList.remove('scale-[1.5]', 'duration-[2000ms]');
+            wheelContainer.classList.add('duration-500');
+
             setTimeout(() => {
                 modal.classList.add("hidden");
 
@@ -530,9 +589,20 @@
                 ctx.arc(0, 0, radius, angle, angle + arc);
                 ctx.lineTo(0, 0);
 
-                // Colors: Pastel Theme
-                const colors = ["#FFB7B2", "#B5EAD7", "#C7CEEA", "#FFDAC1"]; // Pink, Mint, Purple, Peach
-                ctx.fillStyle = colors[i % colors.length];
+                // Colors: Pastel Gradients
+                const colors = [
+                    ["#FFB7B2", "#FFDAC1"], // Pink -> Peach
+                    ["#B5EAD7", "#E2F0CB"], // Mint -> Lime
+                    ["#C7CEEA", "#E0BBE4"], // Purple -> Lavender
+                    ["#FFDAC1", "#FF9AA2"]  // Peach -> Salmon
+                ];
+
+                const colorPair = colors[i % colors.length];
+                const gradient = ctx.createLinearGradient(0, 0, radius, 0); // Simple linear gradient from center
+                gradient.addColorStop(0, colorPair[0]);
+                gradient.addColorStop(1, colorPair[1]);
+
+                ctx.fillStyle = gradient;
                 ctx.fill();
 
                 ctx.strokeStyle = "#FFF";
@@ -544,24 +614,64 @@
                 ctx.rotate(angle + arc / 2);
                 ctx.textAlign = "right";
 
-                ctx.fillStyle = "#4A4A4A"; // Dark Gray Text
-
+                ctx.fillStyle = "#FFF"; // White Text for better contrast on gradients
                 ctx.font = len > 50 ? "bold 12px Mali" : "bold 24px Mali";
-                ctx.shadowColor = "rgba(255,255,255,0.5)";
-                ctx.shadowBlur = 0;
+                ctx.shadowColor = "rgba(0,0,0,0.2)";
+                ctx.shadowBlur = 4;
                 ctx.fillText(data.numbers[i], radius - 20, 8);
                 ctx.restore();
             }
 
             ctx.restore();
 
-            // Center
+            // Glass/Gloss Overlay (Premium Effect)
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.clip();
+
+            const glassGradient = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+            glassGradient.addColorStop(0, "rgba(255, 255, 255, 0.4)");
+            glassGradient.addColorStop(0.5, "rgba(255, 255, 255, 0)");
+            glassGradient.addColorStop(1, "rgba(255, 255, 255, 0.1)");
+
+            ctx.fillStyle = glassGradient;
+            ctx.fill();
+
+            // Inner Shadow for depth
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = "rgba(0,0,0,0.1)";
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            ctx.restore();
+
+            // Center Cap (Enhanced)
+            // Outer Ring
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
+            ctx.fillStyle = "#FFF";
+            ctx.fill();
+
+            // Inner Gradient Circle
+            const centerGrad = ctx.createRadialGradient(centerX, centerY, 10, centerX, centerY, 35);
+            centerGrad.addColorStop(0, "#FFF");
+            centerGrad.addColorStop(1, "#FFB7B2");
+
             ctx.beginPath();
             ctx.arc(centerX, centerY, 35, 0, Math.PI * 2);
-            ctx.fillStyle = "#FFFFFF";
+            ctx.fillStyle = centerGrad;
             ctx.fill();
-            ctx.strokeStyle = "#FFB7B2";
+
+            ctx.strokeStyle = "#FFF";
             ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Shadow for depth
+            ctx.shadowColor = "rgba(0,0,0,0.1)";
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 4;
             ctx.stroke();
         }
 
