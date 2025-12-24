@@ -205,10 +205,14 @@
     </style>
 </head>
 
-<body class="pastel-bg text-gray-700 min-h-screen flex flex-col items-center overflow-hidden relative">
+<body
+    class="pastel-bg text-gray-700 min-h-screen flex flex-col items-center overflow-y-auto overflow-x-hidden relative">
 
     <!-- Floating Background Shapes -->
     <div id="shapes-container" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+
+    <!-- Audio Effect -->
+    <audio id="clapSound" src="clap.mp3"></audio>
 
     <!-- Main Container: Full Screen Flex -->
     <div class="relative z-10 w-full min-h-screen flex flex-col lg:flex-row items-center justify-center p-4 gap-4">
@@ -516,6 +520,13 @@
         function handleWin(number, index) {
             // Trigger Fireworks
             launchFireworks();
+
+            // Play Sound
+            const audio = document.getElementById("clapSound");
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(e => console.log("Audio play failed:", e));
+            }
 
             // Show Result Modal
             const modal = document.getElementById("winnerModal");
