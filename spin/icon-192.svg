@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="40" fill="#FFB7B2"/>
+  <!-- Wheel -->
+  <circle cx="96" cy="96" r="60" fill="#FFF" stroke="#E0E0E0" stroke-width="4"/>
+  <!-- Wheel segments -->
+  <path d="M96 96 L96 36 A60 60 0 0 1 148 66 Z" fill="#FFB7B2"/>
+  <path d="M96 96 L148 66 A60 60 0 0 1 156 96 Z" fill="#B5EAD7"/>
+  <path d="M96 96 L156 96 A60 60 0 0 1 148 126 Z" fill="#C7CEEA"/>
+  <path d="M96 96 L148 126 A60 60 0 0 1 96 156 Z" fill="#FFDAC1"/>
+  <path d="M96 96 L96 156 A60 60 0 0 1 44 126 Z" fill="#FFB7B2"/>
+  <path d="M96 96 L44 126 A60 60 0 0 1 36 96 Z" fill="#B5EAD7"/>
+  <path d="M96 96 L36 96 A60 60 0 0 1 44 66 Z" fill="#C7CEEA"/>
+  <path d="M96 96 L44 66 A60 60 0 0 1 96 36 Z" fill="#FFDAC1"/>
+  <!-- Center -->
+  <circle cx="96" cy="96" r="20" fill="#FFF" stroke="#FFB7B2" stroke-width="3"/>
+  <!-- Gift box -->
+  <rect x="86" y="90" width="20" height="16" rx="2" fill="#FFB7B2"/>
+  <rect x="84" y="86" width="24" height="6" rx="1" fill="#FF9E99"/>
+  <rect x="94" y="86" width="4" height="20" fill="#FFDAC1"/>
+  <circle cx="96" cy="84" r="3" fill="#B5EAD7"/>
+</svg>

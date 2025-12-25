@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="100" fill="#FFB7B2"/>
+  <!-- Wheel -->
+  <circle cx="256" cy="256" r="160" fill="#FFF" stroke="#E0E0E0" stroke-width="8"/>
+  <!-- Wheel segments -->
+  <path d="M256 256 L256 96 A160 160 0 0 1 394 176 Z" fill="#FFB7B2"/>
+  <path d="M256 256 L394 176 A160 160 0 0 1 416 256 Z" fill="#B5EAD7"/>
+  <path d="M256 256 L416 256 A160 160 0 0 1 394 336 Z" fill="#C7CEEA"/>
+  <path d="M256 256 L394 336 A160 160 0 0 1 256 416 Z" fill="#FFDAC1"/>
+  <path d="M256 256 L256 416 A160 160 0 0 1 118 336 Z" fill="#FFB7B2"/>
+  <path d="M256 256 L118 336 A160 160 0 0 1 96 256 Z" fill="#B5EAD7"/>
+  <path d="M256 256 L96 256 A160 160 0 0 1 118 176 Z" fill="#C7CEEA"/>
+  <path d="M256 256 L118 176 A160 160 0 0 1 256 96 Z" fill="#FFDAC1"/>
+  <!-- Center -->
+  <circle cx="256" cy="256" r="50" fill="#FFF" stroke="#FFB7B2" stroke-width="6"/>
+  <!-- Gift box -->
+  <rect x="230" y="245" width="52" height="40" rx="4" fill="#FFB7B2"/>
+  <rect x="224" y="232" width="64" height="16" rx="3" fill="#FF9E99"/>
+  <rect x="250" y="232" width="12" height="53" fill="#FFDAC1"/>
+  <ellipse cx="244" cy="226" rx="10" ry="8" fill="#C7CEEA"/>
+  <ellipse cx="268" cy="226" rx="10" ry="8" fill="#C7CEEA"/>
+  <circle cx="256" cy="228" r="6" fill="#B5EAD7"/>
+</svg>

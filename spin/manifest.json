@@ -1,0 +1,30 @@
+{
+    "name": "LuckySpin 2025 - จับรางวัลปีใหม่",
+    "short_name": "LuckySpin",
+    "description": "วงล้อสุ่มจับรางวัลปีใหม่ สวยงาม ใช้งานง่าย",
+    "start_url": "./LuckySpin.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#FFB7B2",
+    "theme_color": "#FF9E99",
+    "icons": [
+        {
+            "src": "icon-192.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "icon-512.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ],
+    "categories": [
+        "entertainment",
+        "games"
+    ],
+    "lang": "th"
+}

@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FF9E99">
+    <meta name="description" content="วงล้อสุ่มจับรางวัลปีใหม่ สวยงาม ใช้งานง่าย">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="LuckySpin">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.svg">
     <title>🎁 LuckySpin 2025 🎉</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
@@ -17,7 +24,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -52,7 +58,6 @@
             }
         }
 
-        /* Floating Shapes (Snow) */
         .shape {
             position: absolute;
             filter: blur(1px);
@@ -80,24 +85,6 @@
             }
         }
 
-        /* Modal Animation */
-        .modal-enter {
-            animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes modalPop {
-            0% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* Mobile Accordion Styles */
         details>summary {
             list-style: none;
             cursor: pointer;
@@ -107,76 +94,12 @@
             display: none;
         }
 
-        details[open] summary~* {
-            animation: slideDown 0.3s ease-in-out;
-        }
-
-        @keyframes slideDown {
-            0% {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         .fade-out {
             opacity: 0 !important;
             pointer-events: none;
             transition: opacity 1s ease-out;
         }
 
-        /* Mobile Landscape Fixes */
-        @media (max-height: 500px) and (orientation: landscape) {
-            header {
-                position: relative !important;
-                top: 0 !important;
-                margin-bottom: 0.25rem !important;
-                padding-top: 0.25rem;
-                z-index: 30;
-                transition: opacity 1s ease-out;
-            }
-
-            header h1 {
-                font-size: 1.25rem !important;
-                display: inline;
-                margin-right: 0.5rem;
-            }
-
-            header p {
-                font-size: 0.75rem !important;
-                padding: 0.1rem 0.5rem !important;
-                display: inline;
-            }
-
-            header br {
-                display: none;
-            }
-
-            /* Adjust Wheel Container to fit */
-            .flex-col.items-center.justify-center.w-full.h-full {
-                margin-top: 0 !important;
-                margin-bottom: 0 !important;
-                justify-content: flex-start !important;
-            }
-
-            /* Wheel Size - Reverted to default (removed max-width constraint) */
-            .aspect-square {
-                margin-bottom: 0.25rem !important;
-            }
-
-            /* Spin Button */
-            #spinBtn {
-                padding: 0.25rem 1.5rem !important;
-                font-size: 1.25rem !important;
-                margin-top: 0.25rem !important;
-            }
-        }
-
-        /* Pulse Animation for Button */
         @keyframes pulse-soft {
             0% {
                 transform: scale(1);
@@ -198,9 +121,25 @@
             animation: pulse-soft 2s infinite;
         }
 
-        /* Enhanced Text Shadow */
         .text-glow {
             text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 183, 178, 0.5);
+        }
+
+        .popup-panel {
+            position: fixed;
+            top: 70px;
+            right: 16px;
+            width: 320px;
+            max-width: calc(100vw - 32px);
+            z-index: 45;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .popup-panel.show {
+            transform: translateX(0);
+            opacity: 1;
         }
     </style>
 </head>
@@ -208,19 +147,13 @@
 <body
     class="pastel-bg text-gray-700 min-h-screen flex flex-col items-center overflow-y-auto overflow-x-hidden relative">
 
-    <!-- Floating Background Shapes -->
     <div id="shapes-container" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
 
-    <!-- Audio Effect -->
-    <audio id="clapSound" src="clap.mp3"></audio>
+    <div class="relative z-10 w-full min-h-screen flex flex-col items-center justify-center p-4 gap-4">
 
-    <!-- Main Container: Full Screen Flex -->
-    <div class="relative z-10 w-full min-h-screen flex flex-col lg:flex-row items-center justify-center p-4 gap-4">
-
-        <!-- Header -->
-        <header class="text-center mb-4 absolute top-4 md:top-8 z-20 animate-fade-in-down w-full pointer-events-none">
+        <header class="text-center mb-4 absolute top-4 md:top-8 z-20 w-full pointer-events-none">
             <h1
-                class="text-3xl md:text-6xl mb-2 pastel-text font-bold leading-tight drop-shadow-sm pointer-events-auto inline-block text-glow text-[#FF9E99]">
+                class="text-3xl md:text-6xl mb-2 font-bold drop-shadow-sm pointer-events-auto inline-block text-glow text-[#FF9E99]">
                 LuckySpin 2025
             </h1>
             <br>
@@ -229,16 +162,77 @@
                 🎁 จับของขวัญปีใหม่ 💖</p>
         </header>
 
-        <!-- Center Panel: Wheel (Full Screen on Desktop) -->
+        <!-- Top Right Icon Buttons -->
+        <div class="fixed top-4 right-4 z-50 flex gap-2">
+            <button id="settingsIconBtn"
+                class="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border-2 border-[#FFB7B2] cursor-pointer hover:scale-110 hover:shadow-xl transition-all duration-300 active:scale-95"
+                title="ตั้งค่าตัวเลข">
+                <span class="text-xl">⚙️</span>
+            </button>
+            <button id="historyIconBtn"
+                class="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border-2 border-[#C7CEEA] cursor-pointer hover:scale-110 hover:shadow-xl transition-all duration-300 active:scale-95"
+                title="ประวัติ">
+                <span class="text-xl">📜</span>
+            </button>
+        </div>
+
+        <!-- Settings Popup Panel -->
+        <div id="settingsPanel" class="popup-panel glass-panel">
+            <div class="p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="flex items-center gap-2 font-bold text-[#FF9E99]"><span class="text-xl">⚙️</span>
+                        ตั้งค่าตัวเลข</span>
+                    <button id="closeSettingsBtn" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+                </div>
+                <div class="mb-4 p-3 bg-white/50 rounded-xl border border-[#FFB7B2]">
+                    <label class="text-xs text-gray-500 mb-1 block">สร้างเลข 1 ถึง...</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="quickCount"
+                            class="w-full bg-white border border-[#FFB7B2] rounded-lg px-3 py-2 text-center focus:outline-none focus:ring-2 focus:ring-[#FFB7B2] font-bold text-gray-600"
+                            placeholder="20" value="20" min="1" max="100">
+                        <button id="generateBtn"
+                            class="bg-[#FFB7B2] text-white px-3 rounded-lg hover:bg-[#FF9E99] active:scale-95 transition-transform">Go</button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-gray-500">แก้ไขเอง (<span id="numberCount">0</span>)</span>
+                    <button id="resetBtn" class="text-xs text-red-400 hover:text-red-500 underline">รีเซ็ต</button>
+                </div>
+                <textarea id="numbersInput"
+                    class="w-full h-32 bg-white border border-[#C7CEEA] rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C7CEEA] resize-none font-mono text-gray-600"
+                    placeholder="1&#10;2&#10;3..."></textarea>
+                <button id="updateBtn"
+                    class="mt-3 w-full py-2 bg-[#C7CEEA] hover:bg-[#B5B9E8] rounded-xl text-sm transition-colors text-white font-bold shadow-sm active:scale-95">อัปเดตวงล้อ</button>
+            </div>
+        </div>
+
+        <!-- History Popup Panel -->
+        <div id="historyPanel" class="popup-panel glass-panel">
+            <div class="p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="flex items-center gap-2 font-bold text-[#C7CEEA]"><span class="text-xl">📜</span>
+                        ประวัติ (<span id="historyCount">0</span>)</span>
+                    <button id="closeHistoryBtn" class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+                </div>
+                <div class="flex justify-end mb-2">
+                    <button id="clearHistoryBtn"
+                        class="text-xs text-red-400 hover:text-red-500 underline">ล้างประวัติ</button>
+                </div>
+                <div class="overflow-y-auto max-h-[300px] space-y-2 pr-1" id="historyList">
+                    <div class="text-center text-gray-400 py-4 text-sm">ยังไม่มีประวัติ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Panel: Wheel -->
         <div
-            class="flex flex-col items-center justify-center w-full h-full transform scale-90 md:scale-100 lg:scale-100 xl:scale-125 transition-transform duration-500 mt-24 lg:mt-0 mb-24 lg:mb-0">
-            <div
-                class="relative group w-full max-w-[350px] md:max-w-[600px] aspect-square flex items-center justify-center mb-6">
+            class="flex flex-col items-center justify-center w-full h-full transform scale-90 md:scale-100 lg:scale-100 xl:scale-105 transition-transform duration-500 mt-20 lg:mt-0 mb-8 lg:mb-0">
+            <div class="relative w-full max-w-[400px] md:max-w-[650px] aspect-square mb-4">
                 <!-- Pointer -->
                 <div
                     class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 md:-translate-y-6 z-20 filter drop-shadow-md">
-                    <svg width="60" height="60" md:width="80" md:height="80" viewBox="0 0 60 60" fill="none"
-                        xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 md:w-20 md:h-20">
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="w-14 h-14 md:w-20 md:h-20">
                         <path d="M30 60L10 10H50L30 60Z" fill="#FFFFD1" stroke="#FFB7B2" stroke-width="3" />
                         <circle cx="30" cy="15" r="5" fill="#FFF" />
                     </svg>
@@ -248,179 +242,119 @@
                 <canvas id="wheelCanvas" width="600" height="600"
                     class="rounded-full border-4 md:border-8 border-white shadow-2xl transition-transform duration-300 w-full h-full bg-white"></canvas>
 
-                <!-- Center Logo -->
-                <div
-                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-32 md:h-32 bg-white rounded-full shadow-inner flex items-center justify-center border-4 border-[#FFB7B2] z-10">
-                    <span class="text-4xl md:text-7xl">🎁</span>
+                <!-- Center Logo (Click to Spin) -->
+                <div id="centerGift"
+                    class="absolute inset-0 m-auto w-24 h-24 md:w-36 md:h-36 bg-white rounded-full flex items-center justify-center border-4 border-[#FFB7B2] z-10 cursor-pointer hover:scale-110 transition-all duration-300 active:scale-95 animate-pulse-soft"
+                    style="box-shadow: 0 0 25px rgba(255, 183, 178, 0.7), 0 0 50px rgba(255, 183, 178, 0.4), 0 10px 30px rgba(0,0,0,0.2);"
+                    title="คลิกเพื่อหมุน">
+                    <svg width="60%" height="60%" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="8" y="28" width="48" height="32" rx="4" fill="#FFB7B2" />
+                        <rect x="4" y="20" width="56" height="12" rx="3" fill="#FF9E99" />
+                        <rect x="28" y="20" width="8" height="40" fill="#FFDAC1" />
+                        <rect x="4" y="24" width="56" height="6" fill="#FFDAC1" />
+                        <ellipse cx="24" cy="16" rx="8" ry="6" fill="#C7CEEA" />
+                        <ellipse cx="40" cy="16" rx="8" ry="6" fill="#C7CEEA" />
+                        <circle cx="32" cy="18" r="5" fill="#B5EAD7" />
+                    </svg>
                 </div>
             </div>
-
-            <!-- Spin Button -->
-            <button id="spinBtn"
-                class="px-12 md:px-24 py-4 md:py-6 bg-gradient-to-r from-[#FFB7B2] to-[#C7CEEA] text-white text-3xl md:text-5xl font-bold rounded-full shadow-lg border-4 border-white hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-3 justify-center z-30 animate-pulse-soft">
-                SPIN! ✨
-            </button>
         </div>
-
-        <!-- Left Panel: Settings (Floating Bottom-Left on Desktop, Stacked on Mobile) -->
-        <div class="w-full max-w-xs md:w-80 lg:fixed lg:bottom-4 lg:left-4 z-40 order-2 lg:order-none">
-            <details class="glass-panel group">
-                <summary
-                    class="p-4 flex justify-between items-center font-bold text-[#FF9E99] cursor-pointer select-none bg-white/80 rounded-2xl">
-                    <span class="flex items-center gap-2"><span class="text-xl">⚙️</span> ตั้งค่าตัวเลข</span>
-                    <span class="transform group-open:rotate-180 transition-transform text-sm">▼</span>
-                </summary>
-                <div class="px-4 pb-4 pt-2 bg-white/90 rounded-b-2xl mt-[-10px] pt-4">
-                    <!-- Quick Generate -->
-                    <div class="mb-4 p-3 bg-white/50 rounded-xl border border-[#FFB7B2]">
-                        <label class="text-xs text-gray-500 mb-1 block">สร้างเลข 1 ถึง...</label>
-                        <div class="flex gap-2">
-                            <input type="number" id="quickCount"
-                                class="w-full bg-white border border-[#FFB7B2] rounded-lg px-3 py-2 text-center focus:outline-none focus:ring-2 focus:ring-[#FFB7B2] font-bold text-gray-600"
-                                placeholder="20" value="20" min="1" max="100">
-                            <button id="generateBtn"
-                                class="bg-[#FFB7B2] text-white px-3 rounded-lg hover:bg-[#FF9E99] active:scale-95 transition-transform">Go</button>
-                        </div>
-                    </div>
-
-                    <!-- Manual Edit -->
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-gray-500">แก้ไขเอง (<span id="numberCount">0</span>)</span>
-                        <button id="resetBtn" class="text-xs text-red-400 hover:text-red-500 underline">รีเซ็ต</button>
-                    </div>
-                    <textarea id="numbersInput"
-                        class="w-full h-32 bg-white border border-[#C7CEEA] rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#C7CEEA] resize-none font-mono text-gray-600"
-                        placeholder="1&#10;2&#10;3..."></textarea>
-                    <button id="updateBtn"
-                        class="mt-3 w-full py-2 bg-[#C7CEEA] hover:bg-[#B5B9E8] rounded-xl text-sm transition-colors text-white font-bold shadow-sm active:scale-95">
-                        อัปเดตวงล้อ
-                    </button>
-                </div>
-            </details>
-        </div>
-
-        <!-- Right Panel: History (Floating Bottom-Right on Desktop, Stacked on Mobile) -->
-        <div class="w-full max-w-xs md:w-80 lg:fixed lg:bottom-4 lg:right-4 z-40 order-3 lg:order-none">
-            <details class="glass-panel group">
-                <summary
-                    class="p-4 flex justify-between items-center font-bold text-[#C7CEEA] cursor-pointer select-none bg-white/80 rounded-2xl">
-                    <span class="flex items-center gap-2"><span class="text-xl">📜</span> ประวัติ (<span
-                            id="historyCount">0</span>)</span>
-                    <span class="transform group-open:rotate-180 transition-transform text-sm">▼</span>
-                </summary>
-                <div class="px-4 pb-4 pt-2 bg-white/90 rounded-b-2xl mt-[-10px] pt-4">
-                    <div class="flex justify-end mb-2">
-                        <button id="clearHistoryBtn"
-                            class="text-xs text-red-400 hover:text-red-500 underline">ล้างประวัติ</button>
-                    </div>
-                    <div class="overflow-y-auto max-h-[200px] space-y-2 pr-1" id="historyList">
-                        <!-- History Items -->
-                        <div class="text-center text-gray-400 py-4 text-sm">ยังไม่มีประวัติ</div>
-                    </div>
-                </div>
-            </details>
-        </div>
-
     </div>
 
-    <!-- Winner Modal Overlay -->
+    <!-- Winner Modal -->
     <div id="winnerModal"
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
         <div
             class="bg-white/90 p-8 md:p-12 rounded-[3rem] shadow-2xl text-center transform scale-50 transition-transform duration-300 border-8 border-[#FFB7B2] max-w-sm md:max-w-lg w-full mx-4 relative overflow-hidden">
-            <!-- Decorative Background -->
             <div class="absolute inset-0 bg-gradient-to-b from-white to-[#FFF0F0] -z-10"></div>
-
             <div class="text-6xl md:text-8xl mb-4 animate-bounce">🎉</div>
-            <h2 class="text-2xl md:text-3xl font-bold text-[#FF9E99] mb-2">ผู้โชคดีคือ!</h2>
+            <h2 class="text-2xl md:text-3xl font-bold text-[#FF9E99] mb-2">เลขโชคดีคือ🎉</h2>
             <div id="modalResultNumber"
                 class="text-7xl md:text-9xl font-bold text-[#4A4A4A] drop-shadow-md my-4 font-mono">--</div>
             <p class="text-gray-500 mb-8">ยินดีด้วยนะค้าบ! 🎁</p>
-
             <button id="closeModalBtn"
-                class="w-full py-3 bg-[#B5EAD7] hover:bg-[#9FDFC3] text-white text-xl font-bold rounded-2xl shadow-md active:scale-95 transition-all">
-                ตกลง ✨
-            </button>
+                class="w-full py-3 bg-[#B5EAD7] hover:bg-[#9FDFC3] text-white text-xl font-bold rounded-2xl shadow-md active:scale-95 transition-all">ตกลง
+                ✨</button>
         </div>
     </div>
 
-    <!-- Credit -->
-    <div
-        class="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-10 opacity-30 hover:opacity-80 transition-opacity duration-500 pointer-events-none">
-        <span class="text-[10px] text-gray-600 font-light tracking-[0.2em]">GolfCode</span>
-    </div>
-
-    <!-- Confetti & Fireworks Container -->
     <canvas id="fireworksCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
 
     <script>
-        /***********************
-         * Core Logic & State
-         ***********************/
-        const defaultData = {
-            numbers: Array.from({ length: 20 }, (_, i) => (i + 1).toString()), // 1-20
-            history: []
-        };
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('✅ Service Worker registered'))
+                    .catch(err => console.log('❌ Service Worker failed:', err));
+            });
+        }
 
+        const defaultData = { numbers: Array.from({ length: 20 }, (_, i) => (i + 1).toString()), history: [] };
         let data = loadData();
         let isSpinning = false;
-
-        // Physics State
         let currentAngle = 0;
         let velocity = 0;
         let friction = 0.985;
         let animationId = null;
+        let glowAnimationId = null;
 
-        /***********************
-         * Initialization
-         ***********************/
         const canvas = document.getElementById("wheelCanvas");
         const ctx = canvas.getContext("2d");
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         const radius = canvas.width / 2 - 20;
 
+        const glowColors = ["#FFD700", "#FF69B4", "#00FFFF", "#FF6347", "#7FFF00", "#FF1493", "#00FF7F"];
+
         function init() {
             syncUI();
             drawWheel();
             updateHistoryUI();
             createFloatingShapes();
+            startGlowAnimation();
 
-            // Auto-hide header after 5 seconds
             setTimeout(() => {
                 const header = document.querySelector('header');
-                if (header) {
-                    header.classList.add('fade-out');
-                }
+                if (header) header.classList.add('fade-out');
             }, 5000);
 
-            document.getElementById("spinBtn").addEventListener("click", startSpin);
+            document.getElementById("centerGift").addEventListener("click", startSpin);
             document.getElementById("generateBtn").addEventListener("click", generateNumbers);
             document.getElementById("updateBtn").addEventListener("click", updateNumbersFromInput);
             document.getElementById("resetBtn").addEventListener("click", () => {
                 if (confirm("รีเซ็ตเป็น 1-20?")) {
-                    let nums = Array.from({ length: 20 }, (_, i) => (i + 1).toString());
-                    data.numbers = shuffleArray(nums);
-                    saveData();
-                    syncUI();
-                    drawWheel();
+                    data.numbers = shuffleArray(Array.from({ length: 20 }, (_, i) => (i + 1).toString()));
+                    saveData(); syncUI(); drawWheel();
                 }
             });
             document.getElementById("clearHistoryBtn").addEventListener("click", () => {
-                if (confirm("ล้างประวัติ?")) {
-                    data.history = [];
-                    saveData();
-                    updateHistoryUI();
-                }
+                if (confirm("ล้างประวัติ?")) { data.history = []; saveData(); updateHistoryUI(); }
             });
-
-            // Quick Generate Input Listener
-            document.getElementById("quickCount").addEventListener("input", (e) => {
-                // document.getElementById("btnCountDisplay").textContent = e.target.value || "0";
-            });
-
-            // Modal Close
             document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+
+            document.getElementById("settingsIconBtn").addEventListener("click", () => {
+                document.getElementById("settingsPanel").classList.toggle("show");
+                document.getElementById("historyPanel").classList.remove("show");
+            });
+            document.getElementById("historyIconBtn").addEventListener("click", () => {
+                document.getElementById("historyPanel").classList.toggle("show");
+                document.getElementById("settingsPanel").classList.remove("show");
+            });
+            document.getElementById("closeSettingsBtn").addEventListener("click", () => {
+                document.getElementById("settingsPanel").classList.remove("show");
+            });
+            document.getElementById("closeHistoryBtn").addEventListener("click", () => {
+                document.getElementById("historyPanel").classList.remove("show");
+            });
+        }
+
+        function startGlowAnimation() {
+            function animateGlow() {
+                if (!isSpinning) drawWheel();
+                glowAnimationId = requestAnimationFrame(animateGlow);
+            }
+            animateGlow();
         }
 
         function createFloatingShapes() {
@@ -431,16 +365,13 @@
                 el.className = "shape text-2xl md:text-4xl";
                 el.textContent = shapes[Math.floor(Math.random() * shapes.length)];
                 el.style.left = Math.random() * 100 + "vw";
-                el.style.top = -10 + "vh"; // Start above screen
-                el.style.animationDuration = (Math.random() * 5 + 5) + "s"; // Fall speed
+                el.style.top = -10 + "vh";
+                el.style.animationDuration = (Math.random() * 5 + 5) + "s";
                 el.style.animationDelay = (Math.random() * 10) + "s";
                 container.appendChild(el);
             }
         }
 
-        /***********************
-         * Logic
-         ***********************/
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -452,35 +383,23 @@
         function generateNumbers() {
             const count = parseInt(document.getElementById("quickCount").value) || 20;
             if (count < 1) return;
-
-            if (confirm(`ต้องการสร้างเลข 1 ถึง ${count} ใหม่หรือไม่? (ข้อมูลเก่าจะหายไป)`)) {
-                let nums = Array.from({ length: count }, (_, i) => (i + 1).toString());
-                data.numbers = shuffleArray(nums);
-                saveData();
-                syncUI();
-                drawWheel();
+            if (confirm(`ต้องการสร้างเลข 1 ถึง ${count} ใหม่หรือไม่?`)) {
+                data.numbers = shuffleArray(Array.from({ length: count }, (_, i) => (i + 1).toString()));
+                saveData(); syncUI(); drawWheel();
             }
         }
 
         function startSpin() {
             if (isSpinning) return;
-            if (data.numbers.length === 0) {
-                alert("❌ หมดแล้ว! ไม่มีเลขเหลือให้จับแล้ว");
-                return;
-            }
+            if (data.numbers.length === 0) { alert("❌ หมดแล้ว!"); return; }
 
             isSpinning = true;
-            document.getElementById("spinBtn").disabled = true;
-            document.getElementById("spinBtn").classList.add("opacity-50", "scale-95", "cursor-not-allowed");
-
-            // Reset Zoom
-            const wheelContainer = document.querySelector('#wheelCanvas').parentElement.parentElement;
-            wheelContainer.classList.remove('scale-[1.5]', 'transition-transform', 'duration-[2000ms]');
-            wheelContainer.classList.add('transition-transform', 'duration-500'); // Restore default speed
+            document.getElementById("centerGift").classList.add("hidden");
+            document.getElementById("settingsPanel").classList.remove("show");
+            document.getElementById("historyPanel").classList.remove("show");
 
             velocity = Math.random() * 25 + 20;
             friction = 0.980 + (Math.random() * 0.009);
-
             animate();
         }
 
@@ -488,14 +407,9 @@
             velocity *= friction;
             currentAngle += velocity;
             if (currentAngle >= 360) currentAngle -= 360;
-
             drawWheel();
-
-            if (velocity < 0.05) {
-                stopSpin();
-            } else {
-                animationId = requestAnimationFrame(animate);
-            }
+            if (velocity < 0.05) stopSpin();
+            else animationId = requestAnimationFrame(animate);
         }
 
         function stopSpin() {
@@ -506,87 +420,50 @@
             const winningIndex = Math.floor(((360 - currentAngle + 270) % 360) / segmentAngle) % data.numbers.length;
             const winningNumber = data.numbers[winningIndex];
 
-            // Zoom Effect
-            const wheelContainer = document.querySelector('#wheelCanvas').parentElement.parentElement;
-            // Add a slower transition for the zoom effect
-            wheelContainer.classList.remove('duration-500');
-            wheelContainer.classList.add('duration-[2000ms]', 'scale-[1.5]');
-
-            setTimeout(() => {
-                handleWin(winningNumber, winningIndex);
-            }, 800); // Wait a bit for zoom to start before showing modal
+            setTimeout(() => handleWin(winningNumber, winningIndex), 500);
         }
 
         function handleWin(number, index) {
-            // Trigger Fireworks
             launchFireworks();
+            const winSound = new Audio("https://actions.google.com/sounds/v1/crowds/battle_crowd_celebrate_stutter.ogg");
+            winSound.volume = 0.6;
+            winSound.play().catch(() => { });
 
-            // Play Sound
-            const audio = document.getElementById("clapSound");
-            if (audio) {
-                audio.currentTime = 0;
-                audio.play().catch(e => console.log("Audio play failed:", e));
-            }
-
-            // Show Result Modal
             const modal = document.getElementById("winnerModal");
             const modalContent = modal.querySelector("div");
             document.getElementById("modalResultNumber").textContent = number;
-
             modal.classList.remove("hidden");
-            // Trigger reflow
             void modal.offsetWidth;
             modal.classList.remove("opacity-0");
             modalContent.classList.remove("scale-50");
             modalContent.classList.add("scale-100");
 
-            // Save History
-            data.history.unshift({
-                number: number,
-                timestamp: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
-            });
-
-            // Remove Number
+            data.history.unshift({ number, timestamp: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) });
             data.numbers.splice(index, 1);
-            currentAngle = 0; // Reset angle
-
-            saveData();
-            updateHistoryUI();
-            syncUI();
-            drawWheel();
+            currentAngle = 0;
+            saveData(); updateHistoryUI(); syncUI(); drawWheel();
         }
 
         function closeModal() {
             const modal = document.getElementById("winnerModal");
             const modalContent = modal.querySelector("div");
-
             modal.classList.add("opacity-0");
             modalContent.classList.remove("scale-100");
             modalContent.classList.add("scale-50");
 
-            // Reset Zoom
-            const wheelContainer = document.querySelector('#wheelCanvas').parentElement.parentElement;
-            wheelContainer.classList.remove('scale-[1.5]', 'duration-[2000ms]');
-            wheelContainer.classList.add('duration-500');
-
             setTimeout(() => {
                 modal.classList.add("hidden");
-
-                // Re-enable button
-                const btn = document.getElementById("spinBtn");
-                btn.disabled = false;
-                btn.classList.remove("opacity-50", "scale-95", "cursor-not-allowed");
-                btn.textContent = "SPIN! ✨";
+                document.getElementById("centerGift").classList.remove("hidden");
             }, 300);
         }
 
         function drawWheel() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             const len = data.numbers.length;
             if (len === 0) return;
 
             const arc = (Math.PI * 2) / len;
+            const time = Date.now() / 150;
 
             ctx.save();
             ctx.translate(centerX, centerY);
@@ -594,171 +471,121 @@
 
             for (let i = 0; i < len; i++) {
                 const angle = i * arc;
-
                 ctx.beginPath();
                 ctx.moveTo(0, 0);
                 ctx.arc(0, 0, radius, angle, angle + arc);
                 ctx.lineTo(0, 0);
 
-                // Colors: Pastel Gradients
-                const colors = [
-                    ["#FFB7B2", "#FFDAC1"], // Pink -> Peach
-                    ["#B5EAD7", "#E2F0CB"], // Mint -> Lime
-                    ["#C7CEEA", "#E0BBE4"], // Purple -> Lavender
-                    ["#FFDAC1", "#FF9AA2"]  // Peach -> Salmon
-                ];
-
+                const colors = [["#FFB7B2", "#FFDAC1"], ["#B5EAD7", "#E2F0CB"], ["#C7CEEA", "#E0BBE4"], ["#FFDAC1", "#FF9AA2"]];
                 const colorPair = colors[i % colors.length];
-                const gradient = ctx.createLinearGradient(0, 0, radius, 0); // Simple linear gradient from center
+                const gradient = ctx.createLinearGradient(0, 0, radius, 0);
                 gradient.addColorStop(0, colorPair[0]);
                 gradient.addColorStop(1, colorPair[1]);
 
                 ctx.fillStyle = gradient;
                 ctx.fill();
-
                 ctx.strokeStyle = "#FFF";
                 ctx.lineWidth = 4;
                 ctx.stroke();
 
-                // Text
                 ctx.save();
                 ctx.rotate(angle + arc / 2);
                 ctx.textAlign = "right";
 
-                ctx.fillStyle = "#FFF"; // White Text for better contrast on gradients
-                ctx.font = len > 50 ? "bold 12px Mali" : "bold 24px Mali";
-                ctx.shadowColor = "rgba(0,0,0,0.2)";
-                ctx.shadowBlur = 4;
+                const glowIntensity = Math.sin(time + i * 0.7) * 0.5 + 0.5;
+                const colorIndex = Math.floor((time / 2 + i) % glowColors.length);
+
+                ctx.shadowColor = glowColors[colorIndex];
+                ctx.shadowBlur = 10 + glowIntensity * 25;
+                ctx.fillStyle = "#FFF";
+                ctx.font = len > 50 ? "bold 14px Mali" : "bold 28px Mali";
                 ctx.fillText(data.numbers[i], radius - 20, 8);
+
+                ctx.shadowColor = "#FFFFFF";
+                ctx.shadowBlur = 5 + glowIntensity * 15;
+                ctx.fillText(data.numbers[i], radius - 20, 8);
+
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = "rgba(0,0,0,0.3)";
+                ctx.lineWidth = 1;
+                ctx.strokeText(data.numbers[i], radius - 20, 8);
+
                 ctx.restore();
             }
-
             ctx.restore();
 
-            // Glass/Gloss Overlay (Premium Effect)
             ctx.save();
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
             ctx.clip();
-
             const glassGradient = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-            glassGradient.addColorStop(0, "rgba(255, 255, 255, 0.4)");
-            glassGradient.addColorStop(0.5, "rgba(255, 255, 255, 0)");
-            glassGradient.addColorStop(1, "rgba(255, 255, 255, 0.1)");
-
+            glassGradient.addColorStop(0, "rgba(255,255,255,0.4)");
+            glassGradient.addColorStop(0.5, "rgba(255,255,255,0)");
+            glassGradient.addColorStop(1, "rgba(255,255,255,0.1)");
             ctx.fillStyle = glassGradient;
             ctx.fill();
-
-            // Inner Shadow for depth
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-            ctx.strokeStyle = "rgba(0,0,0,0.1)";
-            ctx.lineWidth = 10;
-            ctx.stroke();
             ctx.restore();
 
-            // Center Cap (Enhanced)
-            // Outer Ring
             ctx.beginPath();
             ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
             ctx.fillStyle = "#FFF";
             ctx.fill();
-
-            // Inner Gradient Circle
             const centerGrad = ctx.createRadialGradient(centerX, centerY, 10, centerX, centerY, 35);
             centerGrad.addColorStop(0, "#FFF");
             centerGrad.addColorStop(1, "#FFB7B2");
-
             ctx.beginPath();
             ctx.arc(centerX, centerY, 35, 0, Math.PI * 2);
             ctx.fillStyle = centerGrad;
             ctx.fill();
-
             ctx.strokeStyle = "#FFF";
             ctx.lineWidth = 4;
             ctx.stroke();
-
-            // Shadow for depth
-            ctx.shadowColor = "rgba(0,0,0,0.1)";
-            ctx.shadowBlur = 10;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 4;
-            ctx.stroke();
         }
 
-        /***********************
-         * Data & UI
-         ***********************/
         function loadData() {
-            const saved = localStorage.getItem("pastelLuckyDraw2025"); // New key for new file
+            const saved = localStorage.getItem("pastelLuckyDraw2025");
             if (saved) return JSON.parse(saved);
-            return defaultData;
+            return { ...defaultData };
         }
 
-        function saveData() {
-            localStorage.setItem("pastelLuckyDraw2025", JSON.stringify(data));
-        }
-
+        function saveData() { localStorage.setItem("pastelLuckyDraw2025", JSON.stringify(data)); }
         function syncUI() {
             document.getElementById("numbersInput").value = data.numbers.join("\n");
             document.getElementById("numberCount").textContent = data.numbers.length;
         }
 
         function updateNumbersFromInput() {
-            const text = document.getElementById("numbersInput").value;
-            data.numbers = text.split("\n").map(s => s.trim()).filter(s => s);
-            saveData();
-            syncUI();
-            drawWheel();
+            data.numbers = document.getElementById("numbersInput").value.split("\n").map(s => s.trim()).filter(s => s);
+            saveData(); syncUI(); drawWheel();
         }
 
         function updateHistoryUI() {
             const list = document.getElementById("historyList");
             list.innerHTML = "";
             document.getElementById("historyCount").textContent = data.history.length;
-
             if (data.history.length === 0) {
                 list.innerHTML = '<div class="text-center text-gray-400 py-4 text-sm">ยังไม่มีประวัติ</div>';
                 return;
             }
-
             data.history.forEach((h, i) => {
                 const item = document.createElement("div");
-                item.className = "bg-white bg-opacity-80 p-3 rounded-xl flex justify-between items-center animate-fade-in border-l-4 border-[#FFB7B2] shadow-sm";
-                item.innerHTML = `
-          <div class="flex items-center gap-3">
-            <span class="text-gray-400 text-sm">#${data.history.length - i}</span>
-            <span class="text-2xl font-bold text-[#4A4A4A]">${h.number}</span>
-          </div>
-          <div class="text-xs text-gray-400">${h.timestamp}</div>
-        `;
+                item.className = "bg-white bg-opacity-80 p-3 rounded-xl flex justify-between items-center border-l-4 border-[#FFB7B2] shadow-sm";
+                item.innerHTML = `<div class="flex items-center gap-3"><span class="text-gray-400 text-sm">#${data.history.length - i}</span><span class="text-2xl font-bold text-[#4A4A4A]">${h.number}</span></div><div class="text-xs text-gray-400">${h.timestamp}</div>`;
                 list.appendChild(item);
             });
         }
 
-        /***********************
-         * Fireworks Logic
-         ***********************/
         const fwCanvas = document.getElementById("fireworksCanvas");
         const fwCtx = fwCanvas.getContext("2d");
         let particles = [];
 
-        function resizeFireworksCanvas() {
-            fwCanvas.width = window.innerWidth;
-            fwCanvas.height = window.innerHeight;
-        }
+        function resizeFireworksCanvas() { fwCanvas.width = window.innerWidth; fwCanvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeFireworksCanvas);
         resizeFireworksCanvas();
 
         function launchFireworks() {
-            // Create multiple explosions
             for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    createExplosion(
-                        Math.random() * fwCanvas.width,
-                        Math.random() * fwCanvas.height * 0.6
-                    );
-                }, i * 300);
+                setTimeout(() => createExplosion(Math.random() * fwCanvas.width, Math.random() * fwCanvas.height * 0.6), i * 300);
             }
             animateFireworks();
         }
@@ -766,38 +593,22 @@
         function createExplosion(x, y) {
             const colors = ["#FFB7B2", "#B5EAD7", "#C7CEEA", "#FFDAC1", "#FFF"];
             for (let i = 0; i < 50; i++) {
-                particles.push({
-                    x: x,
-                    y: y,
-                    vx: (Math.random() - 0.5) * 10,
-                    vy: (Math.random() - 0.5) * 10,
-                    alpha: 1,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    size: Math.random() * 4 + 2
-                });
+                particles.push({ x, y, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, alpha: 1, color: colors[Math.floor(Math.random() * colors.length)], size: Math.random() * 4 + 2 });
             }
         }
 
         function animateFireworks() {
             if (particles.length === 0) return;
-
             fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
-
-            particles.forEach((p, i) => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.vy += 0.1; // Gravity
-                p.alpha -= 0.01;
-
+            particles = particles.filter(p => {
+                p.x += p.vx; p.y += p.vy; p.vy += 0.1; p.alpha -= 0.01;
                 fwCtx.globalAlpha = p.alpha;
                 fwCtx.fillStyle = p.color;
                 fwCtx.beginPath();
                 fwCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 fwCtx.fill();
-
-                if (p.alpha <= 0) particles.splice(i, 1);
+                return p.alpha > 0;
             });
-
             requestAnimationFrame(animateFireworks);
         }
 
