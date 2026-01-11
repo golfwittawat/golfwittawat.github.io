@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Signage - Premium Edition</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="app_icon_sw.png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --gold: #d4af37;
+            --gold-light: #f1d592;
+            --text-main: #f4f4f4;
+            --text-dim: #a0a0a0;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(212, 175, 55, 0.3);
+            --transition-speed: 1.5s;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Montserrat', Arial, sans-serif
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-drag: none
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            font-family: var(--font-sans);
+            color: var(--text-main)
+        }
+
+        body.hide-cursor {
+            cursor: none
+        }
+
+        .bg-animate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
+            z-index: -1
+        }
+
+        .bg-animate::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent 0%, rgba(212, 175, 55, 0.05) 50%, transparent 100%);
+            animation: rotate 20s linear infinite
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        #slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            background-size: cover;
+            background-position: center
+        }
+
+        .slide.active {
+            opacity: 1
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none
+        }
+
+        body.playing .controls {
+            opacity: 1;
+            pointer-events: auto
+        }
+
+        body.hide-cursor .controls {
+            opacity: 0;
+            pointer-events: none
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            color: var(--gold);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5rem
+        }
+
+        .control-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: scale(1.1);
+            border-color: var(--gold)
+        }
+
+        .control-btn.active {
+            background: var(--gold);
+            color: #000
+        }
+
+        #start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            text-align: center;
+            padding: 40px
+        }
+
+        .overlay-content {
+            max-width: 600px;
+            padding: 60px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeInScale 0.8s ease-out
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95)
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1)
+            }
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(to bottom, var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 50px
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+            color: #000;
+            border: none;
+            padding: 22px 60px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.1em
+        }
+
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+            filter: brightness(1.1)
+        }
+
+        .management-section {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%
+        }
+
+        .management-title {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 25px
+        }
+
+        .btn-secondary-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 28px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold);
+            color: var(--gold)
+        }
+
+        #status {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: var(--gold);
+            font-weight: 500;
+            min-height: 1.2em
+        }
+
+        .tip {
+            margin-top: 25px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            font-style: italic;
+            opacity: 0.6
+        }
+
+        input[type="file"] {
+            display: none
+        }
+
+        body.vertical h1 {
+            font-size: 2.5rem
+        }
+
+        body.vertical .overlay-content {
+            padding: 40px 20px;
+            width: 90vw
+        }
+
+        body.vertical .controls {
+            bottom: 20px;
+            right: 20px;
+            flex-direction: column
+        }
+
+        .interval-control {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            color: var(--text-dim);
+            font-size: 0.9rem
+        }
+
+        .interval-input {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--gold);
+            padding: 8px 15px;
+            border-radius: 8px;
+            width: 80px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            outline: none
+        }
+
+        .interval-input:focus {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1)
+        }
+
+        .interval-input::-webkit-inner-spin-button,
+        .interval-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0
+        }
+
+        #license-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(30px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            text-align: center;
+            padding: 40px
+        }
+
+        #license-modal.hidden {
+            display: none
+        }
+
+        .license-box {
+            max-width: 500px;
+            padding: 50px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5)
+        }
+
+        .license-icon {
+            font-size: 4rem;
+            margin-bottom: 20px
+        }
+
+        .license-title {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 10px
+        }
+
+        .license-subtitle {
+            color: var(--text-dim);
+            margin-bottom: 30px;
+            font-size: 0.9rem
+        }
+
+        .license-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--glass-border);
+            color: var(--gold);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 0.1em;
+            outline: none;
+            margin-bottom: 20px
+        }
+
+        .license-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3)
+        }
+
+        .license-input.error {
+            border-color: #ff4444;
+            animation: shake 0.5s ease
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            25% {
+                transform: translateX(-10px)
+            }
+
+            75% {
+                transform: translateX(10px)
+            }
+        }
+
+        .license-error {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            min-height: 1.2em
+        }
+
+        .license-btn {
+            background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 100px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em
+        }
+
+        .license-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4)
+        }
+
+        .license-info {
+            margin-top: 30px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            opacity: 0.6
+        }
+    </style>
+</head>
+
+<body class="vertical">
+    <div class="bg-animate"></div>
+    <div id="license-modal">
+        <div class="license-box">
+            <div class="license-icon">🔐</div>
+            <h2 class="license-title">License Activation</h2>
+            <p class="license-subtitle">Enter your license key to unlock the application</p><input type="text"
+                id="license-input" class="license-input" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19">
+            <p id="license-error" class="license-error"></p><button id="license-btn"
+                class="license-btn">Activate</button>
+            <p class="license-info">Contact support if you don't have a license key</p>
+        </div>
+    </div>
+    <div id="start-overlay" style="display:none;">
+        <div class="overlay-content">
+            <p class="subtitle">Premium Signage</p>
+            <h1>Exquisite Display</h1>
+            <div class="btn-group"><button class="btn-main" id="btn-start">Begin Experience</button>
+                <div class="interval-control"><span>Slide Duration:</span><input type="number" id="interval-input"
+                        class="interval-input" min="1" max="3600" value="10"><span>seconds</span></div>
+            </div>
+            <div class="management-section">
+                <p class="management-title">Content Curation</p>
+                <div class="btn-secondary-group"><button class="btn-secondary"
+                        onclick="document.getElementById('folder-input').click()">📁 Sync Folder</button><button
+                        class="btn-secondary" onclick="document.getElementById('file-input').click()">📄 Select
+                        Files</button><button class="btn-secondary" id="btn-reset" style="display:none;">🔄 Reset
+                        Cache</button></div><input type="file" id="folder-input" webkitdirectory directory
+                    multiple><input type="file" id="file-input" multiple accept="image/*">
+            </div>
+            <div id="status">Ready</div>
+            <p class="tip">Tip: Double-click screen to return to this menu</p>
+        </div>
+    </div>
+    <div class="controls">
+        <div class="control-btn" id="btn-prev" title="Previous">❮</div>
+        <div class="control-btn" id="btn-pause" title="Pause/Play">⏸</div>
+        <div class="control-btn" id="btn-next" title="Next">❯</div>
+    </div>
+    <div id="slideshow-container"></div>
+    <script>
+        const LICENSE = { SECRET: 'SGNG', STORAGE_KEY: 'signage_license', ALLOWED_DOMAINS: ['golfwittawat.github.io'], PRE_ACTIVATED_KEY: 'PREM-SGNG-1276-2R5B', checkDomain() { const d = window.location.hostname; if (!this.ALLOWED_DOMAINS.includes(d)) { document.body.innerHTML = '<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:#0a0a0a;color:#ff6b6b;font-family:sans-serif;text-align:center;padding:40px;"><div style="font-size:5rem;margin-bottom:20px;">⛔</div><h1 style="color:#d4af37;margin-bottom:10px;">Unauthorized Domain</h1><p style="color:#a0a0a0;">This application is not licensed for use on this domain.</p><p style="margin-top:20px;font-size:0.8rem;color:#666;">Domain: ' + d + '</p></div>'; return false } return true }, validate(key) { if (!key) return { valid: false, error: 'Please enter a license key' }; const parts = key.toUpperCase().split('-'); if (parts.length !== 4) return { valid: false, error: 'Invalid key format' }; const [prefix, secret, date, hash] = parts; if (prefix !== 'PREM') return { valid: false, error: 'Invalid license prefix' }; if (secret !== this.SECRET) return { valid: false, error: 'Invalid license key' }; if (!/^\d{4}$/.test(date)) return { valid: false, error: 'Invalid expiration date' }; const month = parseInt(date.substring(0, 2)); const year = parseInt('20' + date.substring(2, 4)); if (month < 1 || month > 12) return { valid: false, error: 'Invalid expiration month' }; const expDate = new Date(year, month, 0); if (new Date() > expDate) return { valid: false, error: 'License has expired' }; const expectedHash = this.generateHash(prefix, secret, date); if (hash !== expectedHash) return { valid: false, error: 'License verification failed' }; return { valid: true, expDate: expDate.toLocaleDateString() } }, generateHash(prefix, secret, date) { const str = prefix + secret + date; let hash = 0; for (let i = 0; i < str.length; i++) { hash = ((hash << 5) - hash) + str.charCodeAt(i); hash = hash & hash } return Math.abs(hash).toString(36).toUpperCase().substring(0, 4).padEnd(4, 'X') }, generate(month, year) { const prefix = 'PREM'; const date = month.toString().padStart(2, '0') + year.toString().substring(2); return `${prefix}-${this.SECRET}-${date}-${this.generateHash(prefix, this.SECRET, date)}` }, save(key) { localStorage.setItem(this.STORAGE_KEY, key) }, load() { return localStorage.getItem(this.STORAGE_KEY) }, clear() { localStorage.removeItem(this.STORAGE_KEY) } };
+        if (!LICENSE.checkDomain()) throw new Error('Unauthorized domain');
+        const licenseModal = document.getElementById('license-modal'), licenseInput = document.getElementById('license-input'), licenseBtn = document.getElementById('license-btn'), licenseError = document.getElementById('license-error'), startOverlay = document.getElementById('start-overlay');
+        licenseInput.addEventListener('input', (e) => { let value = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase(); let formatted = ''; for (let i = 0; i < value.length && i < 16; i++) { if (i > 0 && i % 4 === 0) formatted += '-'; formatted += value[i] } e.target.value = formatted });
+        licenseBtn.addEventListener('click', () => { const key = licenseInput.value.trim(); const result = LICENSE.validate(key); if (result.valid) { LICENSE.save(key); licenseModal.classList.add('hidden'); startOverlay.style.display = 'flex' } else { licenseError.textContent = result.error; licenseInput.classList.add('error'); setTimeout(() => licenseInput.classList.remove('error'), 500) } });
+        licenseInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') licenseBtn.click() });
+        function checkLicense() { if (LICENSE.PRE_ACTIVATED_KEY) { const result = LICENSE.validate(LICENSE.PRE_ACTIVATED_KEY); if (result.valid) { licenseModal.classList.add('hidden'); startOverlay.style.display = 'flex'; return true } } const storedKey = LICENSE.load(); if (storedKey) { const result = LICENSE.validate(storedKey); if (result.valid) { licenseModal.classList.add('hidden'); startOverlay.style.display = 'flex'; return true } else { LICENSE.clear(); licenseError.textContent = result.error + '. Please re-activate.' } } return false }
+        const CONFIG = { orientation: 'vertical', slideInterval: 5000, autoResumeDelay: 10000 }; const savedInterval = localStorage.getItem('signage_interval'); if (savedInterval) CONFIG.slideInterval = parseInt(savedInterval) * 1000;
+        const DB_NAME = 'SignageDB', STORE_NAME = 'Images'; let db;
+        const initDB = () => new Promise((resolve, reject) => { const request = indexedDB.open(DB_NAME, 1); request.onupgradeneeded = (e) => { db = e.target.result; if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true }) }; request.onsuccess = (e) => { db = e.target.result; resolve(db) }; request.onerror = (e) => reject(e) });
+        const saveImages = async (files) => { statusEl.textContent = 'Curating content... 0%'; const imageData = []; let processed = 0; for (const file of files) { if (file.type.startsWith('image/')) { try { const blob = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = (e) => resolve(new Blob([e.target.result], { type: file.type })); reader.onerror = reject; reader.readAsArrayBuffer(file) }); imageData.push({ blob }) } catch (err) { } } processed++; statusEl.textContent = `Curating content... ${Math.round((processed / files.length) * 100)}%` } if (imageData.length === 0) { statusEl.textContent = 'No visual assets found.'; return } statusEl.textContent = 'Finalizing collection...'; return new Promise((resolve, reject) => { const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); store.clear(); imageData.forEach(item => store.add(item)); tx.oncomplete = () => { statusEl.textContent = `Success! ${imageData.length} assets synced.`; resolve() }; tx.onerror = reject }) };
+        const getImages = () => new Promise((resolve) => { const tx = db.transaction(STORE_NAME, 'readonly'); const store = tx.objectStore(STORE_NAME); const request = store.getAll(); request.onsuccess = () => resolve(request.result) });
+        let currentSlideIndex = 0, slidesData = [], slideshowInterval, inactivityTimeout, isPaused = false; const container = document.getElementById('slideshow-container');
+        async function startSlideshow() { stopSlideshow(); document.body.className = CONFIG.orientation + ' playing'; const storedImages = await getImages(); slidesData = storedImages.length > 0 ? storedImages.map(img => ({ image: URL.createObjectURL(img.blob) })) : []; if (slidesData.length === 0) { document.getElementById('start-overlay').style.display = 'flex'; document.body.classList.remove('playing'); statusEl.textContent = 'Please sync content first.'; return } renderSlides(); resumeAutoPlay() }
+        function stopSlideshow() { if (slideshowInterval) clearInterval(slideshowInterval); if (inactivityTimeout) clearTimeout(inactivityTimeout) }
+        function resumeAutoPlay() { if (slideshowInterval) clearInterval(slideshowInterval); isPaused = false; document.getElementById('btn-pause').textContent = '⏸'; document.getElementById('btn-pause').classList.remove('active'); slideshowInterval = setInterval(nextSlide, CONFIG.slideInterval) }
+        function pauseAutoPlay() { if (slideshowInterval) clearInterval(slideshowInterval); isPaused = true; document.getElementById('btn-pause').textContent = '▶'; document.getElementById('btn-pause').classList.add('active'); resetInactivityTimer() }
+        function resetInactivityTimer() { if (inactivityTimeout) clearTimeout(inactivityTimeout); inactivityTimeout = setTimeout(() => { if (isPaused || document.body.classList.contains('playing')) resumeAutoPlay() }, CONFIG.autoResumeDelay) }
+        function renderSlides() { container.innerHTML = ''; slidesData.forEach((slide, index) => { const div = document.createElement('div'); div.className = `slide ${index === 0 ? 'active' : ''}`; div.style.backgroundImage = `url('${slide.image}')`; container.appendChild(div) }) }
+        function nextSlide() { const slides = document.querySelectorAll('.slide'); if (slides.length <= 1) return; slides[currentSlideIndex].classList.remove('active'); currentSlideIndex = (currentSlideIndex + 1) % slides.length; slides[currentSlideIndex].classList.add('active') }
+        function prevSlide() { const slides = document.querySelectorAll('.slide'); if (slides.length <= 1) return; slides[currentSlideIndex].classList.remove('active'); currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length; slides[currentSlideIndex].classList.add('active') }
+        const statusEl = document.getElementById('status'), btnReset = document.getElementById('btn-reset');
+        window.onload = async () => { checkLicense(); await initDB(); const stored = await getImages(); if (stored.length > 0) { statusEl.textContent = `${stored.length} assets in collection`; btnReset.style.display = 'inline-block' } if (savedInterval) document.getElementById('interval-input').value = savedInterval };
+        const handleFileSelection = async (e) => { const files = Array.from(e.target.files); if (files.length === 0) return; await saveImages(files); btnReset.style.display = 'inline-block'; e.target.value = ''; setTimeout(() => document.getElementById('btn-start').click(), 1500) };
+        document.getElementById('folder-input').onchange = handleFileSelection;
+        document.getElementById('file-input').onchange = handleFileSelection;
+        document.getElementById('btn-reset').onclick = async () => { const tx = db.transaction(STORE_NAME, 'readwrite'); tx.objectStore(STORE_NAME).clear(); tx.oncomplete = () => { statusEl.textContent = 'Collection cleared.'; btnReset.style.display = 'none'; slidesData = []; container.innerHTML = '' } };
+        document.getElementById('btn-start').onclick = function () { const intervalVal = parseInt(document.getElementById('interval-input').value) || 5; CONFIG.slideInterval = intervalVal * 1000; localStorage.setItem('signage_interval', intervalVal); document.getElementById('start-overlay').style.display = 'none'; enterFullscreen(); startSlideshow() };
+        document.getElementById('btn-pause').onclick = (e) => { e.stopPropagation(); if (isPaused) resumeAutoPlay(); else pauseAutoPlay() };
+        document.getElementById('btn-next').onclick = (e) => { e.stopPropagation(); nextSlide(); pauseAutoPlay() };
+        document.getElementById('btn-prev').onclick = (e) => { e.stopPropagation(); prevSlide(); pauseAutoPlay() };
+        function enterFullscreen() { const d = document.documentElement; if (d.requestFullscreen) d.requestFullscreen(); else if (d.webkitRequestFullscreen) d.webkitRequestFullscreen() }
+        function exitFullscreen() { if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen() }
+        container.ondblclick = () => { document.getElementById('start-overlay').style.display = 'flex'; document.body.classList.remove('playing', 'hide-cursor'); stopSlideshow(); exitFullscreen() };
+        let cursorTimeout; document.addEventListener('mousemove', () => { if (document.body.classList.contains('playing')) { document.body.classList.remove('hide-cursor'); clearTimeout(cursorTimeout); cursorTimeout = setTimeout(() => { if (document.body.classList.contains('playing')) document.body.classList.add('hide-cursor') }, 3000) } });
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => { if (['F11', 'Escape', 'F5'].includes(e.key) || (e.ctrlKey && ['r', 'n', 't'].includes(e.key))) e.preventDefault() });
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => { }) }) }
+    </script>
+</body>
+
+</html>

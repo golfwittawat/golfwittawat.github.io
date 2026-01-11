@@ -1,0 +1,21 @@
+{
+  "name": "Digital Signage - Premium Edition",
+  "short_name": "Signage",
+  "description": "Premium Digital Signage Slideshow",
+  "start_url": "DigitalSignage.html",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#d4af37",
+  "icons": [
+    {
+      "src": "app_icon_sw.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "app_icon_sw.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
