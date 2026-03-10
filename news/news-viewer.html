@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="n8n News"/>
+<meta name="theme-color" content="#0a0c10" id="themeColor"/>
+<title>n8n News</title>
+<link rel="manifest" id="manifestLink"/>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Noto+Serif+Thai:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ═══ THEMES ═══ */
+[data-theme="dark"]{
+  --bg:#0a0c10;
+  --bg2:#0e1118;
+  --bg3:#131720;
+  --bg4:#181e2a;
+  --border:#1e2535;
+  --border2:#28334a;
+  --acc:#e8392a;
+  --acc-dim:rgba(232,57,42,.12);
+  --acc-glow:rgba(232,57,42,.3);
+  --text:#e8eaf2;
+  --text2:#9aa3ba;
+  --text3:#5e6d88;
+  --card:#0e1118;
+  --nav:rgba(10,12,16,.92);
+  --sidebar:#0b0d14;
+  --shadow:0 2px 24px rgba(0,0,0,.5);
+  --shadow-lg:0 8px 48px rgba(0,0,0,.65);
+  --pill-bg:#1a2030;
+  --pill-border:#253040;
+  --tag-red:rgba(232,57,42,.15);
+  --tag-blue:rgba(56,139,253,.12);
+  --tag-green:rgba(46,160,67,.12);
+  --tag-orange:rgba(255,140,0,.12);
+  --tag-purple:rgba(130,80,255,.12);
+}
+[data-theme="light"]{
+  --bg:#f5f6f8;
+  --bg2:#ffffff;
+  --bg3:#f0f2f6;
+  --bg4:#e8ebf2;
+  --border:#dde2ee;
+  --border2:#c8d0e0;
+  --acc:#d62d1f;
+  --acc-dim:rgba(214,45,31,.08);
+  --acc-glow:rgba(214,45,31,.2);
+  --text:#111827;
+  --text2:#374151;
+  --text3:#9ca3af;
+  --card:#ffffff;
+  --nav:rgba(245,246,248,.95);
+  --sidebar:#ffffff;
+  --shadow:0 2px 16px rgba(0,0,0,.08);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.12);
+  --pill-bg:#f0f2f6;
+  --pill-border:#dde2ee;
+  --tag-red:rgba(214,45,31,.1);
+  --tag-blue:rgba(37,99,235,.08);
+  --tag-green:rgba(22,163,74,.08);
+  --tag-orange:rgba(234,88,12,.08);
+  --tag-purple:rgba(124,58,237,.08);
+}
+
+/* ═══ BASE ═══ */
+html,body{height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);transition:background .25s,color .25s;-webkit-font-smoothing:antialiased}
+
+/* ═══ APP SHELL ═══ */
+.app{display:flex;height:100%;height:100dvh;overflow:hidden}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{
+  width:240px;flex-shrink:0;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:relative;z-index:200;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),background .25s,border-color .25s;
+}
+
+/* Logo */
+.logo{
+  display:flex;align-items:center;gap:.75rem;
+  padding:1.1rem 1.2rem;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.logo-mark{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--acc);display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif Thai',serif;font-size:1rem;font-weight:900;color:#fff;
+  flex-shrink:0;box-shadow:0 0 20px var(--acc-glow);
+}
+.logo-title{font-family:'Noto Serif Thai',serif;font-size:.95rem;font-weight:800;color:var(--text);line-height:1.1}
+.logo-sub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;color:var(--text3);letter-spacing:.1em;margin-top:.15rem}
+
+/* Sidebar search */
+.sb-search{padding:.8rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-search input{
+  width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  padding:.42rem .75rem .42rem 2rem;font-family:'Sarabun',sans-serif;font-size:.8rem;
+  color:var(--text);outline:none;transition:border-color .2s,background .25s;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235e6d88' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:.65rem center;
+}
+.sb-search input:focus{border-color:var(--acc);background-color:var(--bg2)}
+.sb-search input::placeholder{color:var(--text3)}
+
+/* Nav */
+.sb-nav{flex:1;overflow-y:auto;padding:.5rem 0;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+.nav-group{margin-bottom:.2rem}
+.nav-group-label{
+  font-family:'IBM Plex Mono',monospace;font-size:.56rem;font-weight:500;
+  color:var(--text3);letter-spacing:.12em;text-transform:uppercase;
+  padding:.55rem 1.2rem .3rem;
+}
+.nav-item{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.46rem 1.2rem;cursor:pointer;
+  border-left:2.5px solid transparent;
+  font-size:.82rem;color:var(--text2);
+  transition:background .12s,color .12s,border-color .12s;
+  white-space:nowrap;overflow:hidden;
+}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{
+  background:var(--acc-dim);border-left-color:var(--acc);
+  color:var(--acc);font-weight:600;
+}
+.nav-item .ni-ico{font-size:.88rem;flex-shrink:0;width:18px;text-align:center}
+.nav-item .ni-lbl{flex:1;overflow:hidden;text-overflow:ellipsis}
+.nav-item .ni-cnt{
+  font-family:'IBM Plex Mono',monospace;font-size:.6rem;
+  background:var(--pill-bg);border:1px solid var(--pill-border);
+  border-radius:99px;padding:.1rem .42rem;color:var(--text3);flex-shrink:0;
+}
+.nav-item.active .ni-cnt{background:var(--acc-dim);border-color:rgba(232,57,42,.25);color:var(--acc)}
+
+/* Sidebar footer */
+.sb-footer{
+  padding:.7rem 1.2rem;border-top:1px solid var(--border);flex-shrink:0;
+  font-family:'IBM Plex Mono',monospace;font-size:.56rem;color:var(--text3);
+}
+
+/* ═══ MAIN AREA ═══ */
+.main{
+  flex:1;min-width:0;display:flex;flex-direction:column;
+  height:100%;height:100dvh;overflow:hidden;
+}
+
+/* ═══ TOPBAR ═══ */
+.topbar{
+  flex-shrink:0;
+  background:var(--nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 1.4rem;
+  padding-top:env(safe-area-inset-top);
+  height:calc(52px + env(safe-area-inset-top));
+  display:flex;align-items:center;gap:.75rem;
+  transition:background .25s,border-color .25s;z-index:100;
+}
+.menu-btn{
+  display:none;width:34px;height:34px;border-radius:7px;
+  background:var(--bg3);border:1px solid var(--border);
+  align-items:center;justify-content:center;
+  cursor:pointer;font-size:1rem;color:var(--text2);flex-shrink:0;
+}
+.topbar-title{
+  font-family:'Noto Serif Thai',serif;font-size:.95rem;font-weight:800;
+  color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.topbar-title em{font-style:normal;color:var(--acc)}
+
+/* Date picker area */
+.date-area{display:flex;align-items:center;gap:.45rem;flex-shrink:0}
+
+.date-btn{
+  display:flex;align-items:center;gap:.4rem;
+  padding:.3rem .7rem;border-radius:7px;
+  border:1px solid var(--border);background:var(--bg3);
+  color:var(--text2);font-family:'IBM Plex Mono',monospace;font-size:.65rem;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.date-btn.today-btn{background:var(--acc-dim);border-color:rgba(232,57,42,.3);color:var(--acc)}
+.date-btn:hover{background:var(--bg4);border-color:var(--border2)}
+.date-btn.today-btn:hover{background:var(--acc-dim)}
+
+.date-picker-wrap{position:relative}
+.date-picker-wrap input[type="date"]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+.cal-btn{
+  display:flex;align-items:center;gap:.35rem;
+  padding:.3rem .65rem;border-radius:7px;
+  border:1px solid var(--border);background:var(--bg3);
+  color:var(--text2);font-family:'IBM Plex Mono',monospace;font-size:.65rem;
+  cursor:pointer;transition:all .2s;white-space:nowrap;pointer-events:none;
+}
+
+/* Icon buttons */
+.icon-btn{
+  width:34px;height:34px;border-radius:7px;
+  background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:.9rem;transition:all .2s;color:var(--text2);flex-shrink:0;
+}
+.icon-btn:hover{background:var(--bg4);border-color:var(--border2)}
+.icon-btn.active{background:var(--acc-dim);border-color:rgba(232,57,42,.3)}
+
+/* ═══ CONTENT SCROLL ═══ */
+.content-scroll{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
+}
+
+/* ═══ CONTENT INNER ═══ */
+.content{max-width:1200px;padding:1.5rem 1.5rem 2rem}
+
+/* ═══ DATE HEADER BAR ═══ */
+.date-banner{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.75rem 1rem;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;margin-bottom:1.25rem;
+  border-left:3px solid var(--acc);
+}
+.date-banner-left{flex:1}
+.date-banner-day{
+  font-family:'Noto Serif Thai',serif;font-size:1.15rem;font-weight:800;color:var(--text);
+}
+.date-banner-day em{font-style:normal;color:var(--acc)}
+.date-banner-full{font-size:.75rem;color:var(--text3);margin-top:.1rem;font-family:'IBM Plex Mono',monospace}
+.date-nav{display:flex;gap:.35rem;flex-shrink:0}
+.date-nav-btn{
+  width:28px;height:28px;border-radius:6px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;
+  transition:all .2s;
+}
+.date-nav-btn:hover{background:var(--bg4)}
+
+/* ═══ STATS ROW ═══ */
+.stats-row{
+  display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.1rem;align-items:center;
+}
+.stat-chip{
+  display:flex;align-items:center;gap:.35rem;
+  padding:.3rem .75rem;border-radius:99px;
+  background:var(--pill-bg);border:1px solid var(--pill-border);
+  font-size:.72rem;color:var(--text2);cursor:pointer;
+  transition:all .18s;
+}
+.stat-chip:hover,.stat-chip.active{background:var(--acc-dim);border-color:rgba(232,57,42,.3);color:var(--acc)}
+.stat-chip .chip-num{font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:.7rem}
+.stat-chip.total{background:var(--acc);border-color:var(--acc);color:#fff}
+.stat-chip.total:hover{opacity:.85}
+
+/* ═══ FILTER BAR ═══ */
+.filter-bar{
+  display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap;
+}
+.search-box{
+  flex:1;min-width:180px;position:relative;
+}
+.search-box input{
+  width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:.48rem .85rem .48rem 2.2rem;font-family:'Sarabun',sans-serif;font-size:.82rem;
+  color:var(--text);outline:none;transition:border-color .2s,background .25s;
+}
+.search-box input:focus{border-color:var(--acc);background:var(--bg2)}
+.search-box input::placeholder{color:var(--text3)}
+.search-box::before{
+  content:'🔍';position:absolute;left:.65rem;top:50%;transform:translateY(-50%);
+  font-size:.8rem;pointer-events:none;
+}
+.sort-sel{
+  background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:.42rem .75rem;font-family:'Sarabun',sans-serif;font-size:.8rem;
+  color:var(--text);outline:none;cursor:pointer;
+  transition:border-color .2s;flex-shrink:0;
+}
+.sort-sel:focus{border-color:var(--acc)}
+
+/* ═══ CATEGORY PILLS ═══ */
+.cat-pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.cat-pill{
+  padding:.28rem .75rem;border-radius:99px;font-size:.72rem;
+  background:var(--pill-bg);border:1px solid var(--pill-border);
+  color:var(--text2);cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.cat-pill:hover{background:var(--bg4)}
+.cat-pill.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+
+/* ═══ NEWS GRID ═══ */
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:.9rem;
+}
+
+/* Hero layout for first 3 items */
+.hero-layout{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:auto auto;gap:.9rem;margin-bottom:.9rem}
+.hero-layout .card:first-child{grid-row:1/3;grid-column:1}
+.hero-layout .card:nth-child(2){grid-row:1}
+.hero-layout .card:nth-child(3){grid-row:2}
+
+/* ═══ CARD ═══ */
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  animation:fadeUp .35s ease both;
+}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--border2)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Card image */
+.card-img{
+  position:relative;overflow:hidden;
+  background:var(--bg3);flex-shrink:0;
+  height:175px;
+}
+.hero-layout .card:first-child .card-img{height:260px}
+.card-img img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .4s ease, opacity .3s ease;
+  opacity:0;
+}
+.card-img img.loaded{opacity:1}
+.card:hover .card-img img{transform:scale(1.04)}
+.card-img-empty{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.35rem;
+  background:linear-gradient(135deg,var(--bg3) 0%,var(--bg4) 100%);
+}
+.card-img-empty .ei-icon{font-size:2rem;opacity:.35}
+.card-img-empty .ei-src{font-size:.65rem;color:var(--text3);font-family:'IBM Plex Mono',monospace}
+
+/* Cat badge on image */
+.cat-badge{
+  position:absolute;top:.6rem;left:.6rem;
+  padding:.2rem .55rem;border-radius:5px;
+  font-size:.62rem;font-weight:700;letter-spacing:.04em;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.15);
+}
+[data-theme="light"] .cat-badge{background:rgba(255,255,255,.85);color:var(--text);border-color:rgba(0,0,0,.1)}
+
+/* Time badge */
+.time-badge{
+  position:absolute;top:.6rem;right:.6rem;
+  padding:.18rem .5rem;border-radius:5px;
+  font-family:'IBM Plex Mono',monospace;font-size:.57rem;
+  background:rgba(0,0,0,.5);color:rgba(255,255,255,.8);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+
+/* Card body */
+.card-body{flex:1;padding:.85rem .9rem;display:flex;flex-direction:column;gap:.45rem}
+
+.card-source{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:.67rem;font-family:'IBM Plex Mono',monospace;color:var(--text3);
+}
+.src-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);flex-shrink:0}
+
+.card-title{
+  font-family:'Noto Serif Thai',serif;
+  font-size:.88rem;font-weight:700;line-height:1.55;color:var(--text);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.hero-layout .card:first-child .card-title{font-size:1.05rem;-webkit-line-clamp:4}
+.card-title a{color:inherit;text-decoration:none}
+.card-title a:hover{color:var(--acc)}
+
+.card-excerpt{
+  font-size:.75rem;color:var(--text2);line-height:1.7;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  flex:1;
+}
+.hero-layout .card:first-child .card-excerpt{-webkit-line-clamp:3}
+
+/* Card footer */
+.card-footer{
+  padding:.55rem .9rem;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.read-btn{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.22rem .6rem;border-radius:5px;
+  background:var(--acc-dim);border:1px solid rgba(232,57,42,.2);
+  color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:.62rem;font-weight:500;
+  text-decoration:none;transition:all .18s;
+}
+.read-btn:hover{background:rgba(232,57,42,.22);border-color:rgba(232,57,42,.4)}
+.card-footer-src{font-size:.65rem;color:var(--text3)}
+
+/* ═══ SOURCE GROUP VIEW ═══ */
+.source-group{margin-bottom:2rem}
+.source-group-header{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.75rem 1rem;background:var(--bg2);
+  border:1px solid var(--border);border-radius:10px;margin-bottom:.85rem;
+  cursor:pointer;transition:border-color .2s;
+}
+.source-group-header:hover{border-color:var(--border2)}
+.sg-icon{font-size:1.3rem}
+.sg-info{flex:1}
+.sg-name{font-family:'Noto Serif Thai',serif;font-weight:800;font-size:.95rem;color:var(--text)}
+.sg-meta{font-size:.68rem;color:var(--text3);font-family:'IBM Plex Mono',monospace;margin-top:.1rem}
+.sg-count{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;font-weight:500;color:var(--text);flex-shrink:0}
+
+/* ═══ EMPTY / LOADING ═══ */
+.empty-state{
+  display:flex;flex-direction:column;align-items:center;
+  padding:4rem 2rem;text-align:center;gap:.75rem;
+}
+.empty-state .es-icon{font-size:2.5rem;opacity:.25}
+.empty-state .es-title{font-family:'Noto Serif Thai',serif;font-size:1rem;font-weight:700;color:var(--text)}
+.empty-state .es-sub{font-size:.8rem;color:var(--text3);line-height:1.6}
+.empty-state .es-btn{
+  margin-top:.5rem;padding:.5rem 1.25rem;border-radius:8px;
+  background:var(--acc);color:#fff;border:none;font-family:'Sarabun',sans-serif;
+  font-size:.82rem;font-weight:600;cursor:pointer;
+}
+
+.spinner-wrap{display:flex;justify-content:center;padding:5rem}
+.spinner{
+  width:36px;height:36px;border-radius:50%;
+  border:2.5px solid var(--border2);border-top-color:var(--acc);
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══ CONN ERROR ═══ */
+.conn-error{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:3rem 1.5rem;text-align:center;gap:1rem;min-height:55vh;
+}
+.ce-icon{font-size:3rem;opacity:.3}
+.ce-title{font-family:'Noto Serif Thai',serif;font-size:1.1rem;font-weight:800;color:var(--text)}
+.ce-msg{font-size:.82rem;color:var(--text2);line-height:1.7;max-width:320px}
+.ce-url{
+  font-family:'IBM Plex Mono',monospace;font-size:.65rem;
+  color:var(--text3);background:var(--bg3);border:1px solid var(--border);
+  border-radius:7px;padding:.4rem .85rem;max-width:320px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.ce-btns{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+.ce-btn{
+  padding:.5rem 1.1rem;border-radius:8px;font-family:'Sarabun',sans-serif;
+  font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);
+  background:var(--bg2);color:var(--text2);transition:all .2s;
+}
+.ce-btn.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+.ce-btn:hover{background:var(--bg3)}
+.ce-btn.primary:hover{opacity:.85}
+
+/* ═══ OVERLAY ═══ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:150}
+.overlay.open{display:block}
+
+/* ═══ SETTINGS ═══ */
+.settings-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.65);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  align-items:center;justify-content:center;padding:1.25rem;
+}
+.settings-overlay.open{display:flex}
+.settings-box{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:16px;
+  padding:1.75rem;width:100%;max-width:460px;
+  box-shadow:var(--shadow-lg);
+}
+.stg-title{font-family:'Noto Serif Thai',serif;font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:.3rem}
+.stg-sub{font-size:.78rem;color:var(--text2);line-height:1.65;margin-bottom:1.35rem}
+.stg-label{display:block;font-size:.74rem;font-weight:600;color:var(--text2);margin-bottom:.4rem}
+.stg-input{
+  width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:8px;
+  padding:.6rem .9rem;font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+  color:var(--text);outline:none;transition:border-color .2s;
+}
+.stg-input:focus{border-color:var(--acc)}
+.stg-hint{font-size:.67rem;color:var(--text3);margin-top:.4rem;line-height:1.6}
+.stg-hint code{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:.1rem .35rem;color:var(--acc);font-size:.65rem}
+.stg-status{margin-top:.85rem;padding:.45rem .8rem;border-radius:7px;font-size:.74rem;display:none}
+.stg-status.ok{background:rgba(46,160,67,.12);border:1px solid rgba(46,160,67,.25);color:#2ea043;display:block}
+.stg-status.err{background:rgba(232,57,42,.1);border:1px solid rgba(232,57,42,.25);color:#ff6354;display:block}
+.stg-btns{display:flex;gap:.55rem;margin-top:1.35rem}
+.stg-btn{
+  flex:1;padding:.6rem;border-radius:8px;border:none;cursor:pointer;
+  font-family:'Sarabun',sans-serif;font-size:.85rem;font-weight:700;transition:opacity .2s;
+}
+.stg-btn.primary{background:var(--acc);color:#fff}
+.stg-btn.secondary{background:var(--bg3);border:1px solid var(--border);color:var(--text2)}
+.stg-btn:hover{opacity:.85}
+.stg-cur{margin-top:.85rem;padding-top:.85rem;border-top:1px solid var(--border)}
+.stg-cur-label{font-size:.65rem;color:var(--text3);margin-bottom:.3rem}
+.stg-cur-url{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--acc);word-break:break-all}
+
+/* ═══ MOBILE BOTTOM NAV ═══ */
+.bottom-nav{
+  display:none;flex-shrink:0;
+  background:var(--nav);border-top:1px solid var(--border);
+  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  padding:.4rem 0;
+  padding-bottom:calc(.4rem + env(safe-area-inset-bottom));
+}
+.bnav-inner{display:flex;justify-content:space-around}
+.bnav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:.18rem;
+  padding:.38rem .5rem;border-radius:8px;border:none;background:none;
+  color:var(--text3);cursor:pointer;font-family:'Sarabun',sans-serif;font-size:.6rem;
+  min-width:52px;transition:color .15s;
+}
+.bnav-btn .bi{font-size:1.1rem;line-height:1}
+.bnav-btn.active{color:var(--acc)}
+.bnav-btn:active{transform:scale(.9)}
+
+/* ═══ MOBILE SHEET ═══ */
+.m-sheet{
+  display:none;position:fixed;inset:0;z-index:400;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+  align-items:flex-end;
+}
+.m-sheet.open{display:flex}
+.sheet-box{
+  width:100%;background:var(--bg2);border-radius:20px 20px 0 0;
+  border-top:1px solid var(--border);max-height:75vh;
+  display:flex;flex-direction:column;
+  animation:sheetUp .22s ease;
+}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+.sheet-handle{width:36px;height:4px;border-radius:99px;background:var(--border2);margin:.65rem auto .2rem}
+.sheet-head{font-family:'Noto Serif Thai',serif;font-size:.95rem;font-weight:800;color:var(--text);padding:.35rem 1.2rem .65rem}
+.sheet-search{padding:0 1rem .7rem;flex-shrink:0}
+.sheet-search input{
+  width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  padding:.48rem .85rem;font-family:'Sarabun',sans-serif;font-size:.82rem;
+  color:var(--text);outline:none;
+}
+.sheet-search input:focus{border-color:var(--acc)}
+.sheet-list{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:.2rem 0 1rem}
+.sheet-row{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.7rem 1.2rem;cursor:pointer;font-size:.88rem;color:var(--text2);
+  transition:background .12s;
+}
+.sheet-row:hover,.sheet-row:active{background:var(--bg3)}
+.sheet-row.active{color:var(--acc);font-weight:700}
+.sr-ico{font-size:1.05rem;width:22px;text-align:center}
+.sr-lbl{flex:1}
+.sr-cnt{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--text3);background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:99px;padding:.1rem .45rem}
+
+/* ═══ DATE SHEET ═══ */
+.date-sheet-box{padding:1rem 1.2rem 1.5rem}
+.date-sheet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;margin-top:.75rem}
+.ds-btn{
+  padding:.5rem .35rem;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text2);font-family:'IBM Plex Mono',monospace;
+  font-size:.68rem;cursor:pointer;transition:all .18s;text-align:center;
+}
+.ds-btn:hover{background:var(--bg4)}
+.ds-btn.active{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:700}
+.ds-input-wrap{margin-top:.85rem;border-top:1px solid var(--border);padding-top:.85rem}
+.ds-input-label{font-size:.72rem;color:var(--text3);margin-bottom:.4rem}
+.ds-input{
+  width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  padding:.5rem .85rem;font-family:'IBM Plex Mono',monospace;font-size:.8rem;
+  color:var(--text);outline:none;
+}
+.ds-input:focus{border-color:var(--acc)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:640px){
+  .sidebar{
+    position:fixed;top:0;left:0;height:100%;
+    transform:translateX(-100%);width:min(80vw,280px);
+    box-shadow:8px 0 40px rgba(0,0,0,.5);z-index:200;
+  }
+  .sidebar.open{transform:none}
+  .main{margin-left:0}
+  .menu-btn{display:flex}
+  .date-area .date-btn:not(.today-btn){display:none}
+  .date-area .cal-btn span:not(.cal-ico){display:none}
+  .bottom-nav{display:block}
+  .content{padding:.85rem .85rem 1.5rem}
+  .news-grid{grid-template-columns:1fr;gap:.65rem}
+  .hero-layout{grid-template-columns:1fr;grid-template-rows:auto}
+  .hero-layout .card:first-child{grid-row:auto;grid-column:1}
+  .hero-layout .card:first-child .card-img{height:200px}
+  .card-img{height:160px}
+  .topbar{padding:0 .9rem;padding-top:env(safe-area-inset-top);gap:.5rem}
+  .topbar-title{font-size:.82rem}
+}
+@media(min-width:641px) and (max-width:1024px){
+  .sidebar{
+    position:fixed;top:0;left:0;height:100%;
+    transform:translateX(-100%);
+    box-shadow:8px 0 40px rgba(0,0,0,.5);z-index:200;
+  }
+  .sidebar.open{transform:none}
+  .main{margin-left:0}
+  .menu-btn{display:flex}
+  .news-grid{grid-template-columns:repeat(2,1fr)}
+  .content{padding:1.1rem 1.25rem 2rem}
+}
+@media(min-width:1025px){
+  .menu-btn{display:none}
+  .main{margin-left:240px}
+}
+@media(min-width:1280px){
+  .news-grid{grid-template-columns:repeat(3,1fr)}
+  .content{padding:1.5rem 2rem 2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ═══ SETTINGS ═══ -->
+<div class="settings-overlay" id="settingsOverlay" onclick="if(event.target===this)closeSettings()">
+  <div class="settings-box">
+    <div class="stg-title">⚙️ ตั้งค่า Webhook URL</div>
+    <div class="stg-sub">ใส่ URL ของ n8n Webhook ที่ต้องการดึงข้อมูลข่าว<br/>รองรับ ngrok, Cloudflare Tunnel, หรือ URL ตรง</div>
+    <label class="stg-label">Webhook URL</label>
+    <input class="stg-input" id="urlInput" type="url" placeholder="https://xxx.ngrok-free.app/webhook/news-viewer" spellcheck="false" autocomplete="off"/>
+    <div class="stg-hint">💡 ngrok URL เปลี่ยนทุก restart — แนะนำใช้ <code>ngrok static domain</code> หรือ Cloudflare Tunnel</div>
+    <div class="stg-status" id="stgStatus"></div>
+    <div class="stg-btns">
+      <button class="stg-btn secondary" onclick="testConn()">🔗 ทดสอบ</button>
+      <button class="stg-btn primary" onclick="saveSettings()">💾 บันทึก</button>
+    </div>
+    <div class="stg-cur">
+      <div class="stg-cur-label">URL ปัจจุบัน</div>
+      <div class="stg-cur-url" id="curUrlDisplay">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MOBILE SHEETS ═══ -->
+<div class="m-sheet" id="srcSheet" onclick="if(event.target===this)closeSheets()">
+  <div class="sheet-box">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">📡 สำนักข่าว</div>
+    <div class="sheet-search"><input id="sheetSearch" placeholder="🔍 ค้นหาสำนัก..." oninput="filterSrcSheet()"/></div>
+    <div class="sheet-list" id="sheetList"></div>
+  </div>
+</div>
+
+<div class="m-sheet" id="catSheet" onclick="if(event.target===this)closeSheets()">
+  <div class="sheet-box">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">🏷️ หมวดหมู่</div>
+    <div class="sheet-list" id="catSheetList"></div>
+  </div>
+</div>
+
+<div class="m-sheet" id="dateSheet" onclick="if(event.target===this)closeSheets()">
+  <div class="sheet-box">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">📅 เลือกวันที่</div>
+    <div class="date-sheet-box">
+      <div style="font-size:.75rem;color:var(--text2)">เลือกวันย้อนหลัง</div>
+      <div class="date-sheet-grid" id="dateSheetGrid"></div>
+      <div class="ds-input-wrap">
+        <div class="ds-input-label">หรือเลือกวันที่เอง</div>
+        <input type="date" class="ds-input" id="dsDateInput" onchange="selectDateFromSheet(this.value)"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-mark">N</div>
+      <div>
+        <div class="logo-title">n8n <span style="color:var(--acc)">News</span></div>
+        <div class="logo-sub">RSS AGGREGATOR</div>
+      </div>
+    </div>
+    <div class="sb-search">
+      <input id="sideSearch" placeholder="ค้นหาสำนักข่าว..." oninput="filterSidebar(this.value)"/>
+    </div>
+    <nav class="sb-nav" id="sideNav">
+      <div class="nav-group">
+        <div class="nav-group-label">ภาพรวม</div>
+        <div class="nav-item active" data-page="all" onclick="setPage('all')">
+          <span class="ni-ico">🗞️</span>
+          <span class="ni-lbl">ข่าวทั้งหมด</span>
+          <span class="ni-cnt" id="cnt-all">—</span>
+        </div>
+      </div>
+      <div class="nav-group" id="catGroup">
+        <div class="nav-group-label">หมวดหมู่</div>
+      </div>
+      <div class="nav-group" id="srcGroup">
+        <div class="nav-group-label">สำนักข่าว</div>
+      </div>
+    </nav>
+    <div class="sb-footer">อัปเดต: <span id="updateTime">—</span></div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="topTitle">ข่าว<em>วันนี้</em></div>
+
+      <!-- Date controls (desktop) -->
+      <div class="date-area" id="dateArea">
+        <button class="date-btn today-btn" id="todayBtn" onclick="goToday()" title="กลับมาวันนี้">📅 วันนี้</button>
+        <div class="date-picker-wrap" title="เลือกวันที่">
+          <input type="date" id="datePickerInput" onchange="selectDate(this.value)"/>
+          <div class="cal-btn"><span class="cal-ico">📆</span><span id="selectedDateLabel">เลือกวัน</span></div>
+        </div>
+      </div>
+
+      <div class="icon-btn" onclick="openSettings()" title="ตั้งค่า">⚙️</div>
+      <div class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="ธีม">🌙</div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content-scroll" id="contentScroll">
+      <div class="content" id="mainContent">
+        <div class="spinner-wrap"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <div class="bnav-inner">
+        <button class="bnav-btn active" id="bnav-all" onclick="setPage('all');syncBnav('all')">
+          <span class="bi">🗞️</span>ทั้งหมด
+        </button>
+        <button class="bnav-btn" id="bnav-src" onclick="openSrcSheet()">
+          <span class="bi">📡</span>สำนัก
+        </button>
+        <button class="bnav-btn" id="bnav-cat" onclick="openCatSheet()">
+          <span class="bi">🏷️</span>หมวด
+        </button>
+        <button class="bnav-btn" id="bnav-date" onclick="openDateSheet()">
+          <span class="bi">📅</span>วันที่
+        </button>
+        <button class="bnav-btn" onclick="toggleTheme()">
+          <span class="bi" id="bnavThemeIco">🌙</span>ธีม
+        </button>
+      </div>
+    </div>
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ════════════════════════════════
+//  CONFIG
+// ════════════════════════════════
+const DEFAULT_URL = 'https://mako-quiet-legally.ngrok-free.app/webhook/news-viewer';
+let N8N_WEBHOOK_URL = localStorage.getItem('n8nWebhookUrl') || DEFAULT_URL;
+const USE_MOCK = false;
+
+// Clean value from Google Sheets (removes surrounding single quotes)
+function clean(v){ return v ? String(v).trim().replace(/^'+|'+$/g,'') : '' }
+
+const CAT_EMOJI = {
+  'ข่าวทั่วไป':'📰','การเมือง':'🏛️','เศรษฐกิจ':'💹','สตาร์ทอัพ':'🚀',
+  'วาไรตี้':'🎭','English':'🌐','IT/Dev':'💻','Enterprise IT':'🏢','AI':'🤖','Gadget':'📱'
+};
+
+// ════════════════════════════════
+//  STATE
+// ════════════════════════════════
+let allNews      = [];
+let currentPage  = 'all';
+let activeCat    = 'all';
+let searchQuery  = '';
+let sortMode     = 'newest';
+let selectedDate = todayStr(); // default = วันนี้, '' = ทั้งหมด
+
+// ════════════════════════════════
+//  DATE HELPERS
+// ════════════════════════════════
+function todayStr(){
+  const d = new Date();
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+function pad(n){ return String(n).padStart(2,'0') }
+function dateStr(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}` }
+
+// รองรับทั้ง isoDate (จาก n8n Google Sheets) และ pubDate (format อื่น)
+function getDateField(n){ return n.isoDate || getDateField(n) || '' }
+
+function pubDateStr(pubDate){
+  if(!pubDate) return '';
+  try{
+    // Strip extra single quotes that Google Sheets sometimes adds
+    let s = String(pubDate).trim().replace(/^'+|'+$/g,'');
+    const d = new Date(s);
+    if(isNaN(d.getTime())) return s.substring(0,10);
+    // Convert to Bangkok time (UTC+7) explicitly
+    // so UTC+0000 dates like "10 Mar 2026 01:00 +0000" = "10 Mar 2026 08:00 +0700"
+    const bkk = new Date(d.getTime() + (7*60*60*1000) + d.getTimezoneOffset()*60*1000);
+    return `${bkk.getFullYear()}-${pad(bkk.getMonth()+1)}-${pad(bkk.getDate())}`;
+  } catch{ return '' }
+}
+
+function filterByDate(news){
+  // ถ้าไม่ได้เลือกวัน = แสดงทั้งหมด (default)
+  if(!selectedDate) return news;
+  // เลือกวัน = กรอง
+  return news.filter(n => {
+    const ps = pubDateStr(getDateField(n));
+    if(!ps) return true; // parse ไม่ได้ = แสดงไว้ก่อน
+    return ps === selectedDate;
+  });
+}
+
+function isToday(){ return !selectedDate || selectedDate === todayStr() }
+
+function thaiDateFull(dateStr){
+  const d = new Date(dateStr+'T00:00:00');
+  return d.toLocaleDateString('th-TH',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+function thaiDateShort(dateStr){
+  const d = new Date(dateStr+'T00:00:00');
+  return d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'});
+}
+
+// ════════════════════════════════
+//  THEME
+// ════════════════════════════════
+const _savedTheme = localStorage.getItem('newsTheme')||'dark';
+document.documentElement.setAttribute('data-theme', _savedTheme);
+document.getElementById('themeBtn').textContent = _savedTheme==='dark'?'🌙':'☀️';
+
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  localStorage.setItem('newsTheme',next);
+  const ico = next==='dark'?'🌙':'☀️';
+  document.getElementById('themeBtn').textContent = ico;
+  const bi = document.getElementById('bnavThemeIco');
+  if(bi) bi.textContent = ico;
+  document.getElementById('themeColor').content = next==='dark'?'#0a0c10':'#f5f6f8';
+}
+
+// ════════════════════════════════
+//  SIDEBAR
+// ════════════════════════════════
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+function filterSidebar(q){
+  document.querySelectorAll('#srcGroup .nav-item').forEach(el=>{
+    el.style.display = el.querySelector('.ni-lbl').textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
+  });
+}
+
+// ════════════════════════════════
+//  LOAD
+// ════════════════════════════════
+function showAllDates(){
+  selectedDate = '';
+  buildSidebar();
+  renderPage();
+}
+
+// Show all news ignoring date filter (debug/fallback)
+function showAllIgnoreDate(){
+  const mc = document.getElementById('mainContent');
+  const dated = allNews; // no date filter
+  mc.innerHTML = `
+    <div style="padding:.6rem 1rem;background:rgba(255,140,0,.1);border:1px solid rgba(255,140,0,.25);border-radius:8px;margin-bottom:1rem;font-size:.75rem;color:#ff9500;display:flex;align-items:center;gap:.5rem">
+      ⚠️ แสดงข่าวทั้งหมด ${allNews.length} รายการ (ข้ามการกรองวัน) — pubDate ของข่าวอาจไม่ตรงกับวันปัจจุบัน
+    </div>
+    <div class="filter-bar">
+      <div class="search-box"><input id="searchInput" placeholder="ค้นหาข่าว..." oninput="onSearch(this.value,dated)"/></div>
+      <select class="sort-sel" onchange="sortMode=this.value;renderPage()">
+        <option value="newest">ล่าสุดก่อน</option>
+        <option value="oldest">เก่าสุดก่อน</option>
+        <option value="source">ตามสำนัก</option>
+      </select>
+    </div>
+    <div id="gridWrap"></div>`;
+  renderGrid('gridWrap', dated);
+}
+
+async function loadNews(){
+  const mc = document.getElementById('mainContent');
+  mc.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
+  try{
+    if(USE_MOCK){
+      allNews = MOCK_DATA;
+    } else {
+      const res = await fetch(N8N_WEBHOOK_URL,{
+        headers:{'ngrok-skip-browser-warning':'true','Accept':'application/json'},
+        signal: AbortSignal.timeout(12000)
+      });
+      const txt = await res.text();
+      try{
+        const json = JSON.parse(txt);
+        allNews = Array.isArray(json) ? json : (json.data || []);
+      } catch{
+        mc.innerHTML = '<div class="conn-error"><div class="ce-icon">⚠️</div><div class="ce-title">Response ไม่ใช่ JSON</div><div class="ce-msg">ตรวจสอบว่า n8n Workflow Active และ Webhook path ถูกต้อง</div><div class="ce-btns"><button class="ce-btn primary" onclick="openSettings()">⚙️ เปลี่ยน URL</button></div></div>';
+        return;
+      }
+    }
+    document.getElementById('updateTime').textContent =
+      new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+    buildSidebar();
+    renderPage();
+  } catch{
+    showConnError();
+  }
+}
+
+function showConnError(){
+  document.getElementById('mainContent').innerHTML = `
+    <div class="conn-error">
+      <div class="ce-icon">📡</div>
+      <div class="ce-title">เชื่อมต่อ Webhook ไม่ได้</div>
+      <div class="ce-msg">ngrok URL อาจเปลี่ยนแล้ว หรือ n8n Workflow ยังไม่ Active</div>
+      <div class="ce-url">${N8N_WEBHOOK_URL}</div>
+      <div class="ce-btns">
+        <button class="ce-btn primary" onclick="openSettings()">⚙️ เปลี่ยน URL</button>
+        <button class="ce-btn" onclick="loadNews()">🔄 ลองใหม่</button>
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════
+//  BUILD SIDEBAR
+// ════════════════════════════════
+function buildSidebar(){
+  const dated = filterByDate(allNews);
+  const displayCount = dated.length;
+  document.getElementById('cnt-all').textContent = displayCount;
+
+  // สำหรับ sidebar ใช้ข้อมูลที่กรองวันแล้ว (ถ้ามีการเลือกวัน) หรือทั้งหมด
+  const sidebarNews = selectedDate ? dated : allNews;
+  const catMap={}, srcMap={};
+  sidebarNews.forEach(n=>{
+    const _c=clean(n.category); const _s=clean(n.source);
+    catMap[_c||'']=(catMap[_c||'']||0)+1;
+    srcMap[_s||'']=(srcMap[_s||'']||0)+1;
+  });
+
+  document.getElementById('catGroup').innerHTML =
+    '<div class="nav-group-label">หมวดหมู่</div>' +
+    Object.entries(catMap).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`
+      <div class="nav-item" data-page="cat:${c}" data-tip="${c||'ไม่มีหมวด'}" onclick="setPage('cat:${esc(c)}')">
+        <span class="ni-ico">${CAT_EMOJI[c]||'📌'}</span>
+        <span class="ni-lbl">${c||'ไม่มีหมวด'}</span>
+        <span class="ni-cnt">${n}</span>
+      </div>`).join('');
+
+  document.getElementById('srcGroup').innerHTML =
+    '<div class="nav-group-label">สำนักข่าว</div>' +
+    Object.entries(srcMap).sort((a,b)=>b[1]-a[1]).map(([s,n])=>`
+      <div class="nav-item" data-page="src:${esc(s)}" onclick="setPage('src:${esc(s)}')">
+        <span class="ni-ico">📡</span>
+        <span class="ni-lbl">${s||'ไม่ระบุ'}</span>
+        <span class="ni-cnt">${n}</span>
+      </div>`).join('');
+
+  syncActiveNav();
+}
+
+function syncActiveNav(){
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.classList.toggle('active', el.dataset.page === currentPage);
+  });
+}
+
+function esc(s){ return (s||'').replace(/'/g,"\\'") }
+
+// ════════════════════════════════
+//  PAGE ROUTING
+// ════════════════════════════════
+function setPage(page){
+  currentPage = page;
+  activeCat   = 'all';
+  searchQuery = '';
+  syncActiveNav();
+  closeSidebar();
+  renderPage();
+  document.getElementById('contentScroll').scrollTop = 0;
+}
+
+function renderPage(){
+  updateDateUI();
+  const mc = document.getElementById('mainContent');
+  const tt = document.getElementById('topTitle');
+  const dated = filterByDate(allNews);
+
+  if(currentPage==='all'){
+    tt.innerHTML = !selectedDate ? 'ข่าว<em>ทั้งหมด</em>' : selectedDate===todayStr() ? 'ข่าว<em>วันนี้</em>' : 'ข่าว<em>วันที่เลือก</em>';
+    renderAllPage(mc, dated);
+  } else if(currentPage.startsWith('cat:')){
+    const cat = currentPage.slice(4);
+    tt.innerHTML = `${CAT_EMOJI[cat]||'📌'} <em>${cat}</em>`;
+    renderCatPage(mc, dated.filter(n=>n.category===cat), cat);
+  } else if(currentPage.startsWith('src:')){
+    const src = currentPage.slice(4);
+    tt.innerHTML = `📡 <em>${src}</em>`;
+    renderSrcPage(mc, dated.filter(n=>n.source===src), src);
+  }
+}
+
+// ════════════════════════════════
+//  DATE CONTROLS
+// ════════════════════════════════
+function updateDateUI(){
+  const inp = document.getElementById('datePickerInput');
+  const lbl = document.getElementById('selectedDateLabel');
+  const todayBtnEl = document.getElementById('todayBtn');
+  inp.value = selectedDate || todayStr();
+  if(selectedDate === todayStr() || !selectedDate){
+    lbl.textContent = 'วันนี้';
+    todayBtnEl.style.display = 'none';
+  } else {
+    lbl.textContent = thaiDateShort(selectedDate);
+    todayBtnEl.style.display = 'flex';
+    todayBtnEl.textContent = '📅 วันนี้';
+  }
+}
+
+function selectDate(val){
+  if(!val) return;
+  selectedDate = val;
+  buildSidebar();
+  renderPage();
+}
+
+function goToday(){
+  selectedDate = todayStr();
+  buildSidebar();
+  renderPage();
+}
+function filterToday(){
+  selectedDate = todayStr();
+  buildSidebar();
+  renderPage();
+}
+
+function prevDay(){
+  const base = selectedDate || todayStr();
+  const d = new Date(base+'T00:00:00');
+  d.setDate(d.getDate()-1);
+  selectedDate = dateStr(d);
+  buildSidebar();
+  renderPage();
+}
+function nextDay(){
+  const base = selectedDate || todayStr();
+  const d = new Date(base+'T00:00:00');
+  d.setDate(d.getDate()+1);
+  if(dateStr(d) > todayStr()) { goToday(); return; }
+  selectedDate = dateStr(d);
+  buildSidebar();
+  renderPage();
+}
+
+// ════════════════════════════════
+//  RENDER PAGES
+// ════════════════════════════════
+function renderAllPage(mc, news){
+  mc.innerHTML = `
+    ${dateBanner()}
+    <div class="stats-row" id="statsRow"></div>
+    <div class="filter-bar">
+      <div class="search-box"><input id="searchInput" placeholder="ค้นหาข่าว..." oninput="onSearch(this.value,news)"/></div>
+      <select class="sort-sel" onchange="sortMode=this.value;renderPage()">
+        <option value="newest">ล่าสุดก่อน</option>
+        <option value="oldest">เก่าสุดก่อน</option>
+        <option value="source">ตามสำนัก</option>
+      </select>
+    </div>
+    <div class="cat-pills" id="catPills"></div>
+    <div id="gridWrap"></div>`;
+
+  buildStats(news, 'statsRow', news);
+  buildCatPills([...new Set(news.map(n=>n.category).filter(Boolean))], 'catPills', news);
+  renderGrid('gridWrap', news);
+}
+
+function renderCatPage(mc, news, cat){
+  mc.innerHTML = `
+    ${dateBanner()}
+    <div class="filter-bar">
+      <div class="search-box"><input id="searchInput" placeholder="ค้นหาใน ${cat}..." oninput="onSearch(this.value,news)"/></div>
+      <select class="sort-sel" onchange="sortMode=this.value;renderPage()">
+        <option value="newest">ล่าสุดก่อน</option>
+        <option value="oldest">เก่าสุดก่อน</option>
+        <option value="source">ตามสำนัก</option>
+      </select>
+    </div>
+    <div id="gridWrap"></div>`;
+  renderGrid('gridWrap', news);
+}
+
+function renderSrcPage(mc, news, src){
+  const cat = news[0]?.category||'';
+  mc.innerHTML = `
+    <div class="source-group-header" style="cursor:default">
+      <div class="sg-icon">${CAT_EMOJI[cat]||'📡'}</div>
+      <div class="sg-info">
+        <div class="sg-name">${src}</div>
+        <div class="sg-meta">${cat} · ${thaiDateShort(selectedDate)}</div>
+      </div>
+      <div class="sg-count">${news.length} ข่าว</div>
+    </div>
+    <div class="filter-bar">
+      <div class="search-box"><input id="searchInput" placeholder="ค้นหาใน ${src}..." oninput="onSearch(this.value,news)"/></div>
+      <select class="sort-sel" onchange="sortMode=this.value;renderPage()">
+        <option value="newest">ล่าสุดก่อน</option>
+        <option value="oldest">เก่าสุดก่อน</option>
+      </select>
+    </div>
+    <div id="gridWrap"></div>`;
+  renderGrid('gridWrap', news);
+}
+
+// ════════════════════════════════
+//  DATE BANNER
+// ════════════════════════════════
+function dateBanner(){
+  const label = isToday() ? 'วันนี้' : 'ย้อนหลัง';
+  const thaiDay = thaiDateFull(selectedDate);
+  const thaiShort = thaiDateShort(selectedDate);
+  return `
+    <div class="date-banner">
+      <div class="date-banner-left">
+        <div class="date-banner-day">${isToday()?'ข่าว <em>วันนี้</em>':'ข่าว <em>'+thaiShort+'</em>'}</div>
+        <div class="date-banner-full">📅 ${thaiDay}</div>
+      </div>
+      <div class="date-nav">
+        <button class="date-nav-btn" onclick="prevDay()" title="วันก่อนหน้า">‹</button>
+        ${!isToday()?`<button class="date-nav-btn" onclick="nextDay()" title="วันถัดไป">›</button>`:''}
+        ${!isToday()?`<button class="date-nav-btn" onclick="goToday()" title="วันนี้" style="font-size:.6rem;width:auto;padding:0 .5rem;font-family:\'IBM Plex Mono\',monospace">TODAY</button>`:''}
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════
+//  GRID RENDERING
+// ════════════════════════════════
+function renderGrid(wrapId, news){
+  const wrap = document.getElementById(wrapId);
+  if(!wrap) return;
+  const filtered = applyFilter(news);
+  if(!filtered.length){
+    const _tot = allNews.length;
+    wrap.innerHTML = `
+      <div class="empty-state">
+        <div class="es-icon">📭</div>
+        <div class="es-title">${_tot>0 ? (selectedDate===todayStr()?'ไม่มีข่าววันนี้':'ไม่มีข่าววันที่เลือก') : 'ไม่พบข่าว'}</div>
+        <div class="es-sub">${_tot>0
+          ? 'มีข้อมูลทั้งหมด <strong>'+_tot+'</strong> ข่าว แต่ไม่มีข่าวในวันที่ '+thaiDateShort(selectedDate||todayStr())
+          : 'ข่าวจาก n8n ยังไม่ถูกดึงมา หรือเชื่อมต่อ Webhook ไม่สำเร็จ'
+        }</div>
+        <div style="display:flex;flex-direction:column;gap:.5rem;align-items:center;margin-top:.5rem">
+          ${_tot>0
+            ? '<button class="es-btn" onclick="showAllDates()">📰 ดูข่าวทุกวัน</button><button class="es-btn" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);margin-top:.35rem" onclick="loadNews()">🔄 โหลดใหม่</button>'
+            : '<button class="es-btn" onclick="loadNews()">🔄 โหลดใหม่</button>'
+          }
+        </div>
+      </div>`;
+    return;
+  }
+
+  // Hero layout if ≥3 items
+  if(filtered.length >= 3 && !searchQuery){
+    wrap.innerHTML =
+      `<div class="hero-layout">${filtered.slice(0,3).map((n,i)=>card(n,i)).join('')}</div>` +
+      (filtered.length>3 ? `<div class="news-grid">${filtered.slice(3).map((n,i)=>card(n,i+3)).join('')}</div>` : '');
+  } else {
+    wrap.innerHTML = `<div class="news-grid">${filtered.map((n,i)=>card(n,i)).join('')}</div>`;
+  }
+}
+
+function applyFilter(news){
+  let f = [...news];
+  if(activeCat!=='all') f = f.filter(n=>n.category===activeCat);
+  if(searchQuery) f = f.filter(n=>
+    (n.title||'').toLowerCase().includes(searchQuery)||
+    (n.source||'').toLowerCase().includes(searchQuery)||
+    (n.content||'').toLowerCase().includes(searchQuery)
+  );
+  if(sortMode==='newest') f.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
+  else if(sortMode==='oldest') f.sort((a,b)=>new Date(a.pubDate||0)-new Date(b.pubDate||0));
+  else if(sortMode==='source') f.sort((a,b)=>(a.source||'').localeCompare(b.source||''));
+  return f;
+}
+
+function onSearch(val, news){
+  searchQuery = val.toLowerCase();
+  renderGrid('gridWrap', news);
+}
+
+// ════════════════════════════════
+//  STATS & PILLS
+// ════════════════════════════════
+function buildStats(news, id, allForPage){
+  const catMap={};
+  news.forEach(n=>{const _c=clean(n.category)||'?';catMap[_c]=(catMap[_c]||0)+1});
+  const top = Object.entries(catMap).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  document.getElementById(id).innerHTML =
+    `<div class="stat-chip total" onclick="setCat('all')">${news.length} <span class="chip-num">ทั้งหมด</span></div>`+
+    top.map(([c,n])=>`
+      <div class="stat-chip ${activeCat===c?'active':''}" onclick="setCat('${esc(c)}')">
+        ${CAT_EMOJI[c]||''} ${c} <span class="chip-num">${n}</span>
+      </div>`).join('');
+}
+
+function buildCatPills(cats, id, news){
+  document.getElementById(id).innerHTML =
+    `<button class="cat-pill ${activeCat==='all'?'on':''}" onclick="setCat('all')">ทั้งหมด</button>`+
+    cats.map(c=>`
+      <button class="cat-pill ${activeCat===c?'on':''}" onclick="setCat('${esc(c)}')">
+        ${CAT_EMOJI[c]||''} ${c}
+      </button>`).join('');
+}
+
+function setCat(cat){
+  activeCat = cat;
+  document.querySelectorAll('.cat-pill').forEach(el=>{
+    el.classList.toggle('on', (cat==='all'&&el.textContent.trim()==='ทั้งหมด')||(el.textContent.trim().includes(cat)&&cat!=='all'));
+  });
+  document.querySelectorAll('.stat-chip:not(.total)').forEach(el=>{
+    el.classList.toggle('active', el.textContent.trim().includes(cat));
+  });
+  renderGrid('gridWrap', filterByDate(allNews).filter(n=>currentPage.startsWith('cat:')?n.category===currentPage.slice(4):true));
+}
+
+// ════════════════════════════════
+//  CARD
+// ════════════════════════════════
+function card(n, i){
+  const cat = String(n.category||'').replace(/^'+|'+$/g,'');
+  const src = String(n.source||'RSS').replace(/^'+|'+$/g,'');
+  const clean = String(n.content||'').replace(/^'+|'+$/g,'').replace(/<[^>]+>/g,'').replace(/\\n/g,' ').replace(/\s+/g,' ').trim();
+  const time = getDateField(n) ? new Date(getDateField(n)).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}) : '';
+  // Clean enclosure URL — strip surrounding quotes, reject relative paths
+  const _enc = String(n.enclosure||'').trim().replace(/^'+|'+$/g,'');
+  const hasImg = _enc && _enc.startsWith('https');
+
+  // Use image proxy to bypass CORS: images.weserv.nl is a free CORS-friendly proxy
+  const proxyUrl = hasImg ? `https://images.weserv.nl/?url=${encodeURIComponent(_enc)}&w=400&h=220&fit=cover&output=webp&q=75` : '';
+
+  const imgHtml = hasImg
+    ? `<img src="${proxyUrl}" alt="" loading="lazy"
+         onload="this.classList.add('loaded')" onerror="this.src='${_enc}';this.referrerPolicy='no-referrer';this.onerror=function(){this.parentElement.innerHTML='<div class=card-img-empty><div class=ei-icon>${CAT_EMOJI[cat]||'📰'}</div><div class=ei-src>${src}</div></div>'}">`
+    : `<div class="card-img-empty"><div class="ei-icon">${CAT_EMOJI[cat]||'📰'}</div><div class="ei-src">${src}</div></div>`;
+
+  return `
+    <div class="card" style="animation-delay:${Math.min(i,.12)*0.04}s">
+      <div class="card-img">
+        ${imgHtml}
+        ${cat?`<span class="cat-badge">${CAT_EMOJI[cat]||''} ${cat}</span>`:''}
+        ${time?`<span class="time-badge">${time}</span>`:''}
+      </div>
+      <div class="card-body">
+        <div class="card-source">
+          <div class="src-dot"></div>${src}
+        </div>
+        <div class="card-title"><a href="${String(n.link||'#').replace(/^'+|'+$/g,'')}" target="_blank" rel="noopener">${String(n.title||'ไม่มีหัวข้อ').replace(/^'+|'+$/g,'')}</a></div>
+        <div class="card-excerpt">${clean.substring(0,160)}${clean.length>160?'…':''}</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-footer-src">${src}</span>
+        <a class="read-btn" href="${String(n.link||'#').replace(/^'+|'+$/g,'')}" target="_blank" rel="noopener">อ่านต่อ →</a>
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════
+//  MOBILE SHEETS
+// ════════════════════════════════
+function syncBnav(id){
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  const el = document.getElementById('bnav-'+id);
+  if(el) el.classList.add('active');
+}
+function closeSheets(){
+  document.querySelectorAll('.m-sheet').forEach(s=>s.classList.remove('open'));
+}
+
+function openSrcSheet(){
+  closeSheets();
+  const dated = filterByDate(allNews);
+  const srcMap={};
+  dated.forEach(n=>{srcMap[n.source||'']=(srcMap[n.source||'']||0)+1});
+  document.getElementById('sheetList').innerHTML =
+    Object.entries(srcMap).sort((a,b)=>b[1]-a[1]).map(([s,n])=>`
+      <div class="sheet-row ${currentPage==='src:'+s?'active':''}" onclick="setPage('src:${esc(s)}');closeSheets();syncBnav('src')">
+        <span class="sr-ico">📡</span>
+        <span class="sr-lbl">${s||'ไม่ระบุ'}</span>
+        <span class="sr-cnt">${n}</span>
+      </div>`).join('');
+  document.getElementById('srcSheet').classList.add('open');
+  setTimeout(()=>document.getElementById('sheetSearch')?.focus(),120);
+}
+
+function openCatSheet(){
+  closeSheets();
+  const dated = filterByDate(allNews);
+  const catMap={};
+  dated.forEach(n=>{catMap[n.category||'']=(catMap[n.category||'']||0)+1});
+  document.getElementById('catSheetList').innerHTML =
+    `<div class="sheet-row ${currentPage==='all'?'active':''}" onclick="setPage('all');closeSheets();syncBnav('all')">
+      <span class="sr-ico">🗞️</span><span class="sr-lbl">ทั้งหมด</span>
+      <span class="sr-cnt">${dated.length}</span>
+    </div>`+
+    Object.entries(catMap).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`
+      <div class="sheet-row ${currentPage==='cat:'+c?'active':''}" onclick="setPage('cat:${esc(c)}');closeSheets();syncBnav('cat')">
+        <span class="sr-ico">${CAT_EMOJI[c]||'📌'}</span>
+        <span class="sr-lbl">${c||'ไม่มีหมวด'}</span>
+        <span class="sr-cnt">${n}</span>
+      </div>`).join('');
+  document.getElementById('catSheet').classList.add('open');
+}
+
+function openDateSheet(){
+  closeSheets();
+  // Build last 7 days grid
+  const grid = document.getElementById('dateSheetGrid');
+  const today = new Date();
+  let html = `<button class="ds-btn ${!selectedDate?'active':''}" onclick="selectDateFromSheet('')" style="grid-column:span 4">📰 แสดงทุกวัน</button>`;
+  for(let i=0;i<7;i++){
+    const d = new Date(today);
+    d.setDate(today.getDate()-i);
+    const ds = dateStr(d);
+    const lbl = i===0?'วันนี้':i===1?'เมื่อวาน':thaiDateShort(ds);
+    html += `<button class="ds-btn ${selectedDate===ds?'active':''}" onclick="selectDateFromSheet('${ds}')">${lbl}</button>`;
+  }
+  grid.innerHTML = html;
+  document.getElementById('dsDateInput').value = selectedDate;
+  document.getElementById('dateSheet').classList.add('open');
+}
+
+function selectDateFromSheet(val){
+  selectedDate = val; // '' = all, 'YYYY-MM-DD' = filter
+  closeSheets();
+  buildSidebar();
+  renderPage();
+}
+
+function filterSrcSheet(){
+  const q = document.getElementById('sheetSearch').value.toLowerCase();
+  document.querySelectorAll('#sheetList .sheet-row').forEach(el=>{
+    el.style.display = el.querySelector('.sr-lbl').textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ closeSheets(); closeSettings(); closeSidebar(); }
+});
+
+// ════════════════════════════════
+//  SETTINGS
+// ════════════════════════════════
+function openSettings(){
+  document.getElementById('urlInput').value = N8N_WEBHOOK_URL;
+  document.getElementById('curUrlDisplay').textContent = N8N_WEBHOOK_URL;
+  document.getElementById('stgStatus').className = 'stg-status';
+  document.getElementById('settingsOverlay').classList.add('open');
+}
+function closeSettings(){
+  document.getElementById('settingsOverlay').classList.remove('open');
+}
+async function testConn(){
+  const url = document.getElementById('urlInput').value.trim();
+  const st = document.getElementById('stgStatus');
+  if(!url){ st.textContent='⚠️ กรุณาใส่ URL ก่อน'; st.className='stg-status err'; return; }
+  st.textContent='🔄 กำลังทดสอบ...'; st.className='stg-status ok';
+  try{
+    const res = await fetch(url,{headers:{'ngrok-skip-browser-warning':'true','Accept':'application/json'},signal:AbortSignal.timeout(8000)});
+    const txt = await res.text();
+    try{
+      const j = JSON.parse(txt);
+      const cnt = Array.isArray(j)?j.length:(j.data?.length||0);
+      st.textContent = `✅ สำเร็จ — พบ ${cnt} ข่าว`;
+      st.className='stg-status ok';
+    } catch{
+      st.textContent='⚠️ Response ไม่ใช่ JSON — ตรวจสอบ Workflow';
+      st.className='stg-status err';
+    }
+  } catch(e){
+    st.textContent=`❌ ${e.message.substring(0,60)}`;
+    st.className='stg-status err';
+  }
+}
+function saveSettings(){
+  const url = document.getElementById('urlInput').value.trim();
+  if(!url){ document.getElementById('stgStatus').textContent='⚠️ กรุณาใส่ URL'; return; }
+  N8N_WEBHOOK_URL = url;
+  localStorage.setItem('n8nWebhookUrl',url);
+  closeSettings();
+  loadNews();
+}
+
+// ════════════════════════════════
+//  PWA
+// ════════════════════════════════
+(function(){
+  const m={name:'n8n News',short_name:'n8n News',start_url:'./',display:'standalone',
+    orientation:'portrait-primary',background_color:'#0a0c10',theme_color:'#e8392a',
+    icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23e8392a'/%3E%3Ctext y='.85em' font-size='72' font-weight='bold' fill='white' x='12'%3EN%3C/text%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'}]};
+  const b=new Blob([JSON.stringify(m)],{type:'application/json'});
+  document.getElementById('manifestLink').href=URL.createObjectURL(b);
+})();
+if('serviceWorker' in navigator){
+  const sw=`self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>{self.clients.claim()});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;if(new URL(e.request.url).pathname.includes('webhook')){e.respondWith(fetch(e.request).catch(()=>new Response('[]',{headers:{'Content-Type':'application/json'}})))}});`;
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'})),{scope:'./'}).catch(()=>{});
+}
+let deferredInstall=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;showInstallBanner()});
+function showInstallBanner(){
+  if(document.getElementById('instBanner')) return;
+  const b=document.createElement('div');
+  b.id='instBanner';
+  b.style.cssText='position:fixed;bottom:calc(68px + env(safe-area-inset-bottom) + 8px);left:50%;transform:translateX(-50%);z-index:500;background:var(--acc);color:#fff;padding:.55rem 1.1rem;border-radius:99px;font-family:Sarabun,sans-serif;font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:.6rem;box-shadow:0 4px 24px var(--acc-glow);cursor:pointer;white-space:nowrap;animation:slideUp .3s ease';
+  b.innerHTML='📲 ติดตั้งแอปนี้ <span style="opacity:.6;font-size:.7rem">✕</span>';
+  b.querySelector('span').onclick=e=>{e.stopPropagation();b.remove()};
+  b.onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();const{outcome}=await deferredInstall.userChoice;deferredInstall=null;b.remove()};
+  document.body.appendChild(b);
+  setTimeout(()=>{b.style.opacity='0';setTimeout(()=>b.remove(),400)},8000);
+}
+const _ss=document.createElement('style');
+_ss.textContent='@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}';
+document.head.appendChild(_ss);
+
+// ════════════════════════════════
+//  MOCK DATA
+// ════════════════════════════════
+const MOCK_DATA = [
+  {title:'ไทยรัฐ — ข่าวตัวอย่างหัวข้อแรก',source:'ไทยรัฐ',category:'ข่าวทั่วไป',pubDate:new Date().toISOString(),link:'https://www.thairath.co.th',enclosure:'',content:'เนื้อหาตัวอย่างสำหรับทดสอบ'},
+  {title:'Blognone — ข่าวไอทีล่าสุด',source:'Blognone',category:'IT/Dev',pubDate:new Date().toISOString(),link:'https://www.blognone.com',enclosure:'',content:'ข่าวไอทีตัวอย่าง'},
+  {title:'Bangkok Post — Today Headlines',source:'Bangkok Post',category:'English',pubDate:new Date().toISOString(),link:'https://www.bangkokpost.com',enclosure:'',content:'English news sample'},
+  {title:'TechCrunch — AI Developments',source:'TechCrunch AI',category:'AI',pubDate:new Date().toISOString(),link:'https://techcrunch.com',enclosure:'',content:'AI news sample'},
+  {title:'ประชาชาติธุรกิจ — ข่าวเศรษฐกิจ',source:'ประชาชาติธุรกิจ',category:'เศรษฐกิจ',pubDate:new Date().toISOString(),link:'https://www.prachachat.net',enclosure:'',content:'ข่าวเศรษฐกิจตัวอย่าง'},
+];
+
+// ════════════════════════════════
+//  INIT
+// ════════════════════════════════
+updateDateUI();
+loadNews();
+</script>
+</body>
+</html>
