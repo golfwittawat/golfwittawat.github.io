@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>พรหมญาณ App Overview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #120f25;
+        --bg-soft: #1b1635;
+        --panel: rgba(18, 15, 37, 0.72);
+        --panel-strong: rgba(23, 19, 46, 0.9);
+        --line: rgba(244, 214, 138, 0.18);
+        --gold: #d9ad45;
+        --gold-soft: #f4d68a;
+        --cream: #f7f1df;
+        --muted: #b8ad94;
+        --accent: #7c5cff;
+        --success: #63d18c;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--cream);
+        font-family: "Prompt", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(124, 92, 255, 0.18), transparent 34%),
+          radial-gradient(circle at 80% 20%, rgba(217, 173, 69, 0.2), transparent 30%),
+          linear-gradient(180deg, #0f0b1f 0%, #171230 45%, #0e0b1a 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.45), transparent 50%),
+          radial-gradient(1px 1px at 32% 72%, rgba(255, 255, 255, 0.3), transparent 50%),
+          radial-gradient(1px 1px at 77% 22%, rgba(255, 255, 255, 0.3), transparent 50%),
+          radial-gradient(1px 1px at 68% 80%, rgba(255, 255, 255, 0.25), transparent 50%);
+        opacity: 0.6;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(1160px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        padding: 32px 0 28px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 44px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand-mark {
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        font-size: 24px;
+        background: linear-gradient(135deg, rgba(244, 214, 138, 0.18), rgba(124, 92, 255, 0.24));
+        border: 1px solid rgba(244, 214, 138, 0.22);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      }
+
+      .brand h1,
+      .brand p {
+        margin: 0;
+      }
+
+      .brand h1 {
+        font-family: "Noto Serif Thai", serif;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .brand p {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: var(--cream);
+        background: rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(12px);
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.9fr;
+        gap: 28px;
+        align-items: stretch;
+      }
+
+      .hero-copy,
+      .hero-visual,
+      .info-panel,
+      .version-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .hero-copy {
+        padding: 32px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(244, 214, 138, 0.2);
+        background: rgba(244, 214, 138, 0.08);
+        color: var(--gold-soft);
+        font-size: 13px;
+        margin-bottom: 18px;
+      }
+
+      .hero-copy h2 {
+        margin: 0 0 16px;
+        font-family: "Noto Serif Thai", serif;
+        font-size: clamp(34px, 5vw, 58px);
+        line-height: 1.1;
+      }
+
+      .hero-copy p {
+        margin: 0;
+        max-width: 720px;
+        font-size: 17px;
+        line-height: 1.8;
+        color: rgba(247, 241, 223, 0.82);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 50px;
+        padding: 0 20px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-weight: 600;
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease,
+          border-color 0.18s ease,
+          background 0.18s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        color: #20160a;
+        background: linear-gradient(135deg, #f4d68a, #d9ad45);
+        box-shadow: 0 14px 32px rgba(217, 173, 69, 0.24);
+      }
+
+      .btn-secondary {
+        color: var(--cream);
+        border-color: rgba(244, 214, 138, 0.18);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .hero-visual {
+        padding: 26px;
+        display: grid;
+        align-items: stretch;
+      }
+
+      .visual-stack {
+        position: relative;
+        min-height: 420px;
+        border-radius: 24px;
+        overflow: hidden;
+        background:
+          linear-gradient(180deg, rgba(6, 7, 15, 0.1), rgba(6, 7, 15, 0.6)),
+          radial-gradient(circle at top, rgba(124, 92, 255, 0.3), transparent 42%),
+          linear-gradient(180deg, #231a45 0%, #120f25 100%);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .visual-stack::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at center, rgba(244, 214, 138, 0.16), transparent 40%),
+          linear-gradient(180deg, transparent 0%, rgba(10, 8, 20, 0.6) 100%);
+      }
+
+      .preview-card {
+        position: absolute;
+        width: 190px;
+        aspect-ratio: 3 / 4;
+        border-radius: 22px;
+        border: 1px solid rgba(244, 214, 138, 0.22);
+        box-shadow:
+          0 16px 50px rgba(0, 0, 0, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+      }
+
+      .preview-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 42%, rgba(10, 8, 20, 0.42));
+      }
+
+      .preview-card.one {
+        top: 42px;
+        left: 34px;
+        transform: rotate(-12deg);
+        background-image: url("ฐานพยากรณ์/ไพ่ครู/S__25387017_0.jpg");
+      }
+
+      .preview-card.two {
+        top: 18px;
+        left: 50%;
+        margin-left: -95px;
+        z-index: 2;
+        transform: translateY(6px);
+        background-image: url("ฐานพยากรณ์/Screenshot_20240626_053754.jpg");
+      }
+
+      .preview-card.three {
+        top: 52px;
+        right: 34px;
+        transform: rotate(11deg);
+        background-image: url("ฐานพยากรณ์/ไพ่ครู/S__25387018_0.jpg");
+      }
+
+      .floating-note {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 22px;
+        z-index: 3;
+        padding: 18px 20px;
+        border-radius: 20px;
+        background: rgba(9, 8, 18, 0.56);
+        border: 1px solid rgba(244, 214, 138, 0.12);
+      }
+
+      .floating-note strong {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .floating-note span {
+        color: rgba(247, 241, 223, 0.72);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin: 26px 0 0;
+      }
+
+      .info-panel {
+        padding: 20px;
+      }
+
+      .info-panel strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 18px;
+      }
+
+      .info-panel p {
+        margin: 0;
+        color: rgba(247, 241, 223, 0.72);
+        line-height: 1.7;
+        font-size: 14px;
+      }
+
+      .section {
+        padding: 22px 0 72px;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .section-head h3,
+      .section-head p {
+        margin: 0;
+      }
+
+      .section-head h3 {
+        font-family: "Noto Serif Thai", serif;
+        font-size: clamp(28px, 4vw, 40px);
+      }
+
+      .section-head p {
+        max-width: 600px;
+        color: rgba(247, 241, 223, 0.72);
+        line-height: 1.7;
+      }
+
+      .version-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .version-card {
+        padding: 22px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .version-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 32%);
+        pointer-events: none;
+      }
+
+      .badge-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid rgba(244, 214, 138, 0.16);
+        color: var(--gold-soft);
+        background: rgba(244, 214, 138, 0.08);
+      }
+
+      .badge.alt {
+        color: #d7cbff;
+        border-color: rgba(124, 92, 255, 0.22);
+        background: rgba(124, 92, 255, 0.12);
+      }
+
+      .version-card h4 {
+        margin: 0 0 10px;
+        font-family: "Noto Serif Thai", serif;
+        font-size: 28px;
+      }
+
+      .version-card > p {
+        margin: 0 0 18px;
+        color: rgba(247, 241, 223, 0.75);
+        line-height: 1.75;
+        min-height: 90px;
+      }
+
+      .thumb {
+        height: 210px;
+        border-radius: 20px;
+        margin-bottom: 18px;
+        background-size: cover;
+        background-position: center;
+        border: 1px solid rgba(244, 214, 138, 0.12);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+      }
+
+      .thumb.one {
+        background-image:
+          linear-gradient(180deg, rgba(8, 8, 18, 0.08), rgba(8, 8, 18, 0.42)),
+          url("ฐานพยากรณ์/ไพ่ครู/S__25387017_0.jpg");
+      }
+
+      .thumb.two {
+        background-image:
+          linear-gradient(180deg, rgba(8, 8, 18, 0.08), rgba(8, 8, 18, 0.42)),
+          url("ฐานพยากรณ์/Screenshot_20240626_054051.jpg");
+      }
+
+      .thumb.three {
+        background-image:
+          linear-gradient(180deg, rgba(8, 8, 18, 0.08), rgba(8, 8, 18, 0.42)),
+          url("ฐานพยากรณ์/Screenshot_20240626_053754.jpg");
+      }
+
+      .feature-list {
+        margin: 0 0 22px;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+
+      .feature-list li {
+        display: flex;
+        align-items: start;
+        gap: 10px;
+        color: rgba(247, 241, 223, 0.82);
+        line-height: 1.6;
+      }
+
+      .feature-list li::before {
+        content: "✦";
+        color: var(--gold-soft);
+        flex: 0 0 auto;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .card-actions .btn {
+        flex: 1 1 160px;
+      }
+
+      .cta {
+        margin-top: 28px;
+        padding: 26px;
+        border-radius: 28px;
+        background: linear-gradient(135deg, rgba(217, 173, 69, 0.16), rgba(124, 92, 255, 0.16));
+        border: 1px solid rgba(244, 214, 138, 0.16);
+        display: grid;
+        grid-template-columns: 1.2fr auto;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .cta h4,
+      .cta p {
+        margin: 0;
+      }
+
+      .cta h4 {
+        font-family: "Noto Serif Thai", serif;
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+
+      .cta p {
+        color: rgba(247, 241, 223, 0.78);
+        line-height: 1.75;
+      }
+
+      .footer {
+        padding: 0 0 46px;
+        color: rgba(247, 241, 223, 0.5);
+        text-align: center;
+        font-size: 13px;
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .version-grid,
+        .info-grid,
+        .cta {
+          grid-template-columns: 1fr;
+        }
+
+        .section-head {
+          align-items: start;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .hero {
+          padding-top: 20px;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: start;
+          margin-bottom: 28px;
+        }
+
+        .hero-copy,
+        .hero-visual,
+        .info-panel,
+        .version-card,
+        .cta {
+          border-radius: 22px;
+        }
+
+        .hero-copy {
+          padding: 24px;
+        }
+
+        .hero-copy h2 {
+          font-size: 34px;
+        }
+
+        .visual-stack {
+          min-height: 380px;
+        }
+
+        .preview-card {
+          width: 140px;
+          border-radius: 18px;
+        }
+
+        .preview-card.one {
+          left: 14px;
+          top: 32px;
+        }
+
+        .preview-card.two {
+          margin-left: -70px;
+        }
+
+        .preview-card.three {
+          right: 14px;
+          top: 36px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="shell">
+        <div class="topbar">
+          <div class="brand">
+            <div class="brand-mark">✦</div>
+            <div>
+              <h1>พรหมญาณ App Overview</h1>
+              <p>ภาพรวมแนวทางหน้าจอและรูปแบบการใช้งานของระบบพรหมญาณ</p>
+            </div>
+          </div>
+          <a class="nav-btn" href="#versions">ดูทั้ง 3 แบบ</a>
+        </div>
+
+        <div class="hero-grid">
+          <section class="hero-copy">
+            <div class="eyebrow">App Variations จากโปรเจกต์ promayan_card</div>
+            <h2>สำรวจ 3 แนวทางของหน้าจอระบบพรหมญาณในมุมมองที่ต่างกัน</h2>
+            <p>
+              หน้านี้ออกแบบมาเพื่อรวมเว็บไซต์พรหมญาณทั้ง 3 รูปแบบไว้ในหน้าเดียว
+              โดยแบบที่ 1 จะอ้างอิง route และสิทธิ์ผู้ใช้จากโปรเจกต์ <code>promayan_card</code> โดยตรง
+              ส่วนแบบที่ 2 และ 3 จะช่วยให้เห็นมุมมองเชิงฟังก์ชันและเชิงภาพลักษณ์ของแอพ
+              เพื่อใช้เปรียบเทียบจุดเด่นของแต่ละแนวทางได้ชัดเจนขึ้น
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#versions">เริ่มดูตัวเลือกทั้งหมด</a>
+              <a class="btn btn-secondary" href="promayan-v1.html">เปิดแบบที่ 1 ทันที</a>
+            </div>
+            <div class="info-grid">
+              <article class="info-panel">
+              <strong>แบบที่ 1</strong>
+              <p>อิงจากระบบจริงของโปรเจกต์ต้นทาง ครอบคลุม login, review, divine, history, profile, settings และฝั่ง admin</p>
+              </article>
+              <article class="info-panel">
+                <strong>แบบที่ 2</strong>
+                <p>เน้น flow การใช้งานและการจัดการระบบ เหมาะกับการดูภาพรวมการทำงานแบบ step-by-step</p>
+              </article>
+              <article class="info-panel">
+                <strong>แบบที่ 3</strong>
+                <p>เน้นบรรยากาศและภาพลักษณ์ของแอพ เหมาะกับการสื่อ mood, tone และความรู้สึกของการใช้งาน</p>
+              </article>
+            </div>
+          </section>
+
+          <aside class="hero-visual">
+            <div class="visual-stack">
+              <div class="preview-card one"></div>
+              <div class="preview-card two"></div>
+              <div class="preview-card three"></div>
+              <div class="floating-note">
+                <strong>เปรียบเทียบแนวทางของแอพได้ในหน้าเดียว</strong>
+                <span>
+                  มีหน้ากลางสำหรับเปรียบเทียบทั้ง 3 แบบในที่เดียว
+                  ช่วยให้เห็นความต่างของ route จริง ฟังก์ชัน ระบบหลังบ้าน และโทนภาพรวมของแอพได้ชัดขึ้น
+                </span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </header>
+
+    <main class="section" id="versions">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <h3>รูปแบบเว็บไซต์ทั้ง 3 แบบ</h3>
+          </div>
+          <p>
+            เลือกเปิดดูแต่ละแบบได้ทันทีจากปุ่มด้านล่าง
+            ถ้าจะใช้หน้านี้ขึ้น GitHub Pages หน้านี้ก็จะเป็นหน้าหลักสำหรับเข้าไปดูแต่ละเวอร์ชันของระบบ
+            โดยแบบที่ 1 จะเหมาะที่สุดเมื่ออยากดูโครงที่ผูกกับระบบจริงมากที่สุด
+          </p>
+        </div>
+
+        <div class="version-grid">
+          <article class="version-card">
+            <div class="badge-row">
+              <span class="badge">แบบที่ 1</span>
+              <span class="badge alt">System Product Mockup</span>
+            </div>
+            <div class="thumb one"></div>
+            <h4>ภาพระบบจากโปรเจกต์จริง</h4>
+            <p>
+              เวอร์ชันนี้นำ route, สิทธิ์ผู้ใช้, และ flow หลักจากโปรเจกต์ <code>promayan_card</code>
+              มาทำเป็น mockup ของระบบใช้งานจริง จึงเหมาะกับการดูโครงสร้างหน้าจอ
+              และความเชื่อมโยงของฟังก์ชันหลักมากกว่าแค่หน้า concept
+            </p>
+            <ul class="feature-list">
+              <li>มี mockup ของ route หลักทั้งฝั่งสมาชิกและ route เฉพาะ staff</li>
+              <li>สะท้อนโครงจริงของ review, divine, history, profile, settings, admin และ card editor</li>
+              <li>แสดงการจัดการไพ่ เนื้อหา และระบบเสียงแบบ Edge TTS, ElevenLabs, Upload ได้ชัดเจน</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="promayan-v1.html">ดูแบบที่ 1</a>
+            </div>
+          </article>
+
+          <article class="version-card">
+            <div class="badge-row">
+              <span class="badge">แบบที่ 2</span>
+              <span class="badge alt">Mockup พร้อมใช้งาน</span>
+            </div>
+            <div class="thumb two"></div>
+            <h4>หน้าระบบและการจัดการ</h4>
+            <p>
+              เวอร์ชันนี้เน้นโครงหน้าจัดการ ชุดไพ่
+              และ flow การใช้งานที่ต่อเนื่อง เหมาะกับการดูภาพรวมเชิงฟังก์ชันของระบบ
+            </p>
+            <ul class="feature-list">
+              <li>เห็นภาพการใช้งานจริงและหน้าจัดการชัด</li>
+              <li>มีภาพไพ่จริงแทรกในหลายจุดของ mockup</li>
+              <li>เหมาะกับการดูความครบของระบบและลำดับขั้นตอนการใช้งาน</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="promayan-v2.html">ดูแบบที่ 2</a>
+            </div>
+          </article>
+
+          <article class="version-card">
+            <div class="badge-row">
+              <span class="badge">แบบที่ 3</span>
+              <span class="badge alt">Brand Experience Style</span>
+            </div>
+            <div class="thumb three"></div>
+            <h4>งานขายภาพลักษณ์</h4>
+            <p>
+              เวอร์ชันนี้เน้นอารมณ์และภาพลักษณ์ของพรหมญาณ
+              เหมาะกับการสื่อความรู้สึก ความพรีเมียม และบรรยากาศของแอพ
+            </p>
+            <ul class="feature-list">
+              <li>เหมาะกับการสื่อ mood และ tone ของหน้าแรกหรือ landing page</li>
+              <li>เน้นความรู้สึกและความน่าเชื่อถือของแบรนด์</li>
+              <li>ใช้เป็นตัวเลือกสำหรับแนวทางหน้าเว็บไซต์หลัก</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-primary" href="promayan-v3.html">ดูแบบที่ 3</a>
+            </div>
+          </article>
+        </div>
+
+        <section class="cta">
+          <div>
+            <h4>พร้อมให้ดูภาพรวมของทั้ง 3 แบบในหน้าเดียว</h4>
+            <p>
+              สามารถกดเข้าไปดูรายละเอียดของแต่ละเวอร์ชันต่อได้ทันที
+              และถ้าต้องการเริ่มจากแบบที่ผูกกับโปรเจกต์จริงมากที่สุด ควรเริ่มที่แบบที่ 1 ก่อน
+            </p>
+          </div>
+          <a class="btn btn-primary" href="promayan-v1.html">เริ่มดูแบบที่ 1</a>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      ใช้หน้านี้เป็นหน้าแรกของ mockup ได้ทันที และเข้าแต่ละเวอร์ชันผ่านปุ่มด้านบน
+    </footer>
+  </body>
+</html>
