@@ -527,6 +527,79 @@
       .faq-arrow {
         transition: transform 0.3s;
       }
+
+      @media (max-width: 768px) {
+        body {
+          overflow-x: hidden;
+        }
+        header > div,
+        #top > div,
+        #about > div,
+        #services > div,
+        #demo > div,
+        #pricing > div,
+        #reviews > div,
+        #contact > div,
+        footer > div {
+          padding-left: 1rem !important;
+          padding-right: 1rem !important;
+        }
+        header > div {
+          height: auto !important;
+          min-height: 4rem;
+          padding-top: 0.75rem;
+          padding-bottom: 0.75rem;
+        }
+        #top {
+          padding-top: 6rem;
+          padding-bottom: 4rem;
+        }
+        .hero-card {
+          width: 122px;
+          border-radius: 12px;
+        }
+        .hero-card.left,
+        .hero-card.right,
+        .hero-card.mid {
+          animation: none !important;
+        }
+        .hero-card.left {
+          transform: rotate(-10deg) translate(-76px, 22px) !important;
+        }
+        .hero-card.mid {
+          transform: translateY(-6px) scale(1.02) !important;
+        }
+        .hero-card.right {
+          transform: rotate(10deg) translate(76px, 22px) !important;
+        }
+        .scroll-cue {
+          display: none;
+        }
+        .ornament {
+          gap: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-card {
+          width: 104px;
+        }
+        .hero-card.left {
+          transform: rotate(-9deg) translate(-60px, 20px) !important;
+        }
+        .hero-card.mid {
+          transform: translateY(-4px) scale(1) !important;
+        }
+        .hero-card.right {
+          transform: rotate(9deg) translate(60px, 20px) !important;
+        }
+        .line-btn,
+        .btn-primary,
+        .btn-outline {
+          width: 100%;
+          justify-content: center;
+        }
+      }
     </style>
   </head>
   <body class="min-h-screen">

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>พรหมญาณ App Overview</title>
+    <title>Promayan Mockup Showcase</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,18 +12,19 @@
     />
     <style>
       :root {
-        --bg: #120f25;
-        --bg-soft: #1b1635;
-        --panel: rgba(18, 15, 37, 0.72);
-        --panel-strong: rgba(23, 19, 46, 0.9);
-        --line: rgba(244, 214, 138, 0.18);
-        --gold: #d9ad45;
-        --gold-soft: #f4d68a;
-        --cream: #f7f1df;
-        --muted: #b8ad94;
-        --accent: #7c5cff;
-        --success: #63d18c;
-        --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+        --bg: #0b0a16;
+        --bg-soft: #151227;
+        --panel: rgba(20, 17, 37, 0.82);
+        --panel-strong: rgba(28, 23, 51, 0.95);
+        --line: rgba(237, 201, 118, 0.16);
+        --line-strong: rgba(237, 201, 118, 0.28);
+        --gold: #d6ab47;
+        --gold-soft: #f3d690;
+        --cream: #f6efdf;
+        --muted: #bdb199;
+        --accent: #9d7bff;
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+        --success: #6bd4a8;
       }
 
       * {
@@ -36,13 +37,12 @@
 
       body {
         margin: 0;
-        min-height: 100vh;
         color: var(--cream);
         font-family: "Prompt", sans-serif;
         background:
-          radial-gradient(circle at top left, rgba(124, 92, 255, 0.18), transparent 34%),
-          radial-gradient(circle at 80% 20%, rgba(217, 173, 69, 0.2), transparent 30%),
-          linear-gradient(180deg, #0f0b1f 0%, #171230 45%, #0e0b1a 100%);
+          radial-gradient(circle at top left, rgba(157, 123, 255, 0.14), transparent 30%),
+          radial-gradient(circle at 80% 10%, rgba(214, 171, 71, 0.16), transparent 26%),
+          linear-gradient(180deg, #0b0915 0%, #110e22 45%, #08070f 100%);
       }
 
       body::before {
@@ -51,11 +51,11 @@
         inset: 0;
         pointer-events: none;
         background-image:
-          radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.45), transparent 50%),
-          radial-gradient(1px 1px at 32% 72%, rgba(255, 255, 255, 0.3), transparent 50%),
-          radial-gradient(1px 1px at 77% 22%, rgba(255, 255, 255, 0.3), transparent 50%),
-          radial-gradient(1px 1px at 68% 80%, rgba(255, 255, 255, 0.25), transparent 50%);
-        opacity: 0.6;
+          radial-gradient(1px 1px at 12% 14%, rgba(255, 255, 255, 0.45), transparent 50%),
+          radial-gradient(1px 1px at 24% 76%, rgba(255, 255, 255, 0.28), transparent 50%),
+          radial-gradient(1px 1px at 72% 22%, rgba(255, 255, 255, 0.32), transparent 50%),
+          radial-gradient(1px 1px at 84% 68%, rgba(255, 255, 255, 0.28), transparent 50%);
+        opacity: 0.75;
       }
 
       a {
@@ -64,79 +64,13 @@
       }
 
       .shell {
-        width: min(1160px, calc(100% - 32px));
+        width: min(1180px, calc(100% - 32px));
         margin: 0 auto;
       }
 
-      .hero {
-        padding: 32px 0 28px;
-      }
-
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 44px;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-
-      .brand-mark {
-        width: 52px;
-        height: 52px;
-        border-radius: 18px;
-        display: grid;
-        place-items: center;
-        font-size: 24px;
-        background: linear-gradient(135deg, rgba(244, 214, 138, 0.18), rgba(124, 92, 255, 0.24));
-        border: 1px solid rgba(244, 214, 138, 0.22);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-      }
-
-      .brand h1,
-      .brand p {
-        margin: 0;
-      }
-
-      .brand h1 {
-        font-family: "Noto Serif Thai", serif;
-        font-size: 18px;
-        font-weight: 700;
-      }
-
-      .brand p {
-        color: var(--muted);
-        font-size: 12px;
-      }
-
-      .nav-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 18px;
-        border-radius: 999px;
-        border: 1px solid var(--line);
-        color: var(--cream);
-        background: rgba(255, 255, 255, 0.04);
-        backdrop-filter: blur(12px);
-      }
-
-      .hero-grid {
-        display: grid;
-        grid-template-columns: 1.2fr 0.9fr;
-        gap: 28px;
-        align-items: stretch;
-      }
-
-      .hero-copy,
-      .hero-visual,
-      .info-panel,
-      .version-card {
+      .summary-card,
+      .version-card,
+      .compare-card {
         background: var(--panel);
         border: 1px solid var(--line);
         border-radius: 28px;
@@ -144,60 +78,21 @@
         backdrop-filter: blur(18px);
       }
 
-      .hero-copy {
-        padding: 32px;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(244, 214, 138, 0.2);
-        background: rgba(244, 214, 138, 0.08);
-        color: var(--gold-soft);
-        font-size: 13px;
-        margin-bottom: 18px;
-      }
-
-      .hero-copy h2 {
-        margin: 0 0 16px;
-        font-family: "Noto Serif Thai", serif;
-        font-size: clamp(34px, 5vw, 58px);
-        line-height: 1.1;
-      }
-
-      .hero-copy p {
-        margin: 0;
-        max-width: 720px;
-        font-size: 17px;
-        line-height: 1.8;
-        color: rgba(247, 241, 223, 0.82);
-      }
-
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        margin-top: 28px;
-      }
-
       .btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        min-height: 50px;
-        padding: 0 20px;
+        min-height: 52px;
+        padding: 0 22px;
         border-radius: 999px;
         border: 1px solid transparent;
         font-weight: 600;
         transition:
           transform 0.18s ease,
           box-shadow 0.18s ease,
-          border-color 0.18s ease,
-          background 0.18s ease;
+          background 0.18s ease,
+          border-color 0.18s ease;
       }
 
       .btn:hover {
@@ -205,145 +100,52 @@
       }
 
       .btn-primary {
-        color: #20160a;
-        background: linear-gradient(135deg, #f4d68a, #d9ad45);
-        box-shadow: 0 14px 32px rgba(217, 173, 69, 0.24);
+        color: #241809;
+        background: linear-gradient(135deg, #f3d690, #d6ab47);
+        box-shadow: 0 14px 32px rgba(214, 171, 71, 0.22);
       }
 
       .btn-secondary {
         color: var(--cream);
-        border-color: rgba(244, 214, 138, 0.18);
         background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(243, 214, 144, 0.16);
       }
 
-      .hero-visual {
-        padding: 26px;
-        display: grid;
-        align-items: stretch;
-      }
-
-      .visual-stack {
-        position: relative;
-        min-height: 420px;
-        border-radius: 24px;
-        overflow: hidden;
-        background:
-          linear-gradient(180deg, rgba(6, 7, 15, 0.1), rgba(6, 7, 15, 0.6)),
-          radial-gradient(circle at top, rgba(124, 92, 255, 0.3), transparent 42%),
-          linear-gradient(180deg, #231a45 0%, #120f25 100%);
-        border: 1px solid rgba(255, 255, 255, 0.04);
-      }
-
-      .visual-stack::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-          radial-gradient(circle at center, rgba(244, 214, 138, 0.16), transparent 40%),
-          linear-gradient(180deg, transparent 0%, rgba(10, 8, 20, 0.6) 100%);
-      }
-
-      .preview-card {
-        position: absolute;
-        width: 190px;
-        aspect-ratio: 3 / 4;
-        border-radius: 22px;
-        border: 1px solid rgba(244, 214, 138, 0.22);
-        box-shadow:
-          0 16px 50px rgba(0, 0, 0, 0.35),
-          0 0 0 1px rgba(255, 255, 255, 0.02) inset;
-        background-size: cover;
-        background-position: center;
-        overflow: hidden;
-      }
-
-      .preview-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 42%, rgba(10, 8, 20, 0.42));
-      }
-
-      .preview-card.one {
-        top: 42px;
-        left: 34px;
-        transform: rotate(-12deg);
-        background-image: url("ฐานพยากรณ์/ไพ่ครู/S__25387017_0.jpg");
-      }
-
-      .preview-card.two {
-        top: 18px;
-        left: 50%;
-        margin-left: -95px;
-        z-index: 2;
-        transform: translateY(6px);
-        background-image: url("ฐานพยากรณ์/Screenshot_20240626_053754.jpg");
-      }
-
-      .preview-card.three {
-        top: 52px;
-        right: 34px;
-        transform: rotate(11deg);
-        background-image: url("ฐานพยากรณ์/ไพ่ครู/S__25387018_0.jpg");
-      }
-
-      .floating-note {
-        position: absolute;
-        left: 24px;
-        right: 24px;
-        bottom: 22px;
-        z-index: 3;
-        padding: 18px 20px;
-        border-radius: 20px;
-        background: rgba(9, 8, 18, 0.56);
-        border: 1px solid rgba(244, 214, 138, 0.12);
-      }
-
-      .floating-note strong {
-        display: block;
-        font-size: 16px;
-        margin-bottom: 8px;
-      }
-
-      .floating-note span {
-        color: rgba(247, 241, 223, 0.72);
-        font-size: 14px;
-        line-height: 1.7;
-      }
-
-      .info-grid {
+      .stat-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 18px;
-        margin: 26px 0 0;
+        gap: 14px;
       }
 
-      .info-panel {
-        padding: 20px;
+      .stat {
+        padding: 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(243, 214, 144, 0.08);
       }
 
-      .info-panel strong {
+      .stat strong {
         display: block;
-        margin-bottom: 8px;
-        font-size: 18px;
+        font-size: 24px;
+        color: var(--gold-soft);
+        margin-bottom: 6px;
       }
 
-      .info-panel p {
-        margin: 0;
-        color: rgba(247, 241, 223, 0.72);
-        line-height: 1.7;
-        font-size: 14px;
+      .stat span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
       }
 
       .section {
-        padding: 22px 0 72px;
+        padding: 28px 0 24px;
       }
 
       .section-head {
         display: flex;
         justify-content: space-between;
         align-items: end;
-        gap: 16px;
+        gap: 18px;
         margin-bottom: 24px;
       }
 
@@ -354,101 +156,69 @@
 
       .section-head h3 {
         font-family: "Noto Serif Thai", serif;
-        font-size: clamp(28px, 4vw, 40px);
+        font-size: clamp(28px, 4vw, 42px);
       }
 
       .section-head p {
-        max-width: 600px;
-        color: rgba(247, 241, 223, 0.72);
-        line-height: 1.7;
+        max-width: 620px;
+        color: rgba(246, 239, 223, 0.74);
+        line-height: 1.75;
       }
 
       .version-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 20px;
+        gap: 22px;
       }
 
       .version-card {
-        padding: 22px;
-        position: relative;
-        overflow: hidden;
+        padding: 24px;
       }
 
-      .version-card::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 32%);
-        pointer-events: none;
+      .version-top {
+        display: grid;
+        grid-template-columns: 1.02fr 0.98fr;
+        gap: 24px;
+        align-items: center;
       }
 
       .badge-row {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: 10px;
         margin-bottom: 14px;
-        flex-wrap: wrap;
       }
 
       .badge {
         display: inline-flex;
         align-items: center;
-        min-height: 28px;
+        min-height: 30px;
         padding: 0 12px;
         border-radius: 999px;
         font-size: 12px;
         font-weight: 600;
-        border: 1px solid rgba(244, 214, 138, 0.16);
         color: var(--gold-soft);
-        background: rgba(244, 214, 138, 0.08);
+        background: rgba(243, 214, 144, 0.08);
+        border: 1px solid rgba(243, 214, 144, 0.14);
       }
 
       .badge.alt {
-        color: #d7cbff;
-        border-color: rgba(124, 92, 255, 0.22);
-        background: rgba(124, 92, 255, 0.12);
+        color: #ddd2ff;
+        background: rgba(157, 123, 255, 0.12);
+        border-color: rgba(157, 123, 255, 0.2);
       }
 
-      .version-card h4 {
-        margin: 0 0 10px;
+      .version-copy h4 {
+        margin: 0 0 12px;
         font-family: "Noto Serif Thai", serif;
-        font-size: 28px;
+        font-size: clamp(30px, 4vw, 38px);
       }
 
-      .version-card > p {
+      .version-copy p {
         margin: 0 0 18px;
-        color: rgba(247, 241, 223, 0.75);
-        line-height: 1.75;
-        min-height: 90px;
-      }
-
-      .thumb {
-        height: 210px;
-        border-radius: 20px;
-        margin-bottom: 18px;
-        background-size: cover;
-        background-position: center;
-        border: 1px solid rgba(244, 214, 138, 0.12);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-      }
-
-      .thumb.one {
-        background-image:
-          linear-gradient(180deg, rgba(8, 8, 18, 0.08), rgba(8, 8, 18, 0.42)),
-          url("ฐานพยากรณ์/ไพ่ครู/S__25387017_0.jpg");
-      }
-
-      .thumb.two {
-        background-image:
-          linear-gradient(180deg, rgba(8, 8, 18, 0.08), rgba(8, 8, 18, 0.42)),
-          url("ฐานพยากรณ์/Screenshot_20240626_054051.jpg");
-      }
-
-      .thumb.three {
-        background-image:
-          linear-gradient(180deg, rgba(8, 8, 18, 0.08), rgba(8, 8, 18, 0.42)),
-          url("ฐานพยากรณ์/Screenshot_20240626_053754.jpg");
+        color: rgba(246, 239, 223, 0.76);
+        line-height: 1.82;
+        font-size: 15px;
       }
 
       .feature-list {
@@ -463,8 +233,8 @@
         display: flex;
         align-items: start;
         gap: 10px;
-        color: rgba(247, 241, 223, 0.82);
-        line-height: 1.6;
+        line-height: 1.65;
+        color: rgba(246, 239, 223, 0.84);
       }
 
       .feature-list li::before {
@@ -475,270 +245,529 @@
 
       .card-actions {
         display: flex;
-        gap: 12px;
         flex-wrap: wrap;
+        gap: 12px;
       }
 
-      .card-actions .btn {
-        flex: 1 1 160px;
+      .preview-shell {
+        position: relative;
+        border-radius: 24px;
+        padding: 18px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+          rgba(7, 8, 16, 0.5);
+        border: 1px solid rgba(243, 214, 144, 0.12);
+        overflow: hidden;
       }
 
-      .cta {
-        margin-top: 28px;
-        padding: 26px;
-        border-radius: 28px;
-        background: linear-gradient(135deg, rgba(217, 173, 69, 0.16), rgba(124, 92, 255, 0.16));
-        border: 1px solid rgba(244, 214, 138, 0.16);
-        display: grid;
-        grid-template-columns: 1.2fr auto;
-        gap: 20px;
+      .preview-head {
+        display: flex;
         align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
       }
 
-      .cta h4,
-      .cta p {
-        margin: 0;
+      .preview-head strong {
+        font-size: 16px;
       }
 
-      .cta h4 {
-        font-family: "Noto Serif Thai", serif;
-        font-size: 28px;
-        margin-bottom: 8px;
-      }
-
-      .cta p {
-        color: rgba(247, 241, 223, 0.78);
-        line-height: 1.75;
-      }
-
-      .footer {
-        padding: 0 0 46px;
-        color: rgba(247, 241, 223, 0.5);
-        text-align: center;
+      .preview-head span {
+        color: var(--muted);
         font-size: 13px;
       }
 
-      @media (max-width: 980px) {
-        .hero-grid,
-        .version-grid,
-        .info-grid,
-        .cta {
+      .dot-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .dot.one { background: #ff7f6b; }
+      .dot.two { background: #ffd166; }
+      .dot.three { background: #6bd4a8; }
+
+      .frame-window {
+        position: relative;
+        height: 320px;
+        overflow: hidden;
+        border-radius: 20px;
+        border: 1px solid rgba(243, 214, 144, 0.16);
+        background: #08070f;
+      }
+
+      .frame-window iframe {
+        width: 1280px;
+        height: 820px;
+        border: 0;
+        transform: scale(0.46);
+        transform-origin: top left;
+        pointer-events: none;
+        filter: saturate(1.05) contrast(1.02);
+      }
+
+      .frame-overlay {
+        position: absolute;
+        inset: auto 0 0;
+        padding: 22px 18px 16px;
+        background: linear-gradient(180deg, transparent, rgba(8, 7, 15, 0.94));
+        color: rgba(246, 239, 223, 0.84);
+        font-size: 13px;
+      }
+
+      .card-modal-preview {
+        position: relative;
+        min-height: 320px;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(243, 214, 144, 0.16);
+        background:
+          radial-gradient(circle at 18% 14%, rgba(243, 214, 144, 0.12), transparent 14%),
+          linear-gradient(180deg, rgba(18, 14, 36, 0.96), rgba(9, 8, 18, 0.96));
+      }
+
+      .card-modal-preview::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent 22%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 30%);
+        filter: blur(2px);
+      }
+
+      .blur-card-stack {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 26px;
+        opacity: 0.34;
+        filter: blur(10px);
+      }
+
+      .blur-card-stack span {
+        width: 78px;
+        height: 170px;
+        border-radius: 26px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 42%),
+          linear-gradient(180deg, #39285b 0%, #19122f 52%, #0c0a16 100%);
+        border: 1px solid rgba(243, 214, 144, 0.08);
+      }
+
+      .card-modal-shell {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 448px);
+        margin: 16px auto 0;
+        border-radius: 20px;
+        padding: 14px 14px 18px;
+        background: #231d42;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+      }
+
+      .card-modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .card-modal-action {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(12, 11, 20, 0.56);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #f4efe4;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .card-modal-frame {
+        border-radius: 18px;
+        padding: 2px;
+        background: linear-gradient(180deg, #d1aa42, #8f6b17);
+      }
+
+      .card-modal-inner {
+        border-radius: 16px;
+        padding: 16px 16px 18px;
+        background: #241d43;
+      }
+
+      .card-art {
+        overflow: hidden;
+        border-radius: 22px;
+        border: 2px solid #af8420;
+        aspect-ratio: 0.68;
+        background: #e7dcc7;
+      }
+
+      .card-art img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+
+      .card-caption {
+        position: relative;
+        margin: 16px auto 0;
+        width: min(100%, 260px);
+        text-align: center;
+      }
+
+      .card-caption::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -6px;
+        height: 32px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.44);
+        filter: blur(8px);
+      }
+
+      .card-caption strong,
+      .card-caption span {
+        position: relative;
+        z-index: 1;
+        display: block;
+      }
+
+      .card-caption strong {
+        font-size: 16px;
+        color: #fff;
+      }
+
+      .card-caption span {
+        margin-top: 4px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.74);
+      }
+
+      .compare-card {
+        padding: 24px;
+        margin: 18px 0 70px;
+      }
+
+      .compare-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .compare-item {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(243, 214, 144, 0.1);
+      }
+
+      .compare-item strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 18px;
+      }
+
+      .compare-item p {
+        margin: 0;
+        color: rgba(246, 239, 223, 0.74);
+        line-height: 1.7;
+        font-size: 14px;
+      }
+
+      .footer-note {
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+        padding: 0 0 40px;
+      }
+
+      @media (max-width: 1040px) {
+        .version-top {
           grid-template-columns: 1fr;
         }
 
-        .section-head {
-          align-items: start;
+        .compare-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .frame-window iframe {
+          transform: scale(0.42);
         }
       }
 
-      @media (max-width: 720px) {
-        .hero {
-          padding-top: 20px;
+      @media (max-width: 780px) {
+        .shell {
+          width: min(100% - 20px, 1180px);
         }
-
-        .topbar {
+        .topbar,
+        .section-head {
           flex-direction: column;
           align-items: start;
-          margin-bottom: 28px;
         }
 
-        .hero-copy,
-        .hero-visual,
-        .info-panel,
+        .stat-grid {
+          grid-template-columns: 1fr;
+        }
+
         .version-card,
-        .cta {
-          border-radius: 22px;
+        .compare-card {
+          border-radius: 24px;
         }
 
-        .hero-copy {
-          padding: 24px;
+        .version-card,
+        .compare-card,
+        .summary-card {
+          padding-left: 20px;
+          padding-right: 20px;
         }
 
-        .hero-copy h2 {
-          font-size: 34px;
+        .section {
+          padding-top: 18px;
         }
 
-        .visual-stack {
-          min-height: 380px;
+        .version-card {
+          padding-top: 20px;
+          padding-bottom: 20px;
         }
 
-        .preview-card {
-          width: 140px;
-          border-radius: 18px;
+        .version-copy h4 {
+          font-size: 2rem;
+          line-height: 1.2;
         }
 
-        .preview-card.one {
-          left: 14px;
-          top: 32px;
+        .preview-shell {
+          padding: 14px;
+          border-radius: 20px;
         }
 
-        .preview-card.two {
-          margin-left: -70px;
+        .card-actions .btn {
+          width: 100%;
         }
 
-        .preview-card.three {
-          right: 14px;
-          top: 36px;
+        .frame-window {
+          height: 260px;
+        }
+
+        .frame-window iframe {
+          transform: scale(0.32);
+        }
+
+        .card-modal-shell {
+          width: min(100%, 360px);
         }
       }
     </style>
   </head>
   <body>
-    <header class="hero">
-      <div class="shell">
-        <div class="topbar">
-          <div class="brand">
-            <div class="brand-mark">✦</div>
-            <div>
-              <h1>พรหมญาณ App Overview</h1>
-              <p>ภาพรวมแนวทางหน้าจอและรูปแบบการใช้งานของระบบพรหมญาณ</p>
-            </div>
-          </div>
-          <a class="nav-btn" href="#versions">ดูทั้ง 3 แบบ</a>
-        </div>
-
-        <div class="hero-grid">
-          <section class="hero-copy">
-            <div class="eyebrow">App Variations จากโปรเจกต์ promayan_card</div>
-            <h2>สำรวจ 3 แนวทางของหน้าจอระบบพรหมญาณในมุมมองที่ต่างกัน</h2>
-            <p>
-              หน้านี้ออกแบบมาเพื่อรวมเว็บไซต์พรหมญาณทั้ง 3 รูปแบบไว้ในหน้าเดียว
-              โดยแบบที่ 1 จะอ้างอิง route และสิทธิ์ผู้ใช้จากโปรเจกต์ <code>promayan_card</code> โดยตรง
-              ส่วนแบบที่ 2 และ 3 จะช่วยให้เห็นมุมมองเชิงฟังก์ชันและเชิงภาพลักษณ์ของแอพ
-              เพื่อใช้เปรียบเทียบจุดเด่นของแต่ละแนวทางได้ชัดเจนขึ้น
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="#versions">เริ่มดูตัวเลือกทั้งหมด</a>
-              <a class="btn btn-secondary" href="promayan-v1.html">เปิดแบบที่ 1 ทันที</a>
-            </div>
-            <div class="info-grid">
-              <article class="info-panel">
-              <strong>แบบที่ 1</strong>
-              <p>อิงจากระบบจริงของโปรเจกต์ต้นทาง ครอบคลุม login, review, divine, history, profile, settings และฝั่ง admin</p>
-              </article>
-              <article class="info-panel">
-                <strong>แบบที่ 2</strong>
-                <p>เน้น flow การใช้งานและการจัดการระบบ เหมาะกับการดูภาพรวมการทำงานแบบ step-by-step</p>
-              </article>
-              <article class="info-panel">
-                <strong>แบบที่ 3</strong>
-                <p>เน้นบรรยากาศและภาพลักษณ์ของแอพ เหมาะกับการสื่อ mood, tone และความรู้สึกของการใช้งาน</p>
-              </article>
-            </div>
-          </section>
-
-          <aside class="hero-visual">
-            <div class="visual-stack">
-              <div class="preview-card one"></div>
-              <div class="preview-card two"></div>
-              <div class="preview-card three"></div>
-              <div class="floating-note">
-                <strong>เปรียบเทียบแนวทางของแอพได้ในหน้าเดียว</strong>
-                <span>
-                  มีหน้ากลางสำหรับเปรียบเทียบทั้ง 3 แบบในที่เดียว
-                  ช่วยให้เห็นความต่างของ route จริง ฟังก์ชัน ระบบหลังบ้าน และโทนภาพรวมของแอพได้ชัดขึ้น
-                </span>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </header>
-
-    <main class="section" id="versions">
-      <div class="shell">
+    <div class="shell">
+      <section class="section" id="versions">
         <div class="section-head">
           <div>
-            <h3>รูปแบบเว็บไซต์ทั้ง 3 แบบ</h3>
+            <h3>เลือกชมแต่ละเวอร์ชัน</h3>
           </div>
           <p>
-            เลือกเปิดดูแต่ละแบบได้ทันทีจากปุ่มด้านล่าง
-            ถ้าจะใช้หน้านี้ขึ้น GitHub Pages หน้านี้ก็จะเป็นหน้าหลักสำหรับเข้าไปดูแต่ละเวอร์ชันของระบบ
-            โดยแบบที่ 1 จะเหมาะที่สุดเมื่ออยากดูโครงที่ผูกกับระบบจริงมากที่สุด
+            แต่ละแบบมีบุคลิกต่างกันชัดเจน คุณสามารถเปิดดูทีละเวอร์ชันจากปุ่มด้านล่าง
+            หรือใช้ preview เพื่อเทียบหน้าตาเบื้องต้นก่อนตัดสินใจ
           </p>
         </div>
 
         <div class="version-grid">
           <article class="version-card">
-            <div class="badge-row">
-              <span class="badge">แบบที่ 1</span>
-              <span class="badge alt">System Product Mockup</span>
-            </div>
-            <div class="thumb one"></div>
-            <h4>ภาพระบบจากโปรเจกต์จริง</h4>
-            <p>
-              เวอร์ชันนี้นำ route, สิทธิ์ผู้ใช้, และ flow หลักจากโปรเจกต์ <code>promayan_card</code>
-              มาทำเป็น mockup ของระบบใช้งานจริง จึงเหมาะกับการดูโครงสร้างหน้าจอ
-              และความเชื่อมโยงของฟังก์ชันหลักมากกว่าแค่หน้า concept
-            </p>
-            <ul class="feature-list">
-              <li>มี mockup ของ route หลักทั้งฝั่งสมาชิกและ route เฉพาะ staff</li>
-              <li>สะท้อนโครงจริงของ review, divine, history, profile, settings, admin และ card editor</li>
-              <li>แสดงการจัดการไพ่ เนื้อหา และระบบเสียงแบบ Edge TTS, ElevenLabs, Upload ได้ชัดเจน</li>
-            </ul>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="promayan-v1.html">ดูแบบที่ 1</a>
+            <div class="version-top">
+              <div class="version-copy">
+                <div class="badge-row">
+                  <span class="badge">Version 1</span>
+                  <span class="badge alt">Card Review App</span>
+                </div>
+                <h4>v1: แอปทบทวนไพ่ที่เปิดจากมือถือได้</h4>
+                <p>
+                  เวอร์ชันนี้แสดงหน้า <code>ทบทวนไพ่</code> เป็นหน้าแรกของแอป
+                  โดยจุดเด่นคือเมื่อกดไพ่แต่ละใบจะมีเสียงบรรยายและความหมายของไพ่ให้ฟังได้ทันที
+                  เหมาะกับการใช้งานบนมือถือ และมีระบบหลังบ้านสำหรับแก้ไขข้อมูลไพ่รวมถึงไฟล์เสียงประกอบ
+                </p>
+                <ul class="feature-list">
+                  <li>เปิดเข้าแอปแล้วเจอหน้าทบทวนไพ่ทันที ใช้งานง่ายบนมือถือ</li>
+                  <li>แตะไพ่เพื่อฟังเสียงบรรยายและดูความหมายของไพ่แต่ละใบได้</li>
+                  <li>มีระบบหลังบ้านสำหรับแก้ไขข้อมูล เนื้อหา และเสียงของไพ่</li>
+                </ul>
+                <div class="card-actions">
+                  <a class="btn btn-primary" href="promayan-v1.html">เปิด v1</a>
+                  <a class="btn btn-secondary" href="#compare">ดูเทียบกับแบบอื่น</a>
+                </div>
+              </div>
+
+              <div class="preview-shell">
+                <div class="preview-head">
+                  <div>
+                    <strong>Live Preview</strong>
+                    <span>ไฟล์: promayan-v1.html</span>
+                  </div>
+                  <div class="dot-row">
+                    <span class="dot one"></span>
+                    <span class="dot two"></span>
+                    <span class="dot three"></span>
+                  </div>
+                </div>
+                <div class="card-modal-preview">
+                  <div class="blur-card-stack" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <div class="card-modal-shell">
+                    <div class="card-modal-actions">
+                      <span class="card-modal-action">▶</span>
+                      <span class="card-modal-action">i</span>
+                      <span class="card-modal-action">×</span>
+                    </div>
+                    <div class="card-modal-frame">
+                      <div class="card-modal-inner">
+                        <div class="card-art">
+                          <img src="ฐานพยากรณ์/ไพ่ครู/S__25387017_0.jpg" alt="เทพพระอาทิตย์" />
+                        </div>
+                        <div class="card-caption">
+                          <strong>เทพประจำวันอาทิตย์</strong>
+                          <span>ไพ่ปกปัก</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
 
           <article class="version-card">
-            <div class="badge-row">
-              <span class="badge">แบบที่ 2</span>
-              <span class="badge alt">Mockup พร้อมใช้งาน</span>
-            </div>
-            <div class="thumb two"></div>
-            <h4>หน้าระบบและการจัดการ</h4>
-            <p>
-              เวอร์ชันนี้เน้นโครงหน้าจัดการ ชุดไพ่
-              และ flow การใช้งานที่ต่อเนื่อง เหมาะกับการดูภาพรวมเชิงฟังก์ชันของระบบ
-            </p>
-            <ul class="feature-list">
-              <li>เห็นภาพการใช้งานจริงและหน้าจัดการชัด</li>
-              <li>มีภาพไพ่จริงแทรกในหลายจุดของ mockup</li>
-              <li>เหมาะกับการดูความครบของระบบและลำดับขั้นตอนการใช้งาน</li>
-            </ul>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="promayan-v2.html">ดูแบบที่ 2</a>
+            <div class="version-top">
+              <div class="version-copy">
+                <div class="badge-row">
+                  <span class="badge">Version 2</span>
+                  <span class="badge alt">Video Generator</span>
+                </div>
+                <h4>v2: ระบบสร้างวิดีโอไพ่แบบอัตโนมัติ</h4>
+                <p>
+                  เวอร์ชันนี้เน้นระบบสร้างวิดีโอไพ่แต่ละใบแบบอัตโนมัติ
+                  สามารถนำข้อความมาแปลงเป็นเสียง แล้วรวมภาพไพ่ เสียงบรรยาย และองค์ประกอบต่าง ๆ
+                  ออกมาเป็นวิดีโอสำเร็จรูปได้ใน flow เดียว
+                </p>
+                <ul class="feature-list">
+                  <li>แปลงข้อความเป็นเสียงเพื่อใช้เป็น narration ของไพ่แต่ละใบ</li>
+                  <li>รวมข้อความ เสียง และภาพไพ่ให้กลายเป็นวิดีโออัตโนมัติ</li>
+                  <li>เหมาะกับการทำคอนเทนต์จำนวนมากให้เร็วและเป็นระบบ</li>
+                </ul>
+                <div class="card-actions">
+                  <a class="btn btn-primary" href="promayan-v2.html">เปิด v2</a>
+                  <a class="btn btn-secondary" href="#compare">ดูเทียบกับแบบอื่น</a>
+                </div>
+              </div>
+
+              <div class="preview-shell">
+                <div class="preview-head">
+                  <div>
+                    <strong>Live Preview</strong>
+                    <span>ไฟล์: promayan-v2.html</span>
+                  </div>
+                  <div class="dot-row">
+                    <span class="dot one"></span>
+                    <span class="dot two"></span>
+                    <span class="dot three"></span>
+                  </div>
+                </div>
+                <div class="frame-window">
+                  <iframe src="promayan-v2.html" title="Promayan Version 2 Preview" loading="lazy"></iframe>
+                  <div class="frame-overlay">เวอร์ชันนี้ชัดเรื่อง workflow สร้างเสียงจากข้อความและประกอบออกมาเป็นวิดีโอไพ่แบบอัตโนมัติ</div>
+                </div>
+              </div>
             </div>
           </article>
 
           <article class="version-card">
-            <div class="badge-row">
-              <span class="badge">แบบที่ 3</span>
-              <span class="badge alt">Brand Experience Style</span>
-            </div>
-            <div class="thumb three"></div>
-            <h4>งานขายภาพลักษณ์</h4>
-            <p>
-              เวอร์ชันนี้เน้นอารมณ์และภาพลักษณ์ของพรหมญาณ
-              เหมาะกับการสื่อความรู้สึก ความพรีเมียม และบรรยากาศของแอพ
-            </p>
-            <ul class="feature-list">
-              <li>เหมาะกับการสื่อ mood และ tone ของหน้าแรกหรือ landing page</li>
-              <li>เน้นความรู้สึกและความน่าเชื่อถือของแบรนด์</li>
-              <li>ใช้เป็นตัวเลือกสำหรับแนวทางหน้าเว็บไซต์หลัก</li>
-            </ul>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="promayan-v3.html">ดูแบบที่ 3</a>
+            <div class="version-top">
+              <div class="version-copy">
+                <div class="badge-row">
+                  <span class="badge">Version 3</span>
+                  <span class="badge alt">Fortune Teller Website</span>
+                </div>
+                <h4>v3: เว็บไซต์สำหรับหมอดูและลูกค้า</h4>
+                <p>
+                  เวอร์ชันนี้เป็นเว็บไซต์สำหรับหมอดู ใช้แสดงรายละเอียดของหมอ
+                  ข้อมูลบริการ ช่องทางติดต่อ และมีระบบสมัครสมาชิกเพื่อให้ลูกค้าเข้ามาติดตามข้อมูลหรือใช้งานบริการต่อได้
+                </p>
+                <ul class="feature-list">
+                  <li>ลูกค้าสามารถดูรายละเอียดของหมอดูและบริการได้จากหน้าเว็บ</li>
+                  <li>มีระบบสมัครสมาชิกเพื่อเก็บข้อมูลและต่อยอดการใช้งาน</li>
+                  <li>มีข้อมูลติดต่อชัดเจน เหมาะกับงานหน้า public-facing</li>
+                </ul>
+                <div class="card-actions">
+                  <a class="btn btn-primary" href="promayan-v3.html">เปิด v3</a>
+                  <a class="btn btn-secondary" href="#compare">ดูเทียบกับแบบอื่น</a>
+                </div>
+              </div>
+
+              <div class="preview-shell">
+                <div class="preview-head">
+                  <div>
+                    <strong>Live Preview</strong>
+                    <span>ไฟล์: promayan-v3.html</span>
+                  </div>
+                  <div class="dot-row">
+                    <span class="dot one"></span>
+                    <span class="dot two"></span>
+                    <span class="dot three"></span>
+                  </div>
+                </div>
+                <div class="frame-window">
+                  <iframe src="promayan-v3.html" title="Promayan Version 3 Preview" loading="lazy"></iframe>
+                  <div class="frame-overlay">เวอร์ชันนี้เด่นที่การเป็นเว็บไซต์สำหรับหมอดู มีข้อมูลบริการ สมัครสมาชิก และช่องทางติดต่อครบ</div>
+                </div>
+              </div>
             </div>
           </article>
+
+        </div>
+      </section>
+
+      <section class="compare-card" id="compare">
+        <div class="section-head">
+          <div>
+            <h3>สรุปเปรียบเทียบแบบสั้น</h3>
+          </div>
+          <p>ถ้าต้องเลือกทิศทางเร็ว ๆ ส่วนนี้จะช่วยให้เห็นว่าควรหยิบเวอร์ชันไหนไปคุยต่อในสถานการณ์แบบใด</p>
         </div>
 
-        <section class="cta">
-          <div>
-            <h4>พร้อมให้ดูภาพรวมของทั้ง 3 แบบในหน้าเดียว</h4>
-            <p>
-              สามารถกดเข้าไปดูรายละเอียดของแต่ละเวอร์ชันต่อได้ทันที
-              และถ้าต้องการเริ่มจากแบบที่ผูกกับโปรเจกต์จริงมากที่สุด ควรเริ่มที่แบบที่ 1 ก่อน
-            </p>
-          </div>
-          <a class="btn btn-primary" href="promayan-v1.html">เริ่มดูแบบที่ 1</a>
-        </section>
-      </div>
-    </main>
+        <div class="compare-grid">
+          <article class="compare-item">
+            <strong>v1 เหมาะเมื่อ</strong>
+            <p>ต้องการแอปทบทวนไพ่ที่เปิดจากมือถือได้ง่าย มีเสียงบรรยายของไพ่ และมีหลังบ้านสำหรับแก้ไขข้อมูลกับเสียง</p>
+          </article>
+          <article class="compare-item">
+            <strong>v2 เหมาะเมื่อ</strong>
+            <p>ต้องการระบบสร้างวิดีโอไพ่อัตโนมัติ จากข้อความไปเป็นเสียง แล้วประกอบออกมาเป็นวิดีโอได้ในขั้นตอนเดียว</p>
+          </article>
+          <article class="compare-item">
+            <strong>v3 เหมาะเมื่อ</strong>
+            <p>ต้องการเว็บไซต์สำหรับหมอดูที่ให้ลูกค้าดูรายละเอียด สมัครสมาชิก และติดต่อได้สะดวกจากหน้าเว็บเดียว</p>
+          </article>
+        </div>
+      </section>
 
-    <footer class="footer">
-      ใช้หน้านี้เป็นหน้าแรกของ mockup ได้ทันที และเข้าแต่ละเวอร์ชันผ่านปุ่มด้านบน
-    </footer>
+      <div class="footer-note">
+        ใช้ไฟล์นี้เป็นหน้าแรกของโฟลเดอร์ `promayan` ได้ทันที และเปิดต่อไปยังแต่ละเวอร์ชันจากปุ่มในหน้า
+      </div>
+    </div>
   </body>
 </html>
